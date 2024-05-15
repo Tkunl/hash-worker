@@ -1,0 +1,20 @@
+{
+  "name": "playground",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "vue": "^3.4.21",
+    "fast-upload": "workspace:*"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.4",
+    "vite": "^5.2.0"
+  }
+}
