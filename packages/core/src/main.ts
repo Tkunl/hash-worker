@@ -1,24 +1,24 @@
-import { getArrayBufFromBlobs, getArrParts, MiniSubject, sliceFile } from './utils'
+import { getArrayBufFromBlobs, getArrParts, sliceFile } from './utils'
 import { md5 } from 'hash-wasm'
 import { WorkerService } from './worker/worker-service'
 import { MerkleTree } from './entity/merkle-tree'
 
 interface IMetaData {
-  size: number,
-  lastModified: number,
+  name: string
+  size: number
+  lastModified: number
   type: string
 }
 
 let workerService: WorkerService | null = null
-let defaultMaxWorkers = 8
+const defaultMaxWorkers = 8
 
-async function upload(
-  file: File,
-  chunkSize: number,
-  curStatus: MiniSubject<string>,
-  cb: (progress: number) => void,
-  maxWorkers = defaultMaxWorkers
-) {
+/**
+ * @param file 待计算 Hash 的文件
+ * @param chunkSize 分片大小 MB
+ * @param maxWorkers worker 线程数量
+ */
+async function getFileHashInfo(file: File, chunkSize = 10, maxWorkers = defaultMaxWorkers) {
   if (workerService === null) {
     workerService = new WorkerService(maxWorkers)
   }
@@ -31,33 +31,33 @@ async function upload(
 
   // 文件元数据
   const metadata: IMetaData = {
-    size: file.size,
+    name: file.name,
+    size: fileSize,
     lastModified: file.lastModified,
     type: file.type,
   }
 
   // 文件分片
-  curStatus.next('Parsing file ...')
   const chunksBlob = sliceFile(file, chunkSize)
   let chunksHash: string[] = []
   if (chunksBlob.length === 1) {
-    chunksHash = [ await md5(new Uint8Array(await chunksBlob[0].arrayBuffer())) ]
+    chunksHash = [await md5(new Uint8Array(await chunksBlob[0].arrayBuffer()))]
   } else {
     let chunksBuf: ArrayBuffer[] = []
     // 将文件分片进行分组, 组内任务并行执行, 组外任务串行执行
     const chunksPart = getArrParts<Blob>(chunksBlob, defaultMaxWorkers)
-    const tasks = chunksPart.map(
-      (part) => async () => {
-        // 手动释放上一次用于计算 Hash 的 ArrayBuffer
-        // !!! 现在只会占用 MAX_WORKERS * 分片数量大小的内存 !!!
-        chunksBuf.length = 0
-        chunksBuf = await getArrayBufFromBlobs(part)
-        // 按文件分片数量执行不同 Hash 策略
-        return chunksBlob.length <= BORDER_COUNT ?
-          await workerService!.getMD5ForFiles(chunksBuf) :
-          await workerService!.getCRC32ForFiles(chunksBuf)
-      },
-    )
+    console.log('chunksBlob', chunksBlob.length)
+    console.log('BORDER_COUNT', BORDER_COUNT)
+    const tasks = chunksPart.map((part) => async () => {
+      // 手动释放上一次用于计算 Hash 的 ArrayBuffer
+      // !!! 现在只会占用 MAX_WORKERS * 分片数量大小的内存 !!!
+      chunksBuf.length = 0
+      chunksBuf = await getArrayBufFromBlobs(part)
+      // 按文件分片数量执行不同 Hash 策略
+      return chunksBlob.length <= BORDER_COUNT
+        ? await workerService!.getMD5ForFiles(chunksBuf)
+        : await workerService!.getCRC32ForFiles(chunksBuf)
+    })
     for (const task of tasks) {
       const result = await task()
       chunksHash.push(...result)
@@ -68,6 +68,12 @@ async function upload(
   await merkleTree.init(chunksHash)
   const fileHash = merkleTree.getRootHash()
 
+  return {
+    chunksBlob,
+    chunksHash,
+    merkleHash: fileHash,
+    metadata,
+  }
 }
 
-export { upload }
+export { getFileHashInfo }

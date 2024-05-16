@@ -22,5 +22,5 @@ export function sliceFile(file: File, baseSize = 1) {
  * @private
  */
 export async function getArrayBufFromBlobs(chunks: Blob[]): Promise<ArrayBuffer[]> {
-  return Promise.all(chunks.map(chunk => chunk.arrayBuffer()))
+  return Promise.all(chunks.map((chunk) => chunk.arrayBuffer()))
 }

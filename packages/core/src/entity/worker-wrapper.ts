@@ -10,9 +10,7 @@ export class WorkerWrapper {
   worker: Worker
   status: StatusEnum
 
-  constructor(
-    worker: Worker,
-  ) {
+  constructor(worker: Worker) {
     this.worker = worker
     this.status = StatusEnum.WAITING
   }

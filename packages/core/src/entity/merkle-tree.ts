@@ -86,7 +86,7 @@ export class MerkleTree implements IMerkleTree {
   }
 
   // 反序列化 Merkle 树
-  static deserialize(serializedTree: string): MerkleTree {
+  static async deserialize(serializedTree: string): Promise<MerkleTree> {
     const parsedData = JSON.parse(serializedTree)
 
     const deserializeNode = (data: any): IMerkleNode | null => {
@@ -115,7 +115,9 @@ export class MerkleTree implements IMerkleTree {
     }
     const leafNodes = extractLeafNodes(root)
 
-    return new MerkleTree(leafNodes)
+    const merkleTree = new MerkleTree()
+    await merkleTree.init(leafNodes)
+    return merkleTree
   }
 
   private async calculateHash(left: IMerkleNode, right: IMerkleNode | null): Promise<string> {

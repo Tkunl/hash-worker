@@ -1,14 +1,26 @@
 <script setup>
-import { main } from 'fast-upload'
-import { onMounted } from 'vue'
+import { ref } from 'vue'
+import { getFileHashInfo } from 'fast-upload'
 
-onMounted(() => {
-  main()
-})
+const file = ref()
+
+function handleInputChange(e) {
+  file.value = e.target.files[0]
+}
+
+function handleGetHash() {
+  getFileHashInfo(file.value).then((data) => {
+    console.log('chunksHash', data.chunksHash)
+    console.log('chunksHash', data.chunksHash)
+  })
+}
+
 </script>
 
 <template>
   <div>Hello</div>
+  <input ref="inputRef" type="file" @change="handleInputChange"/>
+  <button @click="handleGetHash">get Hash</button>
 </template>
 
 <style scoped>

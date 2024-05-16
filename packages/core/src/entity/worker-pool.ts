@@ -7,20 +7,16 @@ export abstract class WorkerPool {
   curRunningCount = new MiniSubject(0)
   results: any[] = []
 
-  protected constructor(
-    maxWorkers = navigator.hardwareConcurrency || 4,
-  ) {
+  protected constructor(maxWorkers = navigator.hardwareConcurrency || 4) {
     this.maxWorkerCount = maxWorkers
   }
 
   exec<T>(params: ArrayBuffer[]) {
     this.results.length = 0
-    const workerParams = params.map(
-      (param, index) => ({ data: param, index }),
-    )
+    const workerParams = params.map((param, index) => ({ data: param, index }))
 
     return new Promise<T[]>((rs) => {
-      this.curRunningCount.subscribe(count => {
+      this.curRunningCount.subscribe((count) => {
         if (count < this.maxWorkerCount && workerParams.length !== 0) {
           // 当前能跑的任务数量
           let curTaskCount = this.maxWorkerCount - count
@@ -45,7 +41,8 @@ export abstract class WorkerPool {
           this.curRunningCount.next(this.curRunningCount.value + curTaskCount)
           canUseWorker.forEach((workerApp, index) => {
             const param = paramsToRun[index]
-            workerApp.run(param.data, params, param.index)
+            workerApp
+              .run(param.data, params, param.index)
               .then((res) => {
                 this.results[param.index] = res
               })
