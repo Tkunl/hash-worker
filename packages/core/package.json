@@ -1,7 +1,8 @@
 {
   "name": "fast-upload",
   "version": "1.0.0",
-  "description": "",
+  "description": "fast-upload is a tool for quickly calculating file hash",
+  "author": "https://github.com/Tkunl",
   "main": "index.js",
   "module": "output/fastUpload.esm-bundler.js",
   "types": "output/types/core/src/main.d.ts",
@@ -12,13 +13,22 @@
       "default": "./output/fastUpload.esm-bundler.js"
     }
   },
+  "files": [
+    "output",
+    "index.cjs",
+    "index.js",
+    "README.md",
+    "package.json"
+  ],
   "scripts": {
     "dev": "npm run rm:windows && rollup -cw",
     "build": "npm run rm:windows && rollup -c",
     "rm:windows": "if exist dist rmdir /s/q output"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "fast-upload",
+    "hash"
+  ],
   "license": "ISC",
   "dependencies": {
     "crc-32": "^1.2.2",
