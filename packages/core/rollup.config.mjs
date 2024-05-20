@@ -173,7 +173,9 @@ function initConfig() {
 
     packageConfig.push(generateConfig(formatName, formatConfig))
 
-    if (['global', 'cjs', 'esm-browser'].includes(formatName)) {
+    // 打包 esm-browser 格式时使用 terser 会报错 ...
+    // if (['global', 'cjs', 'esm-browser'].includes(formatName)) {
+    if (['global', 'cjs'].includes(formatName)) {
       // 压缩代码
       packageConfig.push(generateMinifiedConfig(formatName))
     } else
