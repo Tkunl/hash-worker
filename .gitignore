@@ -1,7 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output, 排除打包产物
-/dist
+dist
 /output
 /tmp
 /out-tsc
