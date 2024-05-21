@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
 import { WorkerMessage } from '../entity/worker-message'
-import { WorkerLabelsEnum } from '../types/worker-labels.enum'
+import { WorkerLabelsEnum } from '../enum/worker-labels.enum'
 import { md5 } from 'hash-wasm'
 
 /**

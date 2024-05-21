@@ -1,16 +1,23 @@
 {
   "name": "kun-hash",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "kun-hash is a tool for quickly calculating file hash",
   "author": "https://github.com/Tkunl",
   "main": "index.js",
   "module": "output/kunHash.esm-bundler.js",
-  "types": "output/types/main.d.ts",
+  "types": "output/main.d.ts",
   "exports": {
     ".": {
-      "require": "./index.cjs",
-      "node": "./index.cjs",
-      "default": "./output/kunHash.esm-bundler.js"
+      "types": {
+        "require": "./output/main.d.ts",
+        "node": "./output/main.d.ts",
+        "default": "./output/main.d.ts"
+      },
+      "default": {
+        "require": "./index.cjs",
+        "node": "./index.cjs",
+        "default": "./output/kunHash.esm-bundler.js"
+      }
     }
   },
   "files": [

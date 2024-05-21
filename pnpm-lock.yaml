@@ -81,7 +81,7 @@ importers:
 
   packages/playground:
     dependencies:
-      fast-upload:
+      kun-hash:
         specifier: workspace:*
         version: link:../core
       vue:

@@ -1,4 +1,4 @@
-import { WorkerLabelsEnum } from '../types/worker-labels.enum'
+import { WorkerLabelsEnum } from '../enum/worker-labels.enum'
 
 export interface WorkerRep<T = any> {
   data: WorkerMessage<T>

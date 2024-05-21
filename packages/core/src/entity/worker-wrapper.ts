@@ -1,5 +1,5 @@
 import { WorkerRep } from './worker-message'
-import { WorkerLabelsEnum } from '../types/worker-labels.enum'
+import { WorkerLabelsEnum } from '../enum/worker-labels.enum'
 
 export enum StatusEnum {
   RUNNING = 'running',

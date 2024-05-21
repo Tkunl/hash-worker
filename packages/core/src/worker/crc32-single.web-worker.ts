@@ -2,7 +2,7 @@
 
 import { crc32 } from 'hash-wasm'
 import { WorkerMessage } from '../entity/worker-message'
-import { WorkerLabelsEnum } from '../types/worker-labels.enum'
+import { WorkerLabelsEnum } from '../enum/worker-labels.enum'
 
 /**
  * 简单的直接算文件的 crc32

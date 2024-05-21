@@ -81,10 +81,10 @@ function generateConfig(formatName, rollupOutput, plugins = []) {
   function tsPluginsConfig(sourceMap) {
     return typescript({
       tsconfig: 'tsconfig.json',
-      'target': 'es2022',
-      'module': 'esnext',
+      target: 'es2022',
+      module: 'esnext',
       declaration: true,
-      declarationDir: 'output/types',
+      declarationDir: '/output/types',
       sourceMap
     })
   }
