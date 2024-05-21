@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "ESNext",
+    "sourceMap": true,
+    "declaration": true, // 是否包含 d.ts 文件
+    "strict": true, // Ts 的严格模式
+    "esModuleInterop": true, // 可以使用 es6 的导入语法导入 cjs 模块
+    "forceConsistentCasingInFileNames": true, // 确保文件大小写一致来确保引用的一致性
+    "skipLibCheck": true, // 跳过第三方库的 d.ts 类型文件检查
+    "lib": ["esnext", "dom"], // 指定编译过程中需要包括的库文件列表, 这些库文件是声明 js 运行时和 dom 中可用的全局变量的类型
+    "moduleResolution": "Bundler" // 定义依赖解析策略, 默认是 node 模块解析策略
+  }
+}

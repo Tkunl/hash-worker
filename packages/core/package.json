@@ -3,33 +3,28 @@
   "version": "0.0.3",
   "description": "kun-hash is a tool for quickly calculating file hash",
   "author": "https://github.com/Tkunl",
-  "main": "index.js",
-  "module": "output/kunHash.esm-bundler.js",
-  "types": "output/main.d.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": {
-        "require": "./output/main.d.ts",
-        "node": "./output/main.d.ts",
-        "default": "./output/main.d.ts"
-      },
-      "default": {
-        "require": "./index.cjs",
-        "node": "./index.cjs",
-        "default": "./output/kunHash.esm-bundler.js"
-      }
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./global": {
+      "require": "./dist/global.js",
+      "import": "./dist/global.js",
+      "types": "./dist/global.d.ts"
     }
   },
   "files": [
-    "output",
-    "index.cjs",
-    "index.js",
-    "README.md",
-    "package.json"
+    "dist",
+    "README.md"
   ],
   "scripts": {
-    "dev": "npm run rm:windows && rollup -cw",
-    "build": "npm run rm:windows && rollup -c",
+    "dev": "rollup --config rollup.config.ts --configPlugin swc3 --watch",
+    "build":"rollup --config rollup.config.ts --configPlugin swc3",
     "rm:windows": "if exist dist rmdir /s/q output"
   },
   "keywords": [
@@ -40,25 +35,5 @@
   "dependencies": {
     "crc-32": "^1.2.2",
     "hash-wasm": "^4.11.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.24.5",
-    "@babel/preset-env": "^7.24.5",
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-eslint": "^9.0.5",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-replace": "^5.0.5",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@typescript-eslint/eslint-plugin": "^7.8.0",
-    "@typescript-eslint/parser": "^7.8.0",
-    "browserslist": "^4.23.0",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.3",
-    "prettier": "^3.2.5",
-    "rollup": "^4.17.2",
-    "rollup-plugin-eslint": "^7.0.0",
-    "rollup-plugin-typescript2": "^0.36.0",
-    "rollup-plugin-web-worker-loader": "^1.6.1"
   }
 }
