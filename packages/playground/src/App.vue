@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { getFileHashInfo } from 'fast-upload'
+import { getFileHashInfo } from 'kun-hash'
 
 const file = ref()
 

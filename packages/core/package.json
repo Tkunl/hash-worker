@@ -1,16 +1,16 @@
 {
-  "name": "fast-upload",
-  "version": "1.0.0",
-  "description": "fast-upload is a tool for quickly calculating file hash",
+  "name": "kun-hash",
+  "version": "0.0.1",
+  "description": "kun-hash is a tool for quickly calculating file hash",
   "author": "https://github.com/Tkunl",
   "main": "index.js",
-  "module": "output/fastUpload.esm-bundler.js",
-  "types": "output/types/core/src/main.d.ts",
+  "module": "output/kunHash.esm-bundler.js",
+  "types": "output/types/main.d.ts",
   "exports": {
     ".": {
       "require": "./index.cjs",
       "node": "./index.cjs",
-      "default": "./output/fastUpload.esm-bundler.js"
+      "default": "./output/kunHash.esm-bundler.js"
     }
   },
   "files": [
@@ -26,10 +26,10 @@
     "rm:windows": "if exist dist rmdir /s/q output"
   },
   "keywords": [
-    "fast-upload",
+    "kun-hash",
     "hash"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "crc-32": "^1.2.2",
     "hash-wasm": "^4.11.0"

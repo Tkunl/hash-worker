@@ -9,7 +9,8 @@ import packageInfo from './package.json' assert { type: 'json' }
 
 const version = packageInfo.version
 const distName = 'output'
-const fileBaseName = 'fastUpload'
+const fileBaseName = 'kunHash'
+const rollupOutputName = 'kunHash'
 const packageConfig = []
 
 /**
@@ -47,7 +48,7 @@ function generateConfig(formatName, rollupOutput, plugins = []) {
   const isCJSBuild = /cjs/.test(rollupOutput.file)
 
   if (isGlobalBuild || isBrowserESMBuild) {
-    rollupOutput.name = 'fastUpload'
+    rollupOutput.name = rollupOutputName
   }
 
   // prod 环境下不会生成 sourcemap
