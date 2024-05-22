@@ -1,10 +1,10 @@
-<script setup>
+<script lang="ts" setup>
 import { ref } from 'vue'
 import { getFileHashInfo } from 'kun-hash'
 
 const file = ref()
 
-function handleInputChange(e) {
+function handleInputChange(e: any) {
   file.value = e.target.files[0]
 }
 
