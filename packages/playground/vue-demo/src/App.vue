@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { getFileHashChunks, Strategy, FileHashChunksResult } from 'kun-hash'
 
-const file = ref()
+const file = ref<File>()
 
 function handleInputChange(e: any) {
   file.value = e.target.files[0]
@@ -10,7 +10,7 @@ function handleInputChange(e: any) {
 
 function handleGetHash() {
   getFileHashChunks({
-    file: file.value,
+    file: file.value!,
     strategy: Strategy.crc32
   }).then((data: FileHashChunksResult) => {
     console.log('chunksHash', data.chunksHash)
@@ -21,7 +21,7 @@ function handleGetHash() {
 
 <template>
   <div>Hello</div>
-  <input ref="inputRef" type="file" @change="handleInputChange"/>
+  <input type="file" @change="handleInputChange"/>
   <button @click="handleGetHash">get Hash</button>
 </template>
 
