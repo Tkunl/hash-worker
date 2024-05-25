@@ -70,4 +70,7 @@ Contributions are welcome! If you find a bug or want to add a new feature, pleas
   <a href="https://github.com/Tkunl">
     <img src="https://avatars.githubusercontent.com/u/19854081?v=4" width="40" height="40" alt="Tkunl">
   </a>
+  <a href="https://github.com/nonzzz">
+    <img src="https://avatars.githubusercontent.com/u/52351095?v=4&s=40" width="40" height="40" alt="Kanno">
+  </a>
 </p>
