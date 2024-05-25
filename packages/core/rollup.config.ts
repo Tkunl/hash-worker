@@ -7,9 +7,9 @@ import webWorkerLoader from 'rollup-plugin-web-worker-loader'
 
 const bundleName = 'kunHash'
 
-// 一般来说现代项目不需要自行压缩这些cjs/esm模块，因为现代构建工具会自动处理
+// 一般来说现代项目不需要自行压缩这些 cjs/esm 模块，因为现代构建工具会自动处理
 // 其次发包发布压缩的包意义在于减少安装大小，但是实际上这个行为可有可无
-// 关于iife/umd 面向现代的前端提供iife就是最好的文明了。
+// 关于 iife/umd 面向现代的前端提供 iife 就可以了。
 // 因此你不需要过多复杂的配置。
 
 export default defineConfig([
