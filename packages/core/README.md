@@ -1,5 +1,73 @@
-## Getting Started
+## Introduce
+Kun-hash is a library for quickly calculating file hashes. It leverages WebWorkers for parallel computation based on hash-wasm, accelerating the speed of calculation when processing file chunks. Kun-hash supports two algorithms for hash calculation: md5 and crc32.
 
-用这个
+> [!WARNING]
+> The merkleHash calculated using Kun-hash is derived from computing the MerkleTree based on the hashes of file chunks, resulting in the rootHash, rather than the hash of the file itself.
 
-`import { getFileHashInfo } from 'kun-hash'`
+## Install
+
+```bash
+
+$ yarn add kun-hash
+
+# or
+
+$ npm install kun-hash
+
+```
+
+## Usage
+
+``` ts
+import { getFileHashChunks, Strategy, FileHashChunksResult, FileHashChunksParam } from 'kun-hash'
+
+function handleGetHash() {
+  const param: FileHashChunksParam = {
+    file: file!,
+    strategy: Strategy.crc32
+  }
+
+  getFileHashChunks(param).then((data: FileHashChunksResult) => {
+    console.log('chunksHash', data.chunksHash)
+  })
+}
+```
+
+## Options
+
+FileHashChunksParam
+
+| params         | type     | default        | description                                                  |
+| -------------- | -------- | -------------- | ------------------------------------------------------------ |
+| file           | File     | /              | The file for which the Hash is to be calculated (required)   |
+| chunkSize      | number   | 10 (MB)        | Chunk size                                                   |
+| maxWorkerCount | number   | 8              | The maximum number of webWorkers that can run simultaneously when calculating the Hash |
+| strategy       | Strategy | Strategy.mixed | Hash calculation strategy                                    |
+| borderCount    | number   | 100            | The boundary point of hash calculation rules in 'mixed' mode |
+
+```ts
+// strategy.ts
+export enum Strategy {
+  md5 = 'md5',
+  crc32 = 'crc32',
+  mixed = 'mixed',
+}
+```
+
+When using the Strategy.mixed strategy, if the number of file fragments is less than the borderCount, the md5 value will be used to construct the MerkleTree; otherwise, crc32 will be used.
+
+### LICENSE
+
+[MIT](./LICENSE)
+
+### Contributions
+
+Contributions are welcome! If you find a bug or want to add a new feature, please open an issue or submit a pull request.
+
+### Author and contributors
+
+<p align="center">
+  <a href="https://github.com/Tkunl">
+    <img src="https://avatars.githubusercontent.com/u/19854081?v=4" width="40" height="40" alt="Tkunl">
+  </a>
+</p>
