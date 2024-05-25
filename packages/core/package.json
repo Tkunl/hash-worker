@@ -35,8 +35,5 @@
   "dependencies": {
     "crc-32": "^1.2.2",
     "hash-wasm": "^4.11.0"
-  },
-  "devDependencies": {
-    "rollup-plugin-web-worker-loader": "^1.6.1"
   }
 }
