@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { FileHashChunksResult, getFileHashChunks, Strategy } from 'kun-hash'
+import { getFileHashChunks, Strategy, FileHashChunksResult, FileHashChunksParam } from 'kun-hash'
 
 function App() {
   let file: File
@@ -10,10 +10,12 @@ function App() {
   }
 
   function handleGetHash() {
-    getFileHashChunks({
-      file,
-      strategy: Strategy.crc32,
-    }).then((data: FileHashChunksResult) => {
+    const param: FileHashChunksParam = {
+      file: file!,
+      strategy: Strategy.crc32
+    }
+
+    getFileHashChunks(param).then((data: FileHashChunksResult) => {
       console.log('chunksHash', data.chunksHash)
     })
   }

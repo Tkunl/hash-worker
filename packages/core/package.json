@@ -1,6 +1,6 @@
 {
   "name": "kun-hash",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "kun-hash is a tool for quickly calculating file hash",
   "author": "https://github.com/Tkunl",
   "main": "./dist/index.js",

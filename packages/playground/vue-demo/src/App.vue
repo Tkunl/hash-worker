@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getFileHashChunks, Strategy, FileHashChunksResult } from 'kun-hash'
+import { getFileHashChunks, Strategy, FileHashChunksResult, FileHashChunksParam } from 'kun-hash'
 
 const file = ref<File>()
 
@@ -9,10 +9,12 @@ function handleInputChange(e: any) {
 }
 
 function handleGetHash() {
-  getFileHashChunks({
+  const param: FileHashChunksParam = {
     file: file.value!,
     strategy: Strategy.crc32
-  }).then((data: FileHashChunksResult) => {
+  }
+
+  getFileHashChunks(param).then((data: FileHashChunksResult) => {
     console.log('chunksHash', data.chunksHash)
   })
 }
