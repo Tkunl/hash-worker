@@ -2,7 +2,8 @@
   "private": true,
   "scripts": {
     "build": "pnpm --filter=./packages/core run build",
-    "play": "npm run build && pnpm --filter=./packages/playground run dev"
+    "play-vue": "npm run build && pnpm --filter=./packages/playground/vue-demo run dev",
+    "play-react": "npm run build && pnpm --filter=./packages/playground/react-demo run dev"
   },
   "keywords": [],
   "author": "",

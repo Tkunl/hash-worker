@@ -1,14 +1,10 @@
 {
-  "name": "playground",
-  "version": "1.0.0",
-  "description": "",
+  "name": "vue-demo",
   "type": "module",
+  "license": "MIT",
   "scripts": {
-    "dev": "vite"
+    "dev": "vite --port 3000"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "vue": "^3.4.21",
     "kun-hash": "workspace:*"
