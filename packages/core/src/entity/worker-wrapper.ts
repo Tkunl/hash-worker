@@ -33,4 +33,8 @@ export class WorkerWrapper {
       this.worker.postMessage(param, [param])
     })
   }
+
+  terminate() {
+    this.worker.terminate()
+  }
 }

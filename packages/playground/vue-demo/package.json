@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "vue": "^3.4.21",
-    "kun-hash": "workspace:*"
+    "hash-worker": "workspace:*"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",

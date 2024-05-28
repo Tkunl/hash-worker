@@ -1,7 +1,7 @@
 {
-  "name": "kun-hash",
-  "version": "0.1.0",
-  "description": "kun-hash is a tool for quickly calculating file hash",
+  "name": "hash-worker",
+  "version": "0.0.1",
+  "description": "hash-worker is a tool for quickly calculating file hash",
   "author": "https://github.com/Tkunl",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -28,7 +28,7 @@
     "rm:windows": "if exist dist rmdir /s/q output"
   },
   "keywords": [
-    "kun-hash",
+    "hash-worker",
     "hash"
   ],
   "license": "MIT",

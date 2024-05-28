@@ -62,7 +62,7 @@ importers:
 
   packages/playground/react-demo:
     dependencies:
-      kun-hash:
+      hash-worker:
         specifier: workspace:*
         version: link:../../core
       react:
@@ -87,7 +87,7 @@ importers:
 
   packages/playground/vue-demo:
     dependencies:
-      kun-hash:
+      hash-worker:
         specifier: workspace:*
         version: link:../../core
       vue:

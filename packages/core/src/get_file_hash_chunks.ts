@@ -1,11 +1,11 @@
 import { getArrayBufFromBlobs, getArrParts, sliceFile } from './utils'
 import { crc32, md5 } from 'hash-wasm'
 import { WorkerService } from './worker/worker-service'
-import { MerkleTree } from './entity/merkle-tree'
 import { isEmpty } from './utils/is'
 import { FileMetaInfo } from './interface'
 import { FileHashChunksParam, FileHashChunksResult } from './interface'
 import { Strategy } from './enum'
+import { getRootHashByChunks } from './get_root_hash_by_chunks'
 
 let workerService: WorkerService | null = null
 
@@ -24,6 +24,9 @@ function normalizeParam(param: FileHashChunksParam) {
     maxWorkerCount: isEmpty(param.maxWorkerCount) ? DEFAULT_MAX_WORKERS : param.maxWorkerCount!, // 默认使用 8个 Worker 线程
     strategy: isEmpty(param.strategy) ? Strategy.mixed : param.strategy!, // 默认使用混合模式计算 hash
     borderCount: isEmpty(param.borderCount) ? BORDER_COUNT : param.borderCount!, // 默认以 100 分片数量作为边界
+    isCloseWorkerImmediately: isEmpty(param.isCloseWorkerImmediately) // 默认计算 hash 后立即关闭 worker
+      ? true
+      : param.isCloseWorkerImmediately!,
   }
   return normalizedParam
 }
@@ -33,7 +36,8 @@ function normalizeParam(param: FileHashChunksParam) {
  * @param param
  */
 async function getFileHashChunks(param: FileHashChunksParam): Promise<FileHashChunksResult> {
-  const { file, chunkSize, maxWorkerCount, strategy, borderCount } = normalizeParam(param)
+  const { file, chunkSize, maxWorkerCount, strategy, borderCount, isCloseWorkerImmediately } =
+    normalizeParam(param)
 
   if (workerService === null) {
     workerService = new WorkerService(maxWorkerCount)
@@ -81,15 +85,14 @@ async function getFileHashChunks(param: FileHashChunksParam): Promise<FileHashCh
           : workerService!.getCRC32ForFiles(chunksBuf)
       }
     })
+    isCloseWorkerImmediately && workerService.terminate()
     for (const task of tasks) {
       const result = await task()
       chunksHash.push(...result)
     }
   }
 
-  const merkleTree = new MerkleTree()
-  await merkleTree.init(chunksHash)
-  const fileHash = merkleTree.getRootHash()
+  const fileHash = await getRootHashByChunks(chunksHash)
 
   return {
     chunksBlob,
@@ -99,4 +102,8 @@ async function getFileHashChunks(param: FileHashChunksParam): Promise<FileHashCh
   }
 }
 
-export default getFileHashChunks
+function destroyWorkerPool() {
+  workerService && workerService.terminate()
+}
+
+export { getFileHashChunks, destroyWorkerPool }

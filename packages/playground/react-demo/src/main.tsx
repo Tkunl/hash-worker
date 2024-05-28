@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { getFileHashChunks, Strategy, FileHashChunksResult, FileHashChunksParam } from 'kun-hash'
+import { getFileHashChunks, Strategy, FileHashChunksResult, FileHashChunksParam } from 'hash-worker'
 
 function App() {
   let file: File

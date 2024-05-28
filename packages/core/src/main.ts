@@ -1,6 +1,4 @@
-import getFileHashChunks from './getFileHashChunks'
-
 export * from './interface'
 export * from './enum'
-
-export { getFileHashChunks }
+export * from './get_file_hash_chunks'
+export * from './get_root_hash_by_chunks'

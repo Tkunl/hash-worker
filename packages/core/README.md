@@ -19,7 +19,7 @@ $ npm install kun-hash
 ## Usage
 
 ``` ts
-import { getFileHashChunks, Strategy, FileHashChunksResult, FileHashChunksParam } from 'kun-hash'
+import { getFileHashChunks, Strategy, destroyWorkerPool, FileHashChunksResult, FileHashChunksParam } from 'kun-hash'
 
 function handleGetHash() {
   const param: FileHashChunksParam = {
@@ -31,19 +31,27 @@ function handleGetHash() {
     console.log('chunksHash', data.chunksHash)
   })
 }
+
+/**
+ * Destroy Worker Thread
+ */
+function handleDestroyWorkerPool() {
+  destroyWorkerPool()
+}
 ```
 
 ## Options
 
 FileHashChunksParam
 
-| params         | type     | default        | description                                                  |
-| -------------- | -------- | -------------- | ------------------------------------------------------------ |
-| file           | File     | /              | The file for which the Hash is to be calculated (required)   |
-| chunkSize      | number   | 10 (MB)        | Chunk size                                                   |
-| maxWorkerCount | number   | 8              | The maximum number of webWorkers that can run simultaneously when calculating the Hash |
-| strategy       | Strategy | Strategy.mixed | Hash calculation strategy                                    |
-| borderCount    | number   | 100            | The boundary point of hash calculation rules in 'mixed' mode |
+| params                   | type     | default        | description                                                  |
+| ------------------------ | -------- | -------------- | ------------------------------------------------------------ |
+| file                     | File     | /              | The file for which the Hash is to be calculated (required)   |
+| chunkSize                | number   | 10 (MB)        | Chunk size                                                   |
+| maxWorkerCount           | number   | 8              | The maximum number of webWorkers that can run simultaneously when calculating the Hash |
+| strategy                 | Strategy | Strategy.mixed | Hash calculation strategy                                    |
+| borderCount              | number   | 100            | The boundary point of hash calculation rules in 'mixed' mode |
+| isCloseWorkerImmediately | boolean  | true           | Whether to destroy worker immediately after calculating the hash |
 
 ```ts
 // strategy.ts
@@ -69,5 +77,8 @@ Contributions are welcome! If you find a bug or want to add a new feature, pleas
 <p align="center">
   <a href="https://github.com/Tkunl">
     <img src="https://avatars.githubusercontent.com/u/19854081?v=4" width="40" height="40" alt="Tkunl">
+  </a>
+  <a href="https://github.com/nonzzz">
+    <img src="https://avatars.githubusercontent.com/u/52351095?v=4&s=40" width="40" height="40" alt="Kanno">
   </a>
 </p>

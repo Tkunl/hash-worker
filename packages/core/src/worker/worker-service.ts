@@ -32,4 +32,11 @@ export class WorkerService {
     }
     return this.crc32SingleWorkerPool.exec<string>(chunks)
   }
+
+  terminate() {
+    this.md5SingleWorkerPool && this.md5SingleWorkerPool.terminate()
+    this.crc32SingleWorkerPool && this.crc32SingleWorkerPool.terminate()
+    this.md5SingleWorkerPool = undefined
+    this.crc32SingleWorkerPool = undefined
+  }
 }

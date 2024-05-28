@@ -61,4 +61,8 @@ export abstract class WorkerPool {
       })
     })
   }
+
+  terminate() {
+    this.pool.forEach((workerWrapper) => workerWrapper.terminate())
+  }
 }
