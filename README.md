@@ -8,11 +8,11 @@ Hash-worker is a library for quickly calculating file hashes. It leverages WebWo
 
 ```bash
 
-$ yarn add Hash-worker
+$ yarn add hash-worker
 
 # or
 
-$ npm install Hash-worker
+$ npm install hash-worker
 
 ```
 
