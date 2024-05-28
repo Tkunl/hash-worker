@@ -5,7 +5,7 @@ import { isEmpty } from './utils/is'
 import { FileMetaInfo } from './interface'
 import { FileHashChunksParam, FileHashChunksResult } from './interface'
 import { Strategy } from './enum'
-import { getRootHashByChunks } from './get_root_hash_by_chunks'
+import { getRootHashByChunks } from './get-root-hash-by-chunks'
 
 let workerService: WorkerService | null = null
 

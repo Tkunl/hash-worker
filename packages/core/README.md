@@ -1,25 +1,25 @@
 ## Introduce
-Kun-hash is a library for quickly calculating file hashes. It leverages WebWorkers for parallel computation based on hash-wasm, accelerating the speed of calculation when processing file chunks. Kun-hash supports two algorithms for hash calculation: md5 and crc32.
+Hash-worker is a library for quickly calculating file hashes. It leverages WebWorkers for parallel computation based on hash-wasm, accelerating the speed of calculation when processing file chunks. Hash-worker supports two algorithms for hash calculation: md5 and crc32.
 
 > [!WARNING]
-> The merkleHash calculated using Kun-hash is derived from computing the MerkleTree based on the hashes of file chunks, resulting in the rootHash, rather than the hash of the file itself.
+> The merkleHash calculated using Hash-worker is derived from computing the MerkleTree based on the hashes of file chunks, resulting in the rootHash, rather than the hash of the file itself.
 
 ## Install
 
 ```bash
 
-$ yarn add kun-hash
+$ yarn add Hash-worker
 
 # or
 
-$ npm install kun-hash
+$ npm install Hash-worker
 
 ```
 
 ## Usage
 
 ``` ts
-import { getFileHashChunks, Strategy, destroyWorkerPool, FileHashChunksResult, FileHashChunksParam } from 'kun-hash'
+import { getFileHashChunks, Strategy, destroyWorkerPool, FileHashChunksResult, FileHashChunksParam } from 'Hash-worker'
 
 function handleGetHash() {
   const param: FileHashChunksParam = {
