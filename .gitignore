@@ -15,6 +15,9 @@ dist
 npm-debug.log
 yarn-error.log
 
+# 忽略覆盖率
+**/coverage/
+
 # IDEs and editors
 .idea/
 .project

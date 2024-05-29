@@ -26,6 +26,7 @@
   "scripts": {
     "dev": "rollup --config rollup.config.ts --configPlugin swc3 --watch",
     "build": "rollup --config rollup.config.ts --configPlugin swc3",
+    "test": "c8 -r=lcov ava __tests__/*.spec.ts",
     "rm:windows": "if exist dist rmdir /s/q output"
   },
   "keywords": [
@@ -36,5 +37,17 @@
   "dependencies": {
     "crc-32": "^1.2.2",
     "hash-wasm": "^4.11.0"
+  },
+  "ava": {
+    "files": [
+      "**/__tests__/*.spec.ts",
+      "e2e/**/*.spec.ts"
+    ],
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "tsx/cjs"
+    ]
   }
 }
