@@ -1,8 +1,12 @@
 ## Introduce
-Hash-worker is a library for quickly calculating file hashes. It leverages WebWorkers for parallel computation based on hash-wasm, accelerating the speed of calculation when processing file chunks. Hash-worker supports two algorithms for hash calculation: md5 and crc32.
+
+**Hash-worker** is a library for fast calculation of file hashes. 
+It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, which speeds up computation when processing file blocks. 
+Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
 
 > [!WARNING]
-> The merkleHash calculated using Hash-worker is derived from computing the MerkleTree based on the hashes of file chunks, resulting in the rootHash, rather than the hash of the file itself.
+> The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes.
+Note that this is not directly equivalent to a hash of the file itself.
 
 ## Install
 
@@ -62,7 +66,8 @@ export enum Strategy {
 }
 ```
 
-When using the Strategy.mixed strategy, if the number of file fragments is less than the borderCount, the md5 value will be used to construct the MerkleTree; otherwise, crc32 will be used.
+When Strategy.mixed strategy is used, if the number of file fragments is less than borderCount, the md5 algorithm will be used to calculate the hash value to build the MerkleTree.
+Otherwise, it switches to using the crc32 algorithm for MerkleTree construction.
 
 ### LICENSE
 
