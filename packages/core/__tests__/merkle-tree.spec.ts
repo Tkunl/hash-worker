@@ -6,6 +6,14 @@ async function createHash(data: string): Promise<string> {
   return md5(data)
 }
 
+test('init() with empty array should throw an error', async (t) => {
+  const tree = new MerkleTree()
+  const error = await t.throwsAsync(async () => {
+    await tree.init([])
+  })
+  t.is(error.message, 'Empty Nodes', 'Should throw "Empty Nodes" error')
+})
+
 test('MerkleTree.init with string hash list', async (t) => {
   // 创建一些测试用的哈希
   const hashList = [

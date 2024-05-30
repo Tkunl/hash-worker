@@ -4,7 +4,7 @@
     "build": "pnpm --filter=./packages/core run build",
     "play-vue": "npm run build && pnpm --filter=./packages/playground/vue-demo run dev",
     "play-react": "npm run build && pnpm --filter=./packages/playground/react-demo run dev",
-    "test": "pnpm --filter=./packages/core run test"
+    "test:windows": "pnpm --filter=./packages/core run test:windows"
   },
   "keywords": [],
   "author": "",
@@ -25,7 +25,11 @@
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-swc3": "^0.11.2",
     "rollup-plugin-web-worker-loader": "^1.6.1",
+    "sinon": "^18.0.0",
     "tsx": "^4.11.0",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@types/sinon": "^17.0.3"
   }
 }

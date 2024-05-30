@@ -15,7 +15,7 @@ interface IMerkleTree {
 }
 
 // Merkle 树节点的类实现
-class MerkleNode implements IMerkleNode {
+export class MerkleNode implements IMerkleNode {
   h: string
   l: IMerkleNode | null
   r: IMerkleNode | null
@@ -66,58 +66,6 @@ export class MerkleTree implements IMerkleTree {
     }
 
     return currentLevelNodes[0] // 返回根节点
-  }
-
-  // 序列化 Merkle 树
-  serialize(): string {
-    const serializeNode = (node: IMerkleNode | null): any => {
-      if (node === null) {
-        return null
-      }
-      return {
-        h: node.h,
-        l: serializeNode(node.l),
-        r: serializeNode(node.r),
-      }
-    }
-
-    const serializedRoot = serializeNode(this.root)
-    return JSON.stringify(serializedRoot)
-  }
-
-  // 反序列化 Merkle 树
-  static async deserialize(serializedTree: string): Promise<MerkleTree> {
-    const parsedData = JSON.parse(serializedTree)
-
-    const deserializeNode = (data: any): IMerkleNode | null => {
-      if (data === null) {
-        return null
-      }
-      return new MerkleNode(data.h, deserializeNode(data.l), deserializeNode(data.r))
-    }
-
-    const root = deserializeNode(parsedData)
-    if (!root) {
-      throw new Error('Invalid serialized tree data')
-    }
-
-    // 创建一个包含所有叶子节点的数组，这是为了与 MerkleTree 的构造函数兼容
-    // 没有保存这些叶子节点的序列化版本，所以这里需要一些额外的逻辑来处理
-    // 如果你需要将整个树的所有节点存储为序列化版本，那么可能需要修改这部分逻辑
-    const extractLeafNodes = (node: IMerkleNode): IMerkleNode[] => {
-      if (node.l === null && node.r === null) {
-        return [node]
-      }
-      return [
-        ...(node.l ? extractLeafNodes(node.l) : []),
-        ...(node.r ? extractLeafNodes(node.r) : []),
-      ]
-    }
-    const leafNodes = extractLeafNodes(root)
-
-    const merkleTree = new MerkleTree()
-    await merkleTree.init(leafNodes)
-    return merkleTree
   }
 
   private async calculateHash(left: IMerkleNode, right: IMerkleNode | null): Promise<string> {
