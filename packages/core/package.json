@@ -26,8 +26,9 @@
   "scripts": {
     "dev": "rollup --config rollup.config.ts --configPlugin swc3 --watch",
     "build": "rollup --config rollup.config.ts --configPlugin swc3",
-    "test:windows": "c8 -r=lcov ava __tests__/*.spec.ts && start coverage/lcov-report/index.html",
-    "rm:windows": "if exist dist rmdir /s/q output"
+    "test:windows": "pnpm rm-ava-cache && c8 -r=lcov ava __tests__/*.spec.ts && start coverage/lcov-report/index.html",
+    "rm:windows": "if exist dist rmdir /s/q output",
+    "rm-ava-cache": "rimraf ./node_modules/.cache/ava"
   },
   "keywords": [
     "hash-worker",

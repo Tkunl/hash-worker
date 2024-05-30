@@ -2,8 +2,8 @@
   "private": true,
   "scripts": {
     "build": "pnpm --filter=./packages/core run build",
-    "play-vue": "npm run build && pnpm --filter=./packages/playground/vue-demo run dev",
-    "play-react": "npm run build && pnpm --filter=./packages/playground/react-demo run dev",
+    "play-vue": "pnpm run build && pnpm --filter=./packages/playground/vue-demo run dev",
+    "play-react": "pnpm run build && pnpm --filter=./packages/playground/react-demo run dev",
     "test:windows": "pnpm --filter=./packages/core run test:windows"
   },
   "keywords": [],
@@ -30,6 +30,7 @@
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@types/sinon": "^17.0.3"
+    "@types/sinon": "^17.0.3",
+    "rimraf": "^5.0.7"
   }
 }
