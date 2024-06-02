@@ -4,7 +4,7 @@
     "build": "pnpm --filter=./packages/core run build",
     "play-vue": "pnpm run build && pnpm --filter=./packages/playground/vue-demo run dev",
     "play-react": "pnpm run build && pnpm --filter=./packages/playground/react-demo run dev",
-    "test:windows": "pnpm --filter=./packages/core run test:windows"
+    "test": "pnpm --filter=./packages/core run test"
   },
   "keywords": [],
   "author": "",
