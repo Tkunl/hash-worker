@@ -1,6 +1,5 @@
 import test from 'ava'
 import sinon from 'sinon'
-// import { WorkerLabelsEnum } from '../src/enum'
 import { StatusEnum, WorkerWrapper } from '../src/entity/worker-wrapper'
 import { WorkerLabelsEnum } from '../src/enum'
 
@@ -37,8 +36,6 @@ test('WorkerWrapper changes status to RUNNING when run is called', async (t) => 
 })
 
 test('WorkerWrapper run resolves with correct data', async (t) => {
-  // ... setup similar to the previous test ...
-
   const worker = new Worker('')
   const workerWrapper = new WorkerWrapper(worker)
 
@@ -61,4 +58,19 @@ test('WorkerWrapper run resolves with correct data', async (t) => {
   // We store the return value of the run command
   const result = await workerWrapper.run(new ArrayBuffer(1), [new ArrayBuffer(5)], 0)
   t.is(result, 'processed data', 'WorkerWrapper run should resolve with the correct data')
+})
+
+test('terminate() should call worker.terminate()', (t) => {
+  // 创建一个模拟的 Worker
+  const worker = new Worker('')
+
+  // 创建 WorkerWrapper 实例
+  const workerWrapper = new WorkerWrapper(worker)
+
+  // 调用 terminate() 方法
+  workerWrapper.terminate()
+
+  // 验证 terminate() 方法被调用
+  // @ts-expect-error
+  t.true(worker.terminate.calledOnce)
 })

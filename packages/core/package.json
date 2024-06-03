@@ -27,7 +27,7 @@
     "dev": "rollup --config rollup.config.ts --configPlugin swc3 --watch",
     "build": "pnpm rm:dist-windows && rollup --config rollup.config.ts --configPlugin swc3",
     "rm:dist-windows": "if exist dist rmdir /s/q dist",
-    "test": "pnpm rm:ava-cache && c8 -r=lcov ava __tests__/*.spec.ts",
+    "test": "pnpm rm:ava-cache && c8 -r=lcov ava --no-cache __tests__/*.spec.ts",
     "rm:ava-cache": "rimraf ./node_modules/.cache/ava"
   },
   "keywords": [
