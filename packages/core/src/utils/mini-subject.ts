@@ -3,8 +3,8 @@ import { generateUUID } from './rand'
 type Cb<T> = (value: T) => void
 
 export class MiniSubject<T> {
-  private _value: T
-  private subscribers: Map<string, Cb<T>> = new Map()
+  protected _value: T
+  protected subscribers: Map<string, Cb<T>> = new Map()
 
   constructor(value: T) {
     this._value = value
