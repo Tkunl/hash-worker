@@ -1,9 +1,9 @@
-import { getArrayBufFromBlobs, getArrParts, sliceFile } from './utils'
+import { getArrayBufFromBlobs, getArrParts, isBrowser, isNode, sliceFile } from './utils'
 import { crc32, md5 } from 'hash-wasm'
 import { WorkerService } from './worker/worker-service'
-import { isEmpty } from './utils/is'
-import { FileMetaInfo } from './interface'
-import { FileHashChunksParam, FileHashChunksResult } from './interface'
+import { isEmpty } from './utils'
+import { BrowserHashChksParam, FileMetaInfo, NodeHashChksParam } from './interface'
+import { HashChksParam, HashChksParamRes } from './interface'
 import { Strategy } from './enum'
 import { getRootHashByChunks } from './get-root-hash-by-chunks'
 
@@ -12,14 +12,23 @@ let workerService: WorkerService | null = null
 const DEFAULT_MAX_WORKERS = 8
 const BORDER_COUNT = 100
 
-function normalizeParam(param: FileHashChunksParam) {
+function normalizeParam(param: HashChksParam) {
+  if (isNode() && isEmpty(param.url)) {
+    throw new Error('The url attribute is required in node environment')
+  }
+
+  if (isBrowser() && isEmpty(param.file)) {
+    throw new Error('The file attribute is required in browser environment')
+  }
+
   /**
    * Ts 编译器无法从 isEmpty 的调用结果自动推断出后续的变量类型, Ts 在类型层面不具备执行时判断函数逻辑的能力
    * 可以通过 明确地检查 undefined 或 使用 ! 或 使用类型断言来处理
    * 此处使用了 !
    */
-  const normalizedParam: Required<FileHashChunksParam> = {
+  const normalizedParam = <HashChksParam>{
     file: param.file,
+    url: param.url,
     chunkSize: isEmpty(param.chunkSize) ? 10 : param.chunkSize!, // 默认 10MB 分片大小
     maxWorkerCount: isEmpty(param.maxWorkerCount) ? DEFAULT_MAX_WORKERS : param.maxWorkerCount!, // 默认使用 8个 Worker 线程
     strategy: isEmpty(param.strategy) ? Strategy.mixed : param.strategy!, // 默认使用混合模式计算 hash
@@ -28,14 +37,23 @@ function normalizeParam(param: FileHashChunksParam) {
       ? true
       : param.isCloseWorkerImmediately!,
   }
-  return normalizedParam
+
+  if (isNode()) {
+    return normalizedParam as NodeHashChksParam
+  }
+
+  if (isBrowser()) {
+    return normalizedParam as BrowserHashChksParam
+  }
+
+  throw new Error('Unsupported environment')
 }
 
 /**
  * 将文件进行分片, 并获取分片后的 hashList
  * @param param
  */
-async function getFileHashChunks(param: FileHashChunksParam): Promise<FileHashChunksResult> {
+async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes> {
   const { file, chunkSize, maxWorkerCount, strategy, borderCount, isCloseWorkerImmediately } =
     normalizeParam(param)
 
