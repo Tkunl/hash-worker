@@ -1,6 +1,5 @@
 import { WorkerPool } from '../entity'
 import { WorkerWrapper } from '../entity'
-// @ts-ignore
 import Worker from 'web-worker:./crc32-single.web-worker.ts'
 
 export class WorkerPoolForCrc32s extends WorkerPool {

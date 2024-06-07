@@ -1,6 +1,5 @@
 import { WorkerPool } from '../entity'
 import { WorkerWrapper } from '../entity'
-// @ts-ignore
 import Worker from 'web-worker:./md5-single.web-worker.ts'
 
 export class WorkerPoolForMd5s extends WorkerPool {
