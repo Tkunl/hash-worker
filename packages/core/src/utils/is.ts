@@ -27,5 +27,10 @@ export function isBrowser(): boolean {
  * @returns {boolean} 如果是在 Node.js 环境中运行，返回 true；否则返回 false
  */
 export function isNode(): boolean {
-  return typeof global !== 'undefined' && typeof process !== 'undefined' && typeof process.versions !== 'undefined' && typeof process.versions.node !== 'undefined'
+  return (
+    typeof global !== 'undefined' &&
+    typeof process !== 'undefined' &&
+    typeof process.versions !== 'undefined' &&
+    typeof process.versions.node !== 'undefined'
+  )
 }

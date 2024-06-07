@@ -51,7 +51,7 @@ test('getArrayBufFromBlobs should convert chunks to ArrayBuffer', async (t) => {
   const arrayBuffers = await getArrayBufFromBlobs(chunks)
 
   t.is(arrayBuffers.length, 3)
-  arrayBuffers.forEach((buffer, index) => {
+  arrayBuffers.forEach((buffer) => {
     t.is(buffer.byteLength, 1 * 1024 * 1024)
     t.is(new TextDecoder().decode(buffer), 'a'.repeat(1 * 1024 * 1024))
   })

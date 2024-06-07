@@ -7,17 +7,20 @@ import { HashChksParam, HashChksParamRes } from './interface'
 import { Strategy } from './enum'
 import { getRootHashByChunks } from './get-root-hash-by-chunks'
 
-let workerService: WorkerService | null = null
-
 const DEFAULT_MAX_WORKERS = 8
 const BORDER_COUNT = 100
 
+const isNodeEnv = isNode();
+const isBrowserEnv = isBrowser();
+
+let workerService: WorkerService | null = null
+
 function normalizeParam(param: HashChksParam) {
-  if (isNode() && isEmpty(param.url)) {
+  if (isNodeEnv && isEmpty(param.url)) {
     throw new Error('The url attribute is required in node environment')
   }
 
-  if (isBrowser() && isEmpty(param.file)) {
+  if (isBrowserEnv && isEmpty(param.file)) {
     throw new Error('The file attribute is required in browser environment')
   }
 
@@ -38,11 +41,11 @@ function normalizeParam(param: HashChksParam) {
       : param.isCloseWorkerImmediately!,
   }
 
-  if (isNode()) {
+  if (isNodeEnv) {
     return normalizedParam as NodeHashChksParam
   }
 
-  if (isBrowser()) {
+  if (isBrowserEnv) {
     return normalizedParam as BrowserHashChksParam
   }
 

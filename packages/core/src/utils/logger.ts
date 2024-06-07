@@ -1,7 +1,3 @@
 const { log, warn, error } = console
 
-export {
-  log,
-  warn,
-  error,
-}
+export { log, warn, error }
