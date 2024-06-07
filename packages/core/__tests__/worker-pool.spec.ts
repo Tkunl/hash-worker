@@ -1,7 +1,6 @@
 import test from 'ava'
-import { StatusEnum, WorkerWrapper } from '../src/entity/worker-wrapper'
+import { StatusEnum, WorkerWrapper, WorkerPool } from '../src/entity'
 import { MiniSubject } from '../src/utils'
-import { WorkerPool } from '../src/entity/worker-pool'
 import sinon from 'sinon'
 
 // 模拟 WorkerWrapper

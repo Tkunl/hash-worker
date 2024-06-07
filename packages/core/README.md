@@ -1,5 +1,7 @@
 ## Introduce
 
+[中文文档](./README-zh.md)
+
 **Hash-worker** is a library for fast calculation of file hashes. 
 It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, which speeds up computation when processing file blocks. 
 Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
@@ -11,13 +13,9 @@ Note that this is not directly equivalent to a hash of the file itself.
 ## Install
 
 ```bash
-
 $ yarn add hash-worker
-
 # or
-
 $ npm install hash-worker
-
 ```
 
 ## Usage
@@ -85,5 +83,8 @@ Contributions are welcome! If you find a bug or want to add a new feature, pleas
   </a>
   <a href="https://github.com/nonzzz">
     <img src="https://avatars.githubusercontent.com/u/52351095?v=4&s=40" width="40" height="40" alt="Kanno">
+  </a>
+  <a href="https://github.com/Eternal-could">
+    <img src="https://avatars.githubusercontent.com/u/74654896?v=4" width="40" height="40" alt="Eternal-could">
   </a>
 </p>

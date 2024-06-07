@@ -1,6 +1,6 @@
 import test from 'ava'
 import sinon from 'sinon'
-import { StatusEnum, WorkerWrapper } from '../src/entity/worker-wrapper'
+import { StatusEnum, WorkerWrapper } from '../src/entity'
 import { WorkerLabelsEnum } from '../src/enum'
 
 // 此处使用 globalThis 替代 global

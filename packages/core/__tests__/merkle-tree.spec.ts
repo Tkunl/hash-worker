@@ -1,6 +1,6 @@
 import test from 'ava'
 import { md5 } from 'hash-wasm'
-import { MerkleTree } from '../src/entity/merkle-tree'
+import { MerkleTree } from '../src/entity'
 
 async function createHash(data: string): Promise<string> {
   return md5(data)

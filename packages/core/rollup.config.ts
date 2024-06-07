@@ -2,7 +2,6 @@ import { defineConfig } from 'rollup'
 import { dts } from 'rollup-plugin-dts'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import { minify, swc } from 'rollup-plugin-swc3'
-// @ts-expect-error
 import webWorkerLoader from 'rollup-plugin-web-worker-loader'
 
 const bundleName = 'kunHash'

@@ -1,5 +1,5 @@
-import { WorkerPool } from '../entity/worker-pool'
-import { WorkerWrapper } from '../entity/worker-wrapper'
+import { WorkerPool } from '../entity'
+import { WorkerWrapper } from '../entity'
 // @ts-ignore
 import Worker from 'web-worker:./md5-single.web-worker.ts'
 

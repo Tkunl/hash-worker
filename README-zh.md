@@ -84,7 +84,7 @@ Contributions are welcome! If you find a bug or want to add a new feature, pleas
     <img src="https://avatars.githubusercontent.com/u/52351095?v=4&s=40" width="40" height="40" alt="Kanno">
   </a>
   <a href="https://github.com/Eternal-could">
-    <img src="https://avatars.githubusercontent.com/u/74654896?v=4" width="40" height="40" alt="Kanno">
+    <img src="https://avatars.githubusercontent.com/u/74654896?v=4" width="40" height="40" alt="Eternal-could">
   </a>
 </p>
 

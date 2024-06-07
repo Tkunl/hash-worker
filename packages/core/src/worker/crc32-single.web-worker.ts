@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
 import { crc32 } from 'hash-wasm'
-import { WorkerMessage } from '../entity/worker-message'
+import { WorkerMessage } from '../entity'
 import { WorkerLabelsEnum } from '../enum'
 
 /**

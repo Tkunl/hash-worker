@@ -1,6 +1,6 @@
 import test from 'ava'
 import { WorkerLabelsEnum } from '../src/enum'
-import { WorkerMessage } from '../src/entity/worker-message'
+import { WorkerMessage } from '../src/entity'
 
 // 测试用例：检查 WorkerMessage 实例化
 test('WorkerMessage initializes with correct label and content', (t) => {

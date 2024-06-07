@@ -1,4 +1,4 @@
-import { MerkleTree } from './entity/merkle-tree'
+import { MerkleTree } from './entity'
 
 export async function getRootHashByChunks(hashList: string[]) {
   const merkleTree = new MerkleTree()
