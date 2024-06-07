@@ -3,8 +3,9 @@
   "scripts": {
     "build": "pnpm --filter=./packages/core run build",
     "test": "pnpm --filter=./packages/core run test",
-    "play-vue": "pnpm run build && pnpm --filter=./packages/playground/vue-demo run dev",
-    "play-react": "pnpm run build && pnpm --filter=./packages/playground/react-demo run dev"
+    "play-vue": "pnpm run build && pnpm --filter=./packages/playground/vue-demo run play",
+    "play-react": "pnpm run build && pnpm --filter=./packages/playground/react-demo run play",
+    "play-node": "pnpm run build && pnpm --filter=./packages/playground/node-demo run play"
   },
   "keywords": [],
   "author": "",
@@ -24,13 +25,13 @@
     "eslint-plugin-prettier": "^5.1.3",
     "prettier": "^3.2.5",
     "proxyquire": "^2.1.3",
+    "rimraf": "^5.0.7",
     "rollup": "^4.17.2",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-swc3": "^0.11.2",
     "rollup-plugin-web-worker-loader": "^1.6.1",
     "sinon": "^18.0.0",
     "tsx": "^4.11.0",
-    "typescript": "^5.4.5",
-    "rimraf": "^5.0.7"
+    "typescript": "^5.4.5"
   }
 }

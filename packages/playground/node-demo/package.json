@@ -1,0 +1,13 @@
+{
+  "name": "node-demo",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "rm:dist": "rimraf ./dist",
+    "build": "tsc",
+    "play": "pnpm rm:dist && pnpm build && node dist/index.js"
+  },
+  "dependencies": {
+    "hash-worker": "workspace:*"
+  }
+}
