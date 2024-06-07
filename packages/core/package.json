@@ -25,9 +25,9 @@
   ],
   "scripts": {
     "dev": "rollup --config rollup.config.ts --configPlugin swc3 --watch",
-    "build": "pnpm rm:dist-windows && rollup --config rollup.config.ts --configPlugin swc3",
-    "rm:dist-windows": "if exist dist rmdir /s/q dist",
-    "test": "pnpm rm:ava-cache && c8 -r=lcov ava --no-cache __tests__/*.spec.ts",
+    "build": "pnpm rm:dist && rollup --config rollup.config.ts --configPlugin swc3",
+    "test": "c8 -r=lcov ava -s --no-cache __tests__/*.spec.ts",
+    "rm:dist": "rimraf ./dist",
     "rm:ava-cache": "rimraf ./node_modules/.cache/ava"
   },
   "keywords": [
@@ -36,7 +36,6 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "crc-32": "^1.2.2",
     "hash-wasm": "^4.11.0"
   },
   "ava": {

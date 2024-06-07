@@ -2,9 +2,9 @@
   "private": true,
   "scripts": {
     "build": "pnpm --filter=./packages/core run build",
+    "test": "pnpm --filter=./packages/core run test",
     "play-vue": "pnpm run build && pnpm --filter=./packages/playground/vue-demo run dev",
-    "play-react": "pnpm run build && pnpm --filter=./packages/playground/react-demo run dev",
-    "test": "pnpm --filter=./packages/core run test"
+    "play-react": "pnpm run build && pnpm --filter=./packages/playground/react-demo run dev"
   },
   "keywords": [],
   "author": "",
@@ -30,9 +30,7 @@
     "rollup-plugin-web-worker-loader": "^1.6.1",
     "sinon": "^18.0.0",
     "tsx": "^4.11.0",
-    "typescript": "^5.4.5"
-  },
-  "dependencies": {
+    "typescript": "^5.4.5",
     "rimraf": "^5.0.7"
   }
 }

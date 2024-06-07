@@ -26,7 +26,7 @@ export default defineConfig([
       { file: 'dist/index.mjs', format: 'esm', exports: 'named' },
       { file: 'dist/index.js', format: 'cjs', exports: 'named' },
     ],
-    plugins: [nodeResolve(), swc(), workerPluginsConfig()],
+    plugins: [nodeResolve(), swc({ sourceMaps: true }), workerPluginsConfig()],
   },
   // esm 类型产物
   {
@@ -40,7 +40,7 @@ export default defineConfig([
     output: { file: 'dist/global.js', format: 'iife', name: bundleName },
     plugins: [
       nodeResolve(),
-      swc(),
+      swc({ sourceMaps: true }),
       minify({ mangle: true, module: true, compress: true, sourceMap: true }),
       workerPluginsConfig(),
     ],
