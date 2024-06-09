@@ -50,5 +50,9 @@
     "require": [
       "tsx/cjs"
     ]
+  },
+  "_moduleAliases": {
+    "web-worker:./md5-single.web-worker.ts": "__tests__/fixture/mock-worker",
+    "web-worker:./crc32-single.web-worker.ts": "__tests__/fixture/mock-worker"
   }
 }
