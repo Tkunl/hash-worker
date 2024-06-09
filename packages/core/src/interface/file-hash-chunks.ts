@@ -9,11 +9,11 @@ export type NodeHashChksParam = Required<Omit<HashChksParam, 'file'>>
 /**
  * 浏览器环境下的参数
  */
-export type BrowserHashChksParam = Required<Omit<HashChksParam, 'url'>>
+export type BrowserHashChksParam = Required<Omit<HashChksParam, 'filePath'>>
 
 export interface HashChksParam {
   file?: File // 待计算 Hash 的文件 (浏览器环境)
-  url?: string // 待计算 Hash 的文件的 URL (Node 环境)
+  filePath?: string // 待计算 Hash 的文件的 URL (Node 环境)
   chunkSize?: number // 分片大小 MB
   maxWorkerCount?: number // worker 线程数量
   strategy?: Strategy // hash 计算策略

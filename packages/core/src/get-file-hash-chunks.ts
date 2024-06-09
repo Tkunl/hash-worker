@@ -10,8 +10,8 @@ import { getRootHashByChunks } from './get-root-hash-by-chunks'
 const DEFAULT_MAX_WORKERS = 8
 const BORDER_COUNT = 100
 
-const isNodeEnv = isNode();
-const isBrowserEnv = isBrowser();
+const isNodeEnv = isNode()
+const isBrowserEnv = isBrowser()
 
 let workerService: WorkerService | null = null
 
@@ -31,7 +31,7 @@ function normalizeParam(param: HashChksParam) {
    */
   const normalizedParam = <HashChksParam>{
     file: param.file,
-    url: param.url,
+    url: param.filePath,
     chunkSize: isEmpty(param.chunkSize) ? 10 : param.chunkSize!, // 默认 10MB 分片大小
     maxWorkerCount: isEmpty(param.maxWorkerCount) ? DEFAULT_MAX_WORKERS : param.maxWorkerCount!, // 默认使用 8个 Worker 线程
     strategy: isEmpty(param.strategy) ? Strategy.mixed : param.strategy!, // 默认使用混合模式计算 hash
@@ -52,29 +52,37 @@ function normalizeParam(param: HashChksParam) {
   throw new Error('Unsupported environment')
 }
 
-/**
- * 将文件进行分片, 并获取分片后的 hashList
- * @param param
- */
-async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes> {
-  const { file, chunkSize, maxWorkerCount, strategy, borderCount, isCloseWorkerImmediately } =
-    normalizeParam(param)
-
-  if (workerService === null) {
-    workerService = new WorkerService(maxWorkerCount)
+async function getFileMetadata(file?: File, filePath?: string): Promise<FileMetaInfo> {
+  if (file && isBrowserEnv) {
+    return {
+      name: file.name,
+      size: file.size / 1024,
+      lastModified: file.lastModified,
+      type: file.type,
+    }
   }
-
-  // 文件大小
-  const fileSize = file.size / 1024
-
-  // 文件元数据
-  const metadata: FileMetaInfo = {
-    name: file.name,
-    size: fileSize,
-    lastModified: file.lastModified,
-    type: file.type,
+  if (filePath && isNodeEnv) {
+    const { promises: fs } = await import('fs')
+    const path = await import('path')
+    const stats = await fs.stat(filePath)
+    return {
+      name: path.basename(filePath),
+      size: stats.size / 1024,
+      lastModified: stats.mtime.getTime(),
+      type: path.extname(filePath),
+    }
   }
+  throw new Error('Unsupported environment')
+}
 
+async function processFileInBrowser(
+  file: File,
+  chunkSize: number,
+  strategy: Strategy,
+  maxWorkerCount: number,
+  isCloseWorkerImmediately: boolean,
+  borderCount: number,
+) {
   // 文件分片
   const chunksBlob = sliceFile(file, chunkSize)
   let chunksHash: string[] = []
@@ -106,7 +114,7 @@ async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes
           : workerService!.getCRC32ForFiles(chunksBuf)
       }
     })
-    isCloseWorkerImmediately && workerService.terminate()
+    isCloseWorkerImmediately && workerService!.terminate()
     for (const task of tasks) {
       const result = await task()
       chunksHash.push(...result)
@@ -114,6 +122,40 @@ async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes
   }
 
   const fileHash = await getRootHashByChunks(chunksHash)
+  
+  return {
+    chunksBlob,
+    chunksHash,
+    fileHash,
+  }
+}
+
+/**
+ * 将文件进行分片, 并获取分片后的 hashList
+ * @param param
+ */
+async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes> {
+  const normalizedParam = normalizeParam(param)
+
+  const { chunkSize, maxWorkerCount, strategy, borderCount, isCloseWorkerImmediately } =
+    normalizedParam
+
+  if (workerService === null) {
+    workerService = new WorkerService(maxWorkerCount)
+  }
+
+  // 文件元数据
+  const metadata = await getFileMetadata(param.file, param.filePath)
+
+  // 浏览器环境下处理文件
+  const { chunksBlob, chunksHash, fileHash } = await processFileInBrowser(
+    param.file!,
+    chunkSize,
+    strategy,
+    borderCount,
+    isCloseWorkerImmediately,
+    borderCount,
+  )
 
   return {
     chunksBlob,

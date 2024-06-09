@@ -14,6 +14,9 @@ importers:
       '@swc/core':
         specifier: ^1.5.7
         version: 1.5.24
+      '@types/module-alias':
+        specifier: ^2.0.4
+        version: 2.0.4
       '@types/node':
         specifier: ^20.14.2
         version: 20.14.2
@@ -692,6 +695,9 @@ packages:
 
   '@types/istanbul-lib-coverage@2.0.6':
     resolution: {integrity: sha512-2QF/t/auWm0lsy8XtKVPG19v3sSOQlJe/YHZgfjb/KBBHOGSV+J2q/S671rcq9uTBrLAXmZpqJiaQbMT+zNU1w==}
+
+  '@types/module-alias@2.0.4':
+    resolution: {integrity: sha512-5+G/QXO/DvHZw60FjvbDzO4JmlD/nG5m2/vVGt25VN1eeP3w2bCoks1Wa7VuptMPM1TxJdx6RjO70N9Fw0nZPA==}
 
   '@types/node@20.14.2':
     resolution: {integrity: sha512-xyu6WAMVwv6AKFLB+e/7ySZVr/0zLCzOa7rSpq6jNwpqOrUbcACDWC+53d4n2QHOnDou0fbIsg8wZu/sxrnI4Q==}
@@ -2613,6 +2619,8 @@ snapshots:
   '@types/estree@1.0.5': {}
 
   '@types/istanbul-lib-coverage@2.0.6': {}
+
+  '@types/module-alias@2.0.4': {}
 
   '@types/node@20.14.2':
     dependencies:
