@@ -1,14 +1,11 @@
 /// <reference lib="webworker" />
 
-import { crc32 } from 'hash-wasm'
 import { WorkerMessage } from '../entity'
 import { WorkerLabelsEnum } from '../enum'
+import { md5 } from 'hash-wasm'
 
-/**
- * 简单的直接算文件的 crc32
- */
 addEventListener('message', async ({ data }: { data: ArrayBuffer }) => {
-  const hash = await crc32(new Uint8Array(data))
+  const hash = await md5(new Uint8Array(data))
 
   postMessage(
     new WorkerMessage(WorkerLabelsEnum.DONE, {

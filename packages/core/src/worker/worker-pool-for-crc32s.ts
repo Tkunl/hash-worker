@@ -1,7 +1,7 @@
 import { WorkerPool } from '../entity'
 import { WorkerWrapper } from '../entity'
 import { isBrowser, isNode } from '../utils'
-import WebWorker from 'web-worker:./crc32-single.web-worker.ts'
+import WebWorker from 'web-worker:./crc32.web-worker.ts'
 
 export class WorkerPoolForCrc32s extends WorkerPool {
   constructor(maxWorkers = navigator.hardwareConcurrency || 4) {
@@ -18,7 +18,7 @@ export class WorkerPoolForCrc32s extends WorkerPool {
 
     if (isNode()) {
       const { Worker } = await import('worker_threads')
-      instance.pool = createWorkerWrapper(new Worker('web-worker:./crc32-single.web-worker.ts'))
+      instance.pool = createWorkerWrapper(new Worker('web-worker:./crc32.web-worker.ts'))
     }
 
     return instance

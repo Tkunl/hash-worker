@@ -1,7 +1,7 @@
 import { WorkerPool } from '../entity'
 import { WorkerWrapper } from '../entity'
 import { isBrowser, isNode } from '../utils'
-import WebWorker from 'web-worker:./md5-single.web-worker.ts'
+import WebWorker from 'web-worker:./md5.web-worker.ts'
 
 export class WorkerPoolForMd5s extends WorkerPool {
   constructor(maxWorkers: number) {
@@ -18,7 +18,7 @@ export class WorkerPoolForMd5s extends WorkerPool {
 
     if (isNode()) {
       const { Worker } = await import('worker_threads')
-      instance.pool = createWorkerWrapper(new Worker('web-worker:./md5-single.web-worker.ts'))
+      instance.pool = createWorkerWrapper(new Worker('web-worker:./md5.web-worker.ts'))
     }
 
     return instance
