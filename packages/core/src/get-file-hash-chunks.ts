@@ -1,9 +1,21 @@
-import { getArrayBufFromBlobs, getArrParts, isBrowser, isNode, sliceFile } from './utils'
+import {
+  getArrayBufFromBlobs,
+  getArrParts,
+  isBrowser,
+  isEmpty,
+  isNode,
+  readFileAsArrayBuffer,
+  sliceFile,
+} from './utils'
 import { crc32, md5 } from 'hash-wasm'
 import { WorkerService } from './worker/worker-service'
-import { isEmpty } from './utils'
-import { BrowserHashChksParam, FileMetaInfo, NodeHashChksParam } from './interface'
-import { HashChksParam, HashChksParamRes } from './interface'
+import {
+  BrowserHashChksParam,
+  FileMetaInfo,
+  HashChksParam,
+  HashChksParamRes,
+  NodeHashChksParam,
+} from './interface'
 import { Strategy } from './enum'
 import { getRootHashByChunks } from './get-root-hash-by-chunks'
 
@@ -15,12 +27,33 @@ const isBrowserEnv = isBrowser()
 
 let workerService: WorkerService | null = null
 
+let fsp: typeof import('node:fs/promises') | undefined
+let path: typeof import('node:path') | undefined
+
+/**
+ * 初始化导入
+ */
+async function initialize(maxWorkerCount: number) {
+  if (isNodeEnv) {
+    fsp = await import('fs/promises')
+    path = await import('path')
+  }
+
+  if (workerService === null) {
+    workerService = new WorkerService(maxWorkerCount)
+  }
+}
+
+/**
+ * 标准化参数
+ * @param param
+ */
 function normalizeParam(param: HashChksParam) {
-  if (isNodeEnv && isEmpty(param.filePath)) {
+  if (isNodeEnv && !param.filePath) {
     throw new Error('The url attribute is required in node environment')
   }
 
-  if (isBrowserEnv && isEmpty(param.file)) {
+  if (isBrowserEnv && !param.file) {
     throw new Error('The file attribute is required in browser environment')
   }
 
@@ -52,6 +85,11 @@ function normalizeParam(param: HashChksParam) {
   throw new Error('Unsupported environment')
 }
 
+/**
+ * 获取文件元数据
+ * @param file 文件
+ * @param filePath 文件路径
+ */
 async function getFileMetadata(file?: File, filePath?: string): Promise<FileMetaInfo> {
   if (file && isBrowserEnv) {
     return {
@@ -61,10 +99,8 @@ async function getFileMetadata(file?: File, filePath?: string): Promise<FileMeta
       type: file.type,
     }
   }
-  if (filePath && isNodeEnv) {
-    const { promises: fs } = await import('fs')
-    const path = await import('path')
-    const stats = await fs.stat(filePath as any)
+  if (filePath && isNodeEnv && fsp && path) {
+    const stats = await fsp.stat(filePath)
     return {
       name: path.basename(filePath),
       size: stats.size / 1024,
@@ -77,12 +113,13 @@ async function getFileMetadata(file?: File, filePath?: string): Promise<FileMeta
 
 async function processFileInBrowser(
   file: File,
-  chunkSize: number,
+  chunkSize: number, // MB
   strategy: Strategy,
   maxWorkerCount: number,
   isCloseWorkerImmediately: boolean,
   borderCount: number,
 ) {
+  if (!isBrowserEnv) throw new Error('Error environment')
   // 文件分片
   const chunksBlob = sliceFile(file, chunkSize)
   let chunksHash: string[] = []
@@ -114,11 +151,11 @@ async function processFileInBrowser(
           : workerService!.getCRC32ForFiles(chunksBuf)
       }
     })
-    isCloseWorkerImmediately && workerService!.terminate()
     for (const task of tasks) {
       const result = await task()
       chunksHash.push(...result)
     }
+    isCloseWorkerImmediately && workerService!.terminate()
   }
 
   const fileHash = await getRootHashByChunks(chunksHash)
@@ -132,13 +169,62 @@ async function processFileInBrowser(
 
 async function processFileInNode(
   filePath: string,
-  chunkSize: number,
+  chunkSize: number, // MB
   strategy: Strategy,
   maxWorkerCount: number,
   isCloseWorkerImmediately: boolean,
   borderCount: number,
 ) {
+  if (!isNodeEnv || !fsp) throw new Error('Error environment')
+  let chunksHash: string[] = []
+  const _chunkSize = chunkSize * 1024 * 1024 // MB
+  const stats = await fsp.stat(filePath)
+  const end = stats.size
+  // 分割位置数组
+  const sliceLocation: [number, number][] = []
+  for (let cur = 0; cur < end; cur += _chunkSize) {
+    sliceLocation.push([cur, cur + _chunkSize])
+  }
+  if (sliceLocation.length === 1) {
+    const unit8Array = new Uint8Array(await readFileAsArrayBuffer(filePath, 0, end))
+    chunksHash =
+      strategy === Strategy.md5 || strategy === Strategy.mixed
+        ? [await md5(unit8Array)]
+        : [await crc32(unit8Array)]
+  } else {
+    // 分组后的起始分割位置
+    const sliceLocationPart = getArrParts<[number, number]>(sliceLocation, maxWorkerCount)
+    let chunksBuf: ArrayBuffer[] = []
+    const tasks = sliceLocationPart.map((partArr) => async () => {
+      chunksBuf.length = 0
+      chunksBuf = await Promise.all(
+        partArr.map((part) => readFileAsArrayBuffer(filePath, part[0], part[1])),
+      )
+      // 执行不同的 hash 计算策略
+      if (strategy === Strategy.md5) {
+        return workerService!.getMD5ForFiles(chunksBuf)
+      }
+      if (strategy === Strategy.crc32) {
+        return workerService!.getCRC32ForFiles(chunksBuf)
+      } else {
+        return sliceLocation.length <= borderCount
+          ? workerService!.getMD5ForFiles(chunksBuf)
+          : workerService!.getCRC32ForFiles(chunksBuf)
+      }
+    })
+    for (const task of tasks) {
+      const result = await task()
+      chunksHash.push(...result)
+    }
+    isCloseWorkerImmediately && workerService!.terminate()
+  }
 
+  const fileHash = await getRootHashByChunks(chunksHash)
+
+  return {
+    chunksHash,
+    fileHash,
+  }
 }
 
 /**
@@ -151,9 +237,7 @@ async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes
   const { chunkSize, maxWorkerCount, strategy, borderCount, isCloseWorkerImmediately } =
     normalizedParam
 
-  if (workerService === null) {
-    workerService = new WorkerService(maxWorkerCount)
-  }
+  await initialize(maxWorkerCount)
 
   // 文件元数据
   const metadata = await getFileMetadata(param.file, param.filePath)
@@ -162,7 +246,6 @@ async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes
   let chunksHash: string[] = []
   let fileHash = ''
 
-  // 浏览器环境下处理文件
   if (isBrowserEnv) {
     const res = await processFileInBrowser(
       param.file!,
@@ -186,16 +269,22 @@ async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes
       isCloseWorkerImmediately,
       borderCount,
     )
+
     chunksHash = res.chunksHash
     fileHash = res.fileHash
   }
 
-  return {
-    chunksBlob,
+  const res: HashChksParamRes = {
     chunksHash,
     merkleHash: fileHash,
     metadata,
   }
+
+  if (isBrowserEnv) {
+    res.chunksBlob = chunksBlob
+  }
+
+  return res
 }
 
 function destroyWorkerPool() {

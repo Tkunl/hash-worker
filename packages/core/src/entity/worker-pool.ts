@@ -42,7 +42,7 @@ export abstract class WorkerPool {
           canUseWorker.forEach((workerApp, index) => {
             const param = paramsToRun[index]
             workerApp
-              .run(param.data, params, param.index)
+              .run<string>(param.data, params, param.index)
               .then((res) => {
                 this.results[param.index] = res
               })

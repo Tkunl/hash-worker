@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { getFileHashChunks, Strategy, FileHashChunksResult, FileHashChunksParam } from 'hash-worker'
+import { getFileHashChunks, Strategy, HashChksParamRes, HashChksParam } from 'hash-worker'
 
 function App() {
   let file: File
@@ -10,13 +10,13 @@ function App() {
   }
 
   function handleGetHash() {
-    const param: FileHashChunksParam = {
+    const param: HashChksParam = {
       file: file!,
       strategy: Strategy.crc32
     }
 
-    getFileHashChunks(param).then((data: FileHashChunksResult) => {
-      console.log('chunksHash', data.chunksHash)
+    getFileHashChunks(param).then((data: HashChksParamRes) => {
+      console.log(data)
     })
   }
 

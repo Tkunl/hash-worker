@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getFileHashChunks, Strategy, destroyWorkerPool, FileHashChunksResult, FileHashChunksParam } from 'hash-worker'
+import { getFileHashChunks, Strategy, destroyWorkerPool, HashChksParamRes, HashChksParam } from 'hash-worker'
 
 const file = ref<File>()
 
@@ -9,14 +9,14 @@ function handleInputChange(e: any) {
 }
 
 function handleGetHash() {
-  const param: FileHashChunksParam = {
+  const param: HashChksParam = {
     file: file.value!,
-    strategy: Strategy.crc32,
+    strategy: Strategy.md5,
     isCloseWorkerImmediately: false
   }
 
-  getFileHashChunks(param).then((data: FileHashChunksResult) => {
-    console.log('chunksHash', data.chunksHash)
+  getFileHashChunks(param).then((data: HashChksParamRes) => {
+    console.log(data)
   })
 }
 

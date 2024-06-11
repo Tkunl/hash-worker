@@ -15,9 +15,9 @@ export class WorkerService {
    * 直接计算文件的 MD5
    * @param chunks 将每个 chunk 视作独立的文件
    */
-  getMD5ForFiles(chunks: ArrayBuffer[]) {
+  async getMD5ForFiles(chunks: ArrayBuffer[]) {
     if (this.md5SingleWorkerPool === undefined) {
-      this.md5SingleWorkerPool = new WorkerPoolForMd5s(this.MAX_WORKERS)
+      this.md5SingleWorkerPool = await WorkerPoolForMd5s.create(this.MAX_WORKERS)
     }
     return this.md5SingleWorkerPool.exec<string>(chunks)
   }
@@ -26,9 +26,9 @@ export class WorkerService {
    * 直接计算文件的 CRC32
    * @param chunks 将每个 chunk 视作独立的文件
    */
-  getCRC32ForFiles(chunks: ArrayBuffer[]) {
+  async getCRC32ForFiles(chunks: ArrayBuffer[]) {
     if (this.crc32SingleWorkerPool === undefined) {
-      this.crc32SingleWorkerPool = new WorkerPoolForCrc32s(this.MAX_WORKERS)
+      this.crc32SingleWorkerPool = await WorkerPoolForCrc32s.create(this.MAX_WORKERS)
     }
     return this.crc32SingleWorkerPool.exec<string>(chunks)
   }
