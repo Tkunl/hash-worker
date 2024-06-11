@@ -4,7 +4,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve'
 import { minify, swc } from 'rollup-plugin-swc3'
 import webWorkerLoader from 'rollup-plugin-web-worker-loader'
 
-const bundleName = 'kunHash'
+const bundleName = 'HashWorker'
 
 // 一般来说现代项目不需要自行压缩这些 cjs/esm 模块，因为现代构建工具会自动处理
 // 其次发包发布压缩的包意义在于减少安装大小，但是实际上这个行为可有可无
@@ -13,6 +13,7 @@ const bundleName = 'kunHash'
 
 function workerPluginsConfig() {
   return webWorkerLoader({
+    targetPlatform: 'base64',
     extensions: ['.ts'],
   })
 }
@@ -32,6 +33,16 @@ export default defineConfig([
     input: 'src/main.ts',
     output: { file: 'dist/index.d.ts' },
     plugins: [dts()],
+  },
+  {
+    input: 'src/worker/test-worker.web-worker.ts',
+    output: { file: 'dist/worker/test-worker.web-worker.mjs', format: 'esm' },
+    plugins: [
+      nodeResolve({
+        preferBuiltins: false, // 告诉插件不要使用 Node.js 内置的模块
+      }),
+      swc({ sourceMaps: true }),
+    ],
   },
   // iife 格式产物
   {

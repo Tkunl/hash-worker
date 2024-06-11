@@ -18,7 +18,7 @@ export class WorkerPoolForMd5s extends WorkerPool {
 
     if (isNode()) {
       const { Worker } = await import('worker_threads')
-      instance.pool = createWorkerWrapper(new Worker('web-worker:./md5.web-worker.ts'))
+      instance.pool = createWorkerWrapper(new Worker('./md5.web-worker.ts'))
     }
 
     return instance

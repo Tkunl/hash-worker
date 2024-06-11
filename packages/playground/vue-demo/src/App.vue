@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
-import { getFileHashChunks, Strategy, destroyWorkerPool, HashChksParamRes, HashChksParam } from 'hash-worker'
+import { getFileHashChunks, Strategy, destroyWorkerPool, HashChksParamRes, HashChksParam, testWorker } from 'hash-worker'
 
 const file = ref<File>()
 
@@ -27,6 +27,10 @@ function handleDestroyWorkerPool() {
   destroyWorkerPool()
 }
 
+function handleDoTest() {
+  testWorker()
+}
+
 </script>
 
 <template>
@@ -34,6 +38,7 @@ function handleDestroyWorkerPool() {
   <input type="file" @change="handleInputChange"/>
   <button @click="handleGetHash">get Hash</button>
   <button @click="handleDestroyWorkerPool">destroy pool</button>
+  <button @click="handleDoTest">do test</button>
 </template>
 
 <style scoped>

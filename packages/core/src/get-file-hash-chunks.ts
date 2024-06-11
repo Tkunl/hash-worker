@@ -18,6 +18,7 @@ import {
 } from './interface'
 import { Strategy } from './enum'
 import { getRootHashByChunks } from './get-root-hash-by-chunks'
+// import WebWorker from 'web-worker:./worker/test-worker.web-worker.ts'
 
 const DEFAULT_MAX_WORKERS = 8
 const BORDER_COUNT = 100
@@ -291,4 +292,34 @@ function destroyWorkerPool() {
   workerService && workerService.terminate()
 }
 
-export { getFileHashChunks, destroyWorkerPool }
+async function testWorker() {
+  if (isBrowserEnv) {
+    const worker = new Worker(new URL('./worker/test-worker.web-worker.mjs', import.meta.url), {
+      type: 'module',
+    })
+    worker.onmessage = (msg: any) => {
+      console.log(msg)
+    }
+    worker.onerror = (e) => {
+      console.log('error')
+      console.log(e)
+    }
+    worker.postMessage('Hello')
+  }
+
+  if (isNodeEnv) {
+    const { Worker: NodeWorker } = await import('worker_threads')
+    const worker = new NodeWorker(new URL('./worker/test-worker.web-worker.mjs', import.meta.url))
+    worker.on('message', (msg: any) => {
+      console.log('message')
+      console.log(msg)
+    })
+    worker.on('error', (e) => {
+      console.log('error')
+      console.log(e)
+    })
+    worker.postMessage('Hello')
+  }
+}
+
+export { getFileHashChunks, destroyWorkerPool, testWorker }
