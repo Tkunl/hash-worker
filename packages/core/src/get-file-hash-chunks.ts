@@ -16,7 +16,7 @@ const isBrowserEnv = isBrowser()
 let workerService: WorkerService | null = null
 
 function normalizeParam(param: HashChksParam) {
-  if (isNodeEnv && isEmpty(param.url)) {
+  if (isNodeEnv && isEmpty(param.filePath)) {
     throw new Error('The url attribute is required in node environment')
   }
 
@@ -64,7 +64,7 @@ async function getFileMetadata(file?: File, filePath?: string): Promise<FileMeta
   if (filePath && isNodeEnv) {
     const { promises: fs } = await import('fs')
     const path = await import('path')
-    const stats = await fs.stat(filePath)
+    const stats = await fs.stat(filePath as any)
     return {
       name: path.basename(filePath),
       size: stats.size / 1024,
@@ -122,12 +122,23 @@ async function processFileInBrowser(
   }
 
   const fileHash = await getRootHashByChunks(chunksHash)
-  
+
   return {
     chunksBlob,
     chunksHash,
     fileHash,
   }
+}
+
+async function processFileInNode(
+  filePath: string,
+  chunkSize: number,
+  strategy: Strategy,
+  maxWorkerCount: number,
+  isCloseWorkerImmediately: boolean,
+  borderCount: number,
+) {
+
 }
 
 /**
@@ -147,15 +158,37 @@ async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes
   // 文件元数据
   const metadata = await getFileMetadata(param.file, param.filePath)
 
+  let chunksBlob: Blob[] = []
+  let chunksHash: string[] = []
+  let fileHash = ''
+
   // 浏览器环境下处理文件
-  const { chunksBlob, chunksHash, fileHash } = await processFileInBrowser(
-    param.file!,
-    chunkSize,
-    strategy,
-    borderCount,
-    isCloseWorkerImmediately,
-    borderCount,
-  )
+  if (isBrowserEnv) {
+    const res = await processFileInBrowser(
+      param.file!,
+      chunkSize,
+      strategy,
+      borderCount,
+      isCloseWorkerImmediately,
+      borderCount,
+    )
+    chunksBlob = res.chunksBlob
+    chunksHash = res.chunksHash
+    fileHash = res.fileHash
+  }
+
+  if (isNodeEnv) {
+    const res = await processFileInNode(
+      param.filePath!,
+      chunkSize,
+      strategy,
+      borderCount,
+      isCloseWorkerImmediately,
+      borderCount,
+    )
+    chunksHash = res.chunksHash
+    fileHash = res.fileHash
+  }
 
   return {
     chunksBlob,

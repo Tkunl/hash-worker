@@ -1,9 +1,11 @@
-function createMockBlob(
-  content: string,
-  name: string = 'mock.txt',
-  type: string = 'text/plain',
-) {
-  return new Blob([content], { type })
+import { getFileHashChunks } from 'hash-worker'
+
+function main() {
+  getFileHashChunks({
+    filePath: 'text.txt',
+  }).then((res: any) => {
+    console.log(res)
+  })
 }
 
-console.log(typeof createMockBlob('a'))
+main()

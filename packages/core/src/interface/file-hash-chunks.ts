@@ -22,7 +22,7 @@ export interface HashChksParam {
 }
 
 export interface HashChksParamRes {
-  chunksBlob: Blob[] // 文件分片的 Blob[]
+  chunksBlob?: Blob[] // 文件分片的 Blob[]
   chunksHash: string[] // 文件分片的 Hash[]
   merkleHash: string // 文件的 merkleHash
   metadata: FileMetaInfo // 文件的 metadata
