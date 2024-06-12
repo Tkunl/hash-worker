@@ -10,9 +10,7 @@ function handleInputChange(e: any) {
 
 function handleGetHash() {
   const param: HashChksParam = {
-    file: file.value!,
-    strategy: Strategy.md5,
-    isCloseWorkerImmediately: false
+    file: file.value
   }
 
   getFileHashChunks(param).then((data: HashChksParamRes) => {

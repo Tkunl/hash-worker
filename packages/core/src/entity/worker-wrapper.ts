@@ -26,6 +26,7 @@ export class WorkerWrapper {
     const onMessage =
       (rs: Resolve) =>
       ({ data }: WorkerRep<{ result: string; chunk: ArrayBuffer }>) => {
+        console.log('onMessage data ...', data)
         const { label, content } = data
         if (label === WorkerLabelsEnum.DONE && content) {
           params[index] = content.chunk

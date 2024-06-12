@@ -271,6 +271,8 @@ async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes
       borderCount,
     )
 
+    // TODO 此处没有打印出来 ...
+    console.log('node res: ', res)
     chunksHash = res.chunksHash
     fileHash = res.fileHash
   }

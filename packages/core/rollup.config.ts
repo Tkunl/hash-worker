@@ -49,7 +49,7 @@ export default defineConfig([
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true, sourceMap: true }),
+      minify({ mangle: true, module: true, compress: true }),
     ],
   },
   {
@@ -58,7 +58,7 @@ export default defineConfig([
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true, sourceMap: true }),
+      minify({ mangle: true, module: true, compress: true }),
     ],
   },
   {
@@ -67,7 +67,7 @@ export default defineConfig([
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true, sourceMap: true }),
+      minify({ mangle: true, module: true, compress: true }),
     ],
   },
 ])

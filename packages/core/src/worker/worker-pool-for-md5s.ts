@@ -10,19 +10,22 @@ export class WorkerPoolForMd5s extends WorkerPool {
   static async create(maxWorkers: number) {
     const instance = new WorkerPoolForMd5s(maxWorkers)
     const countArr = Array.from({ length: maxWorkers })
-    const createWorkerWrapper = (worker: any) => countArr.map(() => new WorkerWrapper(worker))
 
     if (isBrowser()) {
-      instance.pool = createWorkerWrapper(
-        new Worker(new URL('./worker/md5.web-worker.mjs', import.meta.url), { type: 'module' }),
-      )
+      instance.pool = countArr.map(() => {
+        return new WorkerWrapper(
+          new Worker(new URL('./worker/md5.web-worker.mjs', import.meta.url), { type: 'module' }),
+        )
+      })
     }
 
     if (isNode()) {
       const { Worker: NodeWorker } = await import('worker_threads')
-      instance.pool = createWorkerWrapper(
-        new NodeWorker(new URL('./worker/md5.web-worker.mjs', import.meta.url)),
-      )
+      instance.pool = countArr.map(() => {
+        return new WorkerWrapper(
+          new NodeWorker(new URL('./worker/md5.web-worker.mjs', import.meta.url)),
+        )
+      })
     }
 
     return instance

@@ -1,3 +1,5 @@
+/// <reference lib="webworker" />
+
 import { isBrowser2, isNode } from '../utils'
 import { md5 } from 'hash-wasm'
 

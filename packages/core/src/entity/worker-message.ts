@@ -10,6 +10,7 @@ export class WorkerMessage<T> {
   content: PostDefined<T>
 
   constructor(label: WorkerLabelsEnum, content?: T) {
+    console.log('WorkerMessage created ...')
     this.label = label
     this.content = content as PostDefined<T>
   }
