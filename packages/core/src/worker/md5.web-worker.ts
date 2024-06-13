@@ -26,10 +26,9 @@ if (isNode()) {
   ;(async () => {
     const { parentPort } = await import('worker_threads')
     parentPort &&
-      parentPort.on('message', async ({ data }: { data: ArrayBuffer }) => {
+      parentPort.on('message', async (data: ArrayBuffer) => {
         const hash = await md5(new Uint8Array(data))
 
-        // TODO 此处可能存在问题 ....
         parentPort.postMessage(
           new WorkerMessage(WorkerLabelsEnum.DONE, {
             result: hash,

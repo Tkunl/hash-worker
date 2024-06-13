@@ -36,8 +36,8 @@ export abstract class WorkerPool {
           }
 
           const paramsToRun = workerParams.splice(0, curTaskCount)
-          // 更新当前正在跑起来的 worker 数量
 
+          // 更新当前正在跑起来的 worker 数量
           this.curRunningCount.next(this.curRunningCount.value + curTaskCount)
           canUseWorker.forEach((workerApp, index) => {
             const param = paramsToRun[index]

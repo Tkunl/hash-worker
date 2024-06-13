@@ -26,6 +26,7 @@ export class WorkerWrapper {
     const onMessage =
       (rs: Resolve) =>
       ({ data }: WorkerRep<{ result: string; chunk: ArrayBuffer }>) => {
+        // TODO 此处会出 undefined
         console.log('onMessage data ...', data)
         const { label, content } = data
         if (label === WorkerLabelsEnum.DONE && content) {
