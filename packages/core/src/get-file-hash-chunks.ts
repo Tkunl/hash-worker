@@ -93,11 +93,18 @@ function normalizeParam(param: HashChksParam) {
  */
 async function getFileMetadata(file?: File, filePath?: string): Promise<FileMetaInfo> {
   if (file && isBrowserEnv) {
+    let fileType: string | undefined = ''
+
+    if (file.name.includes('.')) {
+      fileType = file.name.split('.').pop()
+      fileType = fileType !== void 0 ? '.' + fileType : ''
+    }
+
     return {
       name: file.name,
       size: file.size / 1024,
       lastModified: file.lastModified,
-      type: file.type,
+      type: fileType,
     }
   }
   if (filePath && isNodeEnv && fsp && path) {
@@ -184,8 +191,9 @@ async function processFileInNode(
   // 分割位置数组
   const sliceLocation: [number, number][] = []
   for (let cur = 0; cur < end; cur += _chunkSize) {
-    sliceLocation.push([cur, cur + _chunkSize])
+    sliceLocation.push([cur, cur + _chunkSize - 1])
   }
+  console.log('sliceLocation', sliceLocation)
   if (sliceLocation.length === 1) {
     const unit8Array = new Uint8Array(await readFileAsArrayBuffer(filePath, 0, end))
     chunksHash =
@@ -271,8 +279,6 @@ async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes
       borderCount,
     )
 
-    // TODO 此处没有打印出来 ...
-    console.log('node res: ', res)
     chunksHash = res.chunksHash
     fileHash = res.fileHash
   }

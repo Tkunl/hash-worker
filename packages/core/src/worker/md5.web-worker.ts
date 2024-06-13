@@ -3,10 +3,7 @@
 import { md5 } from 'hash-wasm'
 import { WorkerMessage } from '../entity'
 import { WorkerLabelsEnum } from '../enum'
-import { generateUUID, isBrowser2, isNode } from '../utils'
-
-const workerId = generateUUID()
-console.log('workerId', workerId)
+import { isBrowser2, isNode } from '../utils'
 
 if (isBrowser2()) {
   addEventListener('message', async ({ data }: { data: ArrayBuffer }) => {

@@ -1,4 +1,4 @@
-import { WorkerRep } from './worker-message'
+import { WorkerMessage, WorkerRep } from './worker-message'
 import { WorkerLabelsEnum } from '../enum'
 import { Worker as NodeWorker } from 'worker_threads'
 import { isBrowser, isNode } from '../utils'
@@ -23,18 +23,22 @@ export class WorkerWrapper {
   run<T>(param: ArrayBuffer, params: ArrayBuffer[], index: number) {
     this.status = StatusEnum.RUNNING
 
-    const onMessage =
-      (rs: Resolve) =>
-      ({ data }: WorkerRep<{ result: string; chunk: ArrayBuffer }>) => {
-        // TODO 此处会出 undefined
-        console.log('onMessage data ...', data)
-        const { label, content } = data
-        if (label === WorkerLabelsEnum.DONE && content) {
-          params[index] = content.chunk
-          this.status = StatusEnum.WAITING
-          rs(content.result as T)
-        }
+    const onMessage = (rs: Resolve) => (dataFromWorker: unknown) => {
+      let data: WorkerMessage<{ result: string; chunk: ArrayBuffer }>
+
+      if (isBrowser()) {
+        data = (dataFromWorker as WorkerRep).data
       }
+      if (isNode()) {
+        data = dataFromWorker as WorkerMessage<{ result: string; chunk: ArrayBuffer }>
+      }
+      const { label, content } = data!
+      if (label === WorkerLabelsEnum.DONE && content) {
+        params[index] = content.chunk
+        this.status = StatusEnum.WAITING
+        rs(content.result as T)
+      }
+    }
 
     const onError = (rj: Reject) => (ev: ErrorEvent) => {
       this.status = StatusEnum.WAITING

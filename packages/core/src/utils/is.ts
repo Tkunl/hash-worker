@@ -26,7 +26,7 @@ export function isBrowser(): boolean {
  * 判断当前运行环境是否是浏览器(Worker 中)
  * @returns {boolean} 如果是在浏览器环境中运行，返回 true；否则返回 false
  */
-export function isBrowser2() {
+export function isBrowser2(): boolean {
   return typeof self !== 'undefined' && typeof self.postMessage === 'function'
 }
 
