@@ -11,14 +11,14 @@ import { crc32, md5 } from 'hash-wasm'
 import { WorkerService } from './worker/worker-service'
 import {
   BrowserHashChksParam,
+  Config,
   FileMetaInfo,
   HashChksParam,
-  HashChksParamRes,
+  HashChksRes,
   NodeHashChksParam,
 } from './interface'
 import { Strategy } from './enum'
 import { getRootHashByChunks } from './get-root-hash-by-chunks'
-// import WebWorker from 'web-worker:./worker/test-worker.web-worker.ts'
 
 const DEFAULT_MAX_WORKERS = 8
 const BORDER_COUNT = 100
@@ -66,13 +66,21 @@ function normalizeParam(param: HashChksParam) {
   const normalizedParam = <HashChksParam>{
     file: param.file,
     url: param.filePath,
-    chunkSize: isEmpty(param.chunkSize) ? 10 : param.chunkSize!, // 默认 10MB 分片大小
-    maxWorkerCount: isEmpty(param.maxWorkerCount) ? DEFAULT_MAX_WORKERS : param.maxWorkerCount!, // 默认使用 8个 Worker 线程
-    strategy: isEmpty(param.strategy) ? Strategy.mixed : param.strategy!, // 默认使用混合模式计算 hash
-    borderCount: isEmpty(param.borderCount) ? BORDER_COUNT : param.borderCount!, // 默认以 100 分片数量作为边界
-    isCloseWorkerImmediately: isEmpty(param.isCloseWorkerImmediately) // 默认计算 hash 后立即关闭 worker
-      ? true
-      : param.isCloseWorkerImmediately!,
+  }
+
+  const { chunkSize, maxWorkerCount, strategy, borderCount, isCloseWorkerImmediately } =
+    param.config ?? {}
+  normalizedParam.config = {
+    // 默认 10MB 分片大小
+    chunkSize: isEmpty(chunkSize) ? 10 : chunkSize!,
+    // 默认使用 8个 Worker 线程
+    maxWorkerCount: isEmpty(maxWorkerCount) ? DEFAULT_MAX_WORKERS : maxWorkerCount!,
+    // 默认使用混合模式计算 hash
+    strategy: isEmpty(strategy) ? Strategy.mixed : strategy!,
+    // 默认以 100 分片数量作为边界
+    borderCount: isEmpty(borderCount) ? BORDER_COUNT : borderCount!,
+    // 默认计算 hash 后立即关闭 worker
+    isCloseWorkerImmediately: isEmpty(isCloseWorkerImmediately) ? true : isCloseWorkerImmediately,
   }
 
   if (isNodeEnv) {
@@ -119,15 +127,10 @@ async function getFileMetadata(file?: File, filePath?: string): Promise<FileMeta
   throw new Error('Unsupported environment')
 }
 
-async function processFileInBrowser(
-  file: File,
-  chunkSize: number, // MB
-  strategy: Strategy,
-  maxWorkerCount: number,
-  isCloseWorkerImmediately: boolean,
-  borderCount: number,
-) {
+async function processFileInBrowser(file: File, config: Required<Config>) {
   if (!isBrowserEnv) throw new Error('Error environment')
+  const { chunkSize, strategy, maxWorkerCount, isCloseWorkerImmediately, borderCount } = config
+
   // 文件分片
   const chunksBlob = sliceFile(file, chunkSize)
   let chunksHash: string[] = []
@@ -175,15 +178,11 @@ async function processFileInBrowser(
   }
 }
 
-async function processFileInNode(
-  filePath: string,
-  chunkSize: number, // MB
-  strategy: Strategy,
-  maxWorkerCount: number,
-  isCloseWorkerImmediately: boolean,
-  borderCount: number,
-) {
+async function processFileInNode(filePath: string, config: Required<Config>) {
   if (!isNodeEnv || !fsp) throw new Error('Error environment')
+  const { chunkSize, strategy, maxWorkerCount, isCloseWorkerImmediately, borderCount } = config
+
+  // 文件起止位置分片
   let chunksHash: string[] = []
   const _chunkSize = chunkSize * 1024 * 1024 // MB
   const stats = await fsp.stat(filePath)
@@ -193,7 +192,7 @@ async function processFileInNode(
   for (let cur = 0; cur < end; cur += _chunkSize) {
     sliceLocation.push([cur, cur + _chunkSize - 1])
   }
-  console.log('sliceLocation', sliceLocation)
+
   if (sliceLocation.length === 1) {
     const unit8Array = new Uint8Array(await readFileAsArrayBuffer(filePath, 0, end))
     chunksHash =
@@ -240,13 +239,10 @@ async function processFileInNode(
  * 将文件进行分片, 并获取分片后的 hashList
  * @param param
  */
-async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes> {
-  const normalizedParam = normalizeParam(param)
+async function getFileHashChunks(param: HashChksParam): Promise<HashChksRes> {
+  const { config } = normalizeParam(param)
 
-  const { chunkSize, maxWorkerCount, strategy, borderCount, isCloseWorkerImmediately } =
-    normalizedParam
-
-  await initialize(maxWorkerCount)
+  await initialize(config.maxWorkerCount)
 
   // 文件元数据
   const metadata = await getFileMetadata(param.file, param.filePath)
@@ -256,34 +252,19 @@ async function getFileHashChunks(param: HashChksParam): Promise<HashChksParamRes
   let fileHash = ''
 
   if (isBrowserEnv) {
-    const res = await processFileInBrowser(
-      param.file!,
-      chunkSize,
-      strategy,
-      borderCount,
-      isCloseWorkerImmediately,
-      borderCount,
-    )
+    const res = await processFileInBrowser(param.file!, config)
     chunksBlob = res.chunksBlob
     chunksHash = res.chunksHash
     fileHash = res.fileHash
   }
 
   if (isNodeEnv) {
-    const res = await processFileInNode(
-      param.filePath!,
-      chunkSize,
-      strategy,
-      borderCount,
-      isCloseWorkerImmediately,
-      borderCount,
-    )
-
+    const res = await processFileInNode(param.filePath!, config)
     chunksHash = res.chunksHash
     fileHash = res.fileHash
   }
 
-  const res: HashChksParamRes = {
+  const res: HashChksRes = {
     chunksHash,
     merkleHash: fileHash,
     metadata,
@@ -300,34 +281,4 @@ function destroyWorkerPool() {
   workerService && workerService.terminate()
 }
 
-async function testWorker() {
-  if (isBrowserEnv) {
-    const worker = new Worker(new URL('./worker/test-worker.web-worker.mjs', import.meta.url), {
-      type: 'module',
-    })
-    worker.onmessage = (msg: any) => {
-      console.log(msg)
-    }
-    worker.onerror = (e) => {
-      console.log('error')
-      console.log(e)
-    }
-    worker.postMessage('Hello')
-  }
-
-  if (isNodeEnv) {
-    const { Worker: NodeWorker } = await import('worker_threads')
-    const worker = new NodeWorker(new URL('./worker/test-worker.web-worker.mjs', import.meta.url))
-    worker.on('message', (msg: any) => {
-      console.log('message')
-      console.log(msg)
-    })
-    worker.on('error', (e) => {
-      console.log('error')
-      console.log(e)
-    })
-    worker.postMessage('Hello')
-  }
-}
-
-export { getFileHashChunks, destroyWorkerPool, testWorker }
+export { getFileHashChunks, destroyWorkerPool }

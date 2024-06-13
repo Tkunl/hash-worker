@@ -1,16 +1,21 @@
-import { getFileHashChunks, Strategy, testWorker } from 'hash-worker'
+import { getFileHashChunks, HashChksParam } from 'hash-worker'
 
+const param: HashChksParam = {
+  filePath: 'D:/TestVideo.mp4',
+  config: {
+    maxWorkerCount: 2
+  }
+}
+
+const beforeDate = Date.now()
 function main() {
-  getFileHashChunks({
-    // filePath: 'text.txt',
-    filePath: 'jdk-17.0.2_windows-x64_bin.exe',
-    // filePath: 'GitHubDesktopSetup-x64.exe',
-    strategy: Strategy.md5
-  }).then((res: any) => {
+  getFileHashChunks(param).then((res: any) => {
+    const afterDate = Date.now()
     console.log(res)
+    console.log(afterDate - beforeDate)
   })
 }
 
 main()
 
-// testWorker()
+
