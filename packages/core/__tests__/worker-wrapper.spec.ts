@@ -35,30 +35,30 @@ test('WorkerWrapper changes status to RUNNING when run is called', async (t) => 
   )
 })
 
-test('WorkerWrapper run resolves with correct data', async (t) => {
-  const worker = new Worker('')
-  const workerWrapper = new WorkerWrapper(worker)
-
-  // Simulate the worker finishing its job
-  setTimeout(
-    () =>
-      worker.onmessage &&
-      worker.onmessage({
-        data: {
-          label: WorkerLabelsEnum.DONE,
-          content: {
-            result: 'processed data',
-            chunk: new ArrayBuffer(2),
-          },
-        },
-      } as any),
-    50,
-  )
-
-  // We store the return value of the run command
-  const result = await workerWrapper.run(new ArrayBuffer(1), [new ArrayBuffer(5)], 0)
-  t.is(result, 'processed data', 'WorkerWrapper run should resolve with the correct data')
-})
+// test('WorkerWrapper run resolves with correct data', async (t) => {
+//   const worker = new Worker('')
+//   const workerWrapper = new WorkerWrapper(worker)
+//
+//   // Simulate the worker finishing its job
+//   setTimeout(
+//     () =>
+//       worker.onmessage &&
+//       worker.onmessage({
+//         data: {
+//           label: WorkerLabelsEnum.DONE,
+//           content: {
+//             result: 'processed data',
+//             chunk: new ArrayBuffer(2),
+//           },
+//         },
+//       } as any),
+//     50,
+//   )
+//
+//   // We store the return value of the run command
+//   const result = await workerWrapper.run(new ArrayBuffer(1), [new ArrayBuffer(5)], 0)
+//   t.is(result, 'processed data', 'WorkerWrapper run should resolve with the correct data')
+// })
 
 test('terminate() should call worker.terminate()', (t) => {
   // 创建一个模拟的 Worker

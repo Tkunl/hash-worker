@@ -3,7 +3,6 @@ import * as arr from './array-utils'
 import * as miniSubject from './mini-subject'
 import * as fileUtils from './file-utils'
 import * as is from './is'
-import * as logger from './logger'
 
 /**
  * 兼容 import utils from './utils'; utils.someFn() 写法
@@ -14,7 +13,6 @@ export default {
   ...miniSubject,
   ...fileUtils,
   ...is,
-  ...logger,
 }
 
 /**
@@ -25,4 +23,3 @@ export * from './array-utils'
 export * from './mini-subject'
 export * from './file-utils'
 export * from './is'
-export * from './logger'

@@ -18,7 +18,7 @@ export async function getFileSliceLocations(filePath: string, baseSize = 1) {
   const fsp = await import('fs/promises')
   const chunkSize = baseSize * 1024 * 1024 // MB
   const stats = await fsp.stat(filePath)
-  const end = stats.size
+  const end = stats.size // Bytes 字节
   const sliceLocation: [number, number][] = []
   for (let cur = 0; cur < end; cur += chunkSize) {
     sliceLocation.push([cur, cur + chunkSize - 1])
