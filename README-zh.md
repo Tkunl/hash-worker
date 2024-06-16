@@ -4,7 +4,9 @@
 
 **Hash-worker** 是一个用于快速计算文件哈希值的库。
 它基于 hash-wasm 且利用了 WebWorkers 进行并行计算，从而加快了处理文件块时的计算速度。
+
 Hash-worker 支持两种哈希计算算法：MD5 和 CRC32。
+
 现在同时支持浏览器环境和 Node.js 环境。
 
 > [!WARNING]
@@ -49,7 +51,7 @@ function handleDestroyWorkerPool() {
 
 **HashChksParam**
 
-HashChksParam 是设置计算 hash 的参数
+HashChksParam 是用于配置计算哈希值所需的参数。
 
 | filed | type   | default | description                                 |
 | -------- | ------ | ------- | ------------------------------------------- |
@@ -62,7 +64,7 @@ HashChksParam 是设置计算 hash 的参数
 | filed                    | type     | default        | description                            |
 | ------------------------ | -------- | -------------- | -------------------------------------- |
 | chunkSize                | number   | 10 (MB)        |                                        |
-| workerCount              | number   | 8              | 计算 Hash 时同时开启 worker 的数量     |
+| workerCount              | number   | 8              | 计算 Hash 时同时开启的 worker 数量     |
 | strategy                 | Strategy | Strategy.mixed | hash 计算策略                          |
 | borderCount              | number   | 100            | 'mixed' 模式下 hash 计算规则的分界点   |
 | isCloseWorkerImmediately | boolean  | true           | 当计算完成时, 是否立即销毁 Worker 线程 |
@@ -81,23 +83,23 @@ export enum Strategy {
 
 **HashChksRes**
 
-HashChksRes 是计算 hash 后的返回值
+HashChksRes 是计算哈希值之后的返回结果。
 
 | filed | type | description |
 | ----- | ---- | ----------- |
-| chunksBlob | Blob[] | 文件分片的 Blob[], 仅在浏览器环境下会返回 |
+| chunksBlob | Blob[] | 仅在浏览器环境下，会返回文件分片的 Blob[] |
 | chunksHash | string[] | 文件分片的 Hash[] |
 | merkleHash | string | 文件的 merkleHash |
 | metadata | FileMetaInfo | 文件的 metadata |
 
 **FileMetaInfo**
 
-| filed        | type   | description              |
-| ------------ | ------ | ------------------------ |
-| name         | string | 用来计算 hash 的文件名   |
+| filed        | type   | description             |
+| ------------ | ------ | ----------------------- |
+| name         | string | 用于计算 hash 的文件名   |
 | size         | number | 文件大小，单位：KB       |
 | lastModified | number | 文件最后一次修改的时间戳 |
-| type         | string | 文件的后缀名             |
+| type         | string | 文件后缀名             |
 
 ### LICENSE
 
