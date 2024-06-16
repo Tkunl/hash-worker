@@ -62,13 +62,13 @@ HashChksParam is used to configure the parameters needed to calculate the hash .
 
 **Config**
 
-| filed                    | type     | default        | description              |
-| ------------------------ | -------- | -------------- |--------------------------|
-| chunkSize                | number   | 10 (MB)        |                          |
-| workerCount              | number   | 8              | Number of workers turned on at the same time as the hash is calculated|
-| strategy                 | Strategy | Strategy.mixed | Hash computation strategy|
-| borderCount              | number   | 100            | The cutoff for the hash calculation rule in 'mixed' mode|
-| isCloseWorkerImmediately | boolean  | true           | Whether to destroy the worker thread immediately when the calculation is complete|
+| filed                    | type     | default        | description                                                  |
+| ------------------------ | -------- | -------------- | ------------------------------------------------------------ |
+| chunkSize                | number   | 10 (MB)        | Size of the file slice                                       |
+| workerCount              | number   | 8              | Number of workers turned on at the same time as the hash is calculated |
+| strategy                 | Strategy | Strategy.mixed | Hash computation strategy                                    |
+| borderCount              | number   | 100            | The cutoff for the hash calculation rule in 'mixed' mode     |
+| isCloseWorkerImmediately | boolean  | true           | Whether to destroy the worker thread immediately when the calculation is complete |
 
 ```ts
 // strategy.ts

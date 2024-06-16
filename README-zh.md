@@ -63,7 +63,7 @@ HashChksParam 是用于配置计算哈希值所需的参数。
 
 | filed                    | type     | default        | description                            |
 | ------------------------ | -------- | -------------- | -------------------------------------- |
-| chunkSize                | number   | 10 (MB)        |                                        |
+| chunkSize                | number   | 10 (MB)        | 文件分片的大小                         |
 | workerCount              | number   | 8              | 计算 Hash 时同时开启的 worker 数量     |
 | strategy                 | Strategy | Strategy.mixed | hash 计算策略                          |
 | borderCount              | number   | 100            | 'mixed' 模式下 hash 计算规则的分界点   |
