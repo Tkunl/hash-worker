@@ -5,7 +5,7 @@
 **Hash-worker** 是一个用于快速计算文件哈希值的库。
 它基于 hash-wasm 且利用了 WebWorkers 进行并行计算，从而加快了处理文件块时的计算速度。
 Hash-worker 支持两种哈希计算算法：MD5 和 CRC32。
-现在同时支持浏览器环境和 Node.js 环境
+现在同时支持浏览器环境和 Node.js 环境。
 
 > [!WARNING]
 > Hash-worker 计算出的 merkleHash 是基于文件块哈希值构建的 MerkleTree 的根哈希值。请注意，这并不直接等同于文件本身的哈希值。
@@ -24,15 +24,15 @@ $ npm install hash-worker
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
 
 function handleGetHash() {
-  const param: FileHashChunksParam = {
-    file: file!,
+  const param: HashChksParam = {
+    file: file,
     config: {
       workerCount: 8,
       strategy: Strategy.md5
     }
   }
 
-  getFileHashChunks(param).then((data: FileHashChunksResult) => {
+  getFileHashChunks(param).then((data: HashChksRes) => {
     console.log('chunksHash', data.chunksHash)
   })
 }
