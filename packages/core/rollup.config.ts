@@ -11,7 +11,7 @@ const bundleName = 'HashWorker'
 // 因此你不需要过多复杂的配置。
 
 export default defineConfig([
-  // esm 格式产物
+  // esm 产物
   {
     input: 'src/main.ts',
     output: [
@@ -19,14 +19,16 @@ export default defineConfig([
       { file: 'dist/index.js', format: 'cjs', exports: 'named' },
     ],
     plugins: [nodeResolve(), swc({ sourceMaps: true })],
+    external: ['worker_threads'],
   },
   // esm 类型产物
   {
     input: 'src/main.ts',
     output: { file: 'dist/index.d.ts' },
     plugins: [dts()],
+    external: ['worker_threads'],
   },
-  // iife 格式产物
+  // iife 产物
   {
     input: 'src/main.ts',
     output: { file: 'dist/global.js', format: 'iife', name: bundleName },
@@ -35,23 +37,16 @@ export default defineConfig([
       swc({ sourceMaps: true }),
       minify({ mangle: true, module: true, compress: true, sourceMap: true }),
     ],
+    external: ['worker_threads'],
   },
   // iife 类型产物
   {
     input: 'src/iife.ts',
     output: { file: 'dist/global.d.ts', format: 'es' },
     plugins: [dts()],
+    external: ['worker_threads'],
   },
   // Worker
-  {
-    input: 'src/worker/test-worker.web-worker.ts',
-    output: { file: 'dist/worker/test-worker.web-worker.mjs', format: 'esm' },
-    plugins: [
-      nodeResolve(),
-      swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true }),
-    ],
-  },
   {
     input: 'src/worker/crc32.web-worker.ts',
     output: { file: 'dist/worker/crc32.web-worker.mjs', format: 'esm' },

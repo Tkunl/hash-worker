@@ -25,7 +25,7 @@ export type BrowserHashChksParam = Required<Pick<HashChksParam, 'file'>> &
 
 export interface Config {
   chunkSize?: number // 分片大小 MB
-  maxWorkerCount?: number // worker 线程数量
+  workerCount?: number // worker 线程数量
   strategy?: Strategy // hash 计算策略
   borderCount?: number // 使用 'mixed' 时的分界点, 分片数量少于 borderCount 时使用 md5 作为 hash 算法, 否则使用 crc32
   isCloseWorkerImmediately?: boolean // 是否在计算 hash 后立即关闭 worker

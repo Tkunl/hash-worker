@@ -57,6 +57,8 @@ export class WorkerWrapper {
     if (isNode()) {
       const worker = this.worker as NodeWorker
       return new Promise<T>((rs, rj) => {
+        // 处理 MaxListenersExceededWarning: Possible EventEmitter memory leak detected 警告
+        worker.setMaxListeners(128)
         worker.on('message', onMessage(rs))
         worker.on('error', onError(rj))
         worker.postMessage(param, [param])

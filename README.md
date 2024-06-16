@@ -18,19 +18,21 @@ $ yarn add hash-worker
 $ npm install hash-worker
 ```
 
-## Usage
+## Usage In Browser
 
 ``` ts
-import { getFileHashChunks, Strategy, destroyWorkerPool, FileHashChunksResult, FileHashChunksParam } from 'Hash-worker'
+import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
 
 function handleGetHash() {
-  const param: FileHashChunksParam = {
-    file: file!,
-    strategy: Strategy.crc32
+  const param: HashChksParam = {
+    file: file,
+    config: {
+      workerCount: 8
+    }
   }
-
-  getFileHashChunks(param).then((data: FileHashChunksResult) => {
-    console.log('chunksHash', data.chunksHash)
+  
+  getFileHashChunks(param).then((data: HashChksRes) => {
+    console.log(data)
   })
 }
 

@@ -1,12 +1,10 @@
-import fsc from 'fs'
-
 /**
  * 分割文件
  * @param file
  * @param baseSize 默认分块大小为 1MB
  */
 export function sliceFile(file: File, baseSize = 1) {
-  const chunkSize = baseSize * 1024 * 1024 // KB
+  const chunkSize = baseSize * 1024 * 1024 // MB
   const chunks: Blob[] = []
   let startPos = 0
   while (startPos < file.size) {
@@ -14,6 +12,18 @@ export function sliceFile(file: File, baseSize = 1) {
     startPos += chunkSize
   }
   return chunks
+}
+
+export async function getFileSliceLocations(filePath: string, baseSize = 1) {
+  const fsp = await import('fs/promises')
+  const chunkSize = baseSize * 1024 * 1024 // MB
+  const stats = await fsp.stat(filePath)
+  const end = stats.size
+  const sliceLocation: [number, number][] = []
+  for (let cur = 0; cur < end; cur += chunkSize) {
+    sliceLocation.push([cur, cur + chunkSize - 1])
+  }
+  return { sliceLocation, endLocation: end }
 }
 
 /**
@@ -32,7 +42,8 @@ export async function getArrayBufFromBlobs(chunks: Blob[]): Promise<ArrayBuffer[
  * @param end 结束位置(字节)
  */
 export async function readFileAsArrayBuffer(path: string, start: number, end: number) {
-  const readStream = fsc.createReadStream(path, { start, end })
+  const fs = await import('fs')
+  const readStream = fs.createReadStream(path, { start, end })
   const chunks: any[] = []
   return new Promise<ArrayBuffer>((rs, rj) => {
     readStream.on('data', (chunk) => {

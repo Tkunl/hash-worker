@@ -12,15 +12,12 @@ function handleGetHash() {
   const param: HashChksParam = {
     file: file.value,
     config: {
-      maxWorkerCount: 2
+      workerCount: 8
     }
   }
 
-  const beforeDate = Date.now()
   getFileHashChunks(param).then((data: HashChksRes) => {
-    const afterDate = Date.now()
     console.log(data)
-    console.log(afterDate - beforeDate)
   })
 }
 

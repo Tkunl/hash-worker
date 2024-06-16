@@ -1,6 +1,7 @@
 import {
   getArrayBufFromBlobs,
   getArrParts,
+  getFileSliceLocations,
   isBrowser,
   isEmpty,
   isNode,
@@ -68,13 +69,13 @@ function normalizeParam(param: HashChksParam) {
     url: param.filePath,
   }
 
-  const { chunkSize, maxWorkerCount, strategy, borderCount, isCloseWorkerImmediately } =
+  const { chunkSize, workerCount, strategy, borderCount, isCloseWorkerImmediately } =
     param.config ?? {}
   normalizedParam.config = {
     // 默认 10MB 分片大小
     chunkSize: isEmpty(chunkSize) ? 10 : chunkSize!,
     // 默认使用 8个 Worker 线程
-    maxWorkerCount: isEmpty(maxWorkerCount) ? DEFAULT_MAX_WORKERS : maxWorkerCount!,
+    workerCount: isEmpty(workerCount) ? DEFAULT_MAX_WORKERS : workerCount!,
     // 默认使用混合模式计算 hash
     strategy: isEmpty(strategy) ? Strategy.mixed : strategy!,
     // 默认以 100 分片数量作为边界
@@ -129,7 +130,7 @@ async function getFileMetadata(file?: File, filePath?: string): Promise<FileMeta
 
 async function processFileInBrowser(file: File, config: Required<Config>) {
   if (!isBrowserEnv) throw new Error('Error environment')
-  const { chunkSize, strategy, maxWorkerCount, isCloseWorkerImmediately, borderCount } = config
+  const { chunkSize, strategy, workerCount, isCloseWorkerImmediately, borderCount } = config
 
   // 文件分片
   const chunksBlob = sliceFile(file, chunkSize)
@@ -144,7 +145,7 @@ async function processFileInBrowser(file: File, config: Required<Config>) {
   } else {
     let chunksBuf: ArrayBuffer[] = []
     // 将文件分片进行分组, 组内任务并行执行, 组外任务串行执行
-    const chunksPart = getArrParts<Blob>(chunksBlob, maxWorkerCount)
+    const chunksPart = getArrParts<Blob>(chunksBlob, workerCount)
     const tasks = chunksPart.map((part) => async () => {
       // 手动释放上一次用于计算 Hash 的 ArrayBuffer
       // 现在只会占用 MAX_WORKERS * 分片数量大小的内存
@@ -180,29 +181,22 @@ async function processFileInBrowser(file: File, config: Required<Config>) {
 
 async function processFileInNode(filePath: string, config: Required<Config>) {
   if (!isNodeEnv || !fsp) throw new Error('Error environment')
-  const { chunkSize, strategy, maxWorkerCount, isCloseWorkerImmediately, borderCount } = config
+  const { chunkSize, strategy, workerCount, isCloseWorkerImmediately, borderCount } = config
 
-  // 文件起止位置分片
+  // 文件分片
+  const { sliceLocation, endLocation } = await getFileSliceLocations(filePath, chunkSize)
   let chunksHash: string[] = []
-  const _chunkSize = chunkSize * 1024 * 1024 // MB
-  const stats = await fsp.stat(filePath)
-  const end = stats.size
-  // 分割位置数组
-  const sliceLocation: [number, number][] = []
-  for (let cur = 0; cur < end; cur += _chunkSize) {
-    sliceLocation.push([cur, cur + _chunkSize - 1])
-  }
 
   if (sliceLocation.length === 1) {
-    const unit8Array = new Uint8Array(await readFileAsArrayBuffer(filePath, 0, end))
+    const unit8Array = new Uint8Array(await readFileAsArrayBuffer(filePath, 0, endLocation))
     chunksHash =
       strategy === Strategy.md5 || strategy === Strategy.mixed
         ? [await md5(unit8Array)]
         : [await crc32(unit8Array)]
   } else {
     // 分组后的起始分割位置
-    const sliceLocationPart = getArrParts<[number, number]>(sliceLocation, maxWorkerCount)
     let chunksBuf: ArrayBuffer[] = []
+    const sliceLocationPart = getArrParts<[number, number]>(sliceLocation, workerCount)
     const tasks = sliceLocationPart.map((partArr) => async () => {
       chunksBuf.length = 0
       chunksBuf = await Promise.all(
@@ -242,7 +236,7 @@ async function processFileInNode(filePath: string, config: Required<Config>) {
 async function getFileHashChunks(param: HashChksParam): Promise<HashChksRes> {
   const { config } = normalizeParam(param)
 
-  await initialize(config.maxWorkerCount)
+  await initialize(config.workerCount)
 
   // 文件元数据
   const metadata = await getFileMetadata(param.file, param.filePath)
