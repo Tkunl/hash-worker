@@ -4,6 +4,7 @@
   "description": "hash-worker is a tool for quickly calculating file hash",
   "author": "https://github.com/Tkunl",
   "repository": "https://github.com/Tkunl/hash-worker",
+  "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -26,10 +27,9 @@
   "scripts": {
     "dev": "rollup --config rollup.config.ts --configPlugin swc3 --watch",
     "build": "pnpm lint && pnpm rm:dist && rollup --config rollup.config.ts --configPlugin swc3",
-    "test": "c8 -r=lcov ava __tests__/*.spec.ts",
+    "test": "jest --coverage",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "rm:dist": "rimraf ./dist",
-    "rm:ava-cache": "rimraf ./node_modules/.cache/ava"
+    "rm:dist": "rimraf ./dist"
   },
   "keywords": [
     "hash-worker",
@@ -38,18 +38,6 @@
   "license": "MIT",
   "dependencies": {
     "hash-wasm": "^4.11.0"
-  },
-  "ava": {
-    "files": [
-      "**/__tests__/*.spec.ts",
-      "e2e/**/*.spec.ts"
-    ],
-    "extensions": [
-      "ts"
-    ],
-    "require": [
-      "tsx/cjs"
-    ]
   },
   "_moduleAliases": {
     "web-worker:./md5-single.web-worker.ts": "__tests__/fixture/mock-worker",

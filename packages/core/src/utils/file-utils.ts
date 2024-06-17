@@ -4,7 +4,7 @@
  * @param baseSize 默认分块大小为 1MB
  */
 export function sliceFile(file: File, baseSize = 1) {
-  const chunkSize = baseSize * 1024 * 1024 // MB
+  const chunkSize = baseSize << 20 // MB
   const chunks: Blob[] = []
   let startPos = 0
   while (startPos < file.size) {
@@ -14,9 +14,14 @@ export function sliceFile(file: File, baseSize = 1) {
   return chunks
 }
 
+/**
+ * 分割文件, 获取每个分片的起止位置
+ * @param filePath
+ * @param baseSize 默认分块大小为 1MB
+ */
 export async function getFileSliceLocations(filePath: string, baseSize = 1) {
   const fsp = await import('fs/promises')
-  const chunkSize = baseSize * 1024 * 1024 // MB
+  const chunkSize = baseSize << 20 // MB
   const stats = await fsp.stat(filePath)
   const end = stats.size // Bytes 字节
   const sliceLocation: [number, number][] = []
