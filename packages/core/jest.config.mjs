@@ -14,5 +14,10 @@ export default {
       testEnvironment: 'jsdom',
       testMatch: ['**/__tests__/browser/**/*.spec.ts']
     },
-  ]
+  ],
+  globals: {
+    'ts-jest': {
+      useESM: true,
+    },
+  }
 }
