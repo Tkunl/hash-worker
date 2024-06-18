@@ -1,49 +1,9 @@
-// 使用 jest.mock() 或 jest.spyOn() 来模拟外部依赖，这里需要先构建好 Mock 类
-// 假设所有的类定义和必要的导入已经正确完成
+import { MockWorkerPool } from '../fixture/mock_worker_pool'
 
-// 扩展 WorkerPool 以使用模拟的 WorkerWrapper 和 MiniSubject
-import { StatusEnum, WorkerPool, WorkerWrapper } from '../../src/entity'
-import { MiniSubject } from '../../src/utils'
-
-class MockWorkerWrapper extends WorkerWrapper {
-  constructor() {
-    super({
-      terminate: () => {},
-    } as Worker)
-    this.status = StatusEnum.WAITING
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  run<T>(param: ArrayBuffer, params: ArrayBuffer[], index: number) {
-    return Promise.resolve('result' as unknown as T)
-  }
-}
-
-class TestWorkerPool extends WorkerPool {
-  constructor(maxWorkers = 4) {
-    super(maxWorkers)
-    this.curRunningCount = new MockMiniSubject(0)
-    for (let i = 0; i < maxWorkers; i++) {
-      this.pool.push(new MockWorkerWrapper())
-    }
-  }
-}
-
-class MockMiniSubject<T> extends MiniSubject<T> {
-  constructor(value: T) {
-    super(value)
-  }
-
-  next(value: T) {
-    this._value = value
-    this.subscribers.forEach((cb) => cb(value))
-  }
-}
-
-describe('WorkerPool Tests', () => {
+describe('WorkerPool', () => {
   // 测试 WorkerPool 是否能够执行任务并返回结果
-  test('WorkerPool should execute tasks and return results', async () => {
-    const workerPool = new TestWorkerPool(2)
+  test('should execute tasks and return results', async () => {
+    const workerPool = new MockWorkerPool(2)
     const params = [new ArrayBuffer(8), new ArrayBuffer(8)]
 
     const results = await workerPool.exec<string>(params)
@@ -53,8 +13,8 @@ describe('WorkerPool Tests', () => {
   })
 
   // 测试 WorkerPool 是否能够正确地终止所有 workers
-  test('WorkerPool should terminate all workers', () => {
-    const workerPool = new TestWorkerPool(2)
+  test('should terminate all workers', () => {
+    const workerPool = new MockWorkerPool(2)
     // 使用 jest.spyOn 为每个 worker 的 terminate 方法设置监视
     const terminateSpies = workerPool.pool.map((worker) => jest.spyOn(worker, 'terminate'))
 
@@ -63,6 +23,31 @@ describe('WorkerPool Tests', () => {
     // 检查每个 spy 是否被调用了一次
     terminateSpies.forEach((spy) => {
       expect(spy).toHaveBeenCalledTimes(1)
+    })
+  })
+
+  test('should execute tasks and return results', async () => {
+    const workerPool = new MockWorkerPool(2)
+    const params = [new ArrayBuffer(8), new ArrayBuffer(8)]
+
+    const results = await workerPool.exec<string>(params)
+
+    expect(results).toEqual(['result', 'result'])
+  })
+
+  test('should terminate all workers', () => {
+    const workerPool = new MockWorkerPool(2)
+
+    // 使用 Jest 的 mock 函数来模拟 terminate 方法
+    workerPool.pool.forEach((worker) => {
+      worker.terminate = jest.fn()
+    })
+
+    workerPool.terminate()
+
+    // 检查每个 worker 的 terminate 方法是否被调用了一次
+    workerPool.pool.forEach((worker) => {
+      expect(worker.terminate).toHaveBeenCalledTimes(1)
     })
   })
 })
