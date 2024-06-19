@@ -27,7 +27,6 @@ export class WorkerWrapper {
       let data: WorkerMessage<{ result: string; chunk: ArrayBuffer }>
 
       if (isBrowser()) {
-        console.log('onMessage....')
         data = (dataFromWorker as WorkerRep).data
       }
       if (isNode()) {
@@ -47,7 +46,6 @@ export class WorkerWrapper {
     }
 
     if (isBrowser()) {
-      console.log('isBrowser()', isBrowser())
       const worker = this.worker as Worker
       return new Promise<T>((rs, rj) => {
         worker.onmessage = onMessage(rs)

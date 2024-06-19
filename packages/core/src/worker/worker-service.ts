@@ -4,8 +4,8 @@ import { WorkerPoolForCrc32s } from './worker-pool-for-crc32s'
 export class WorkerService {
   MAX_WORKERS
 
-  md5SingleWorkerPool: WorkerPoolForMd5s | undefined
-  crc32SingleWorkerPool: WorkerPoolForCrc32s | undefined
+  md5Pool: WorkerPoolForMd5s | undefined
+  crc32Pool: WorkerPoolForCrc32s | undefined
 
   constructor(maxWorkers: number) {
     this.MAX_WORKERS = maxWorkers
@@ -16,10 +16,10 @@ export class WorkerService {
    * @param chunks 将每个 chunk 视作独立的文件
    */
   async getMD5ForFiles(chunks: ArrayBuffer[]) {
-    if (this.md5SingleWorkerPool === undefined) {
-      this.md5SingleWorkerPool = await WorkerPoolForMd5s.create(this.MAX_WORKERS)
+    if (this.md5Pool === undefined) {
+      this.md5Pool = await WorkerPoolForMd5s.create(this.MAX_WORKERS)
     }
-    return this.md5SingleWorkerPool.exec<string>(chunks)
+    return this.md5Pool.exec<string>(chunks)
   }
 
   /**
@@ -27,16 +27,16 @@ export class WorkerService {
    * @param chunks 将每个 chunk 视作独立的文件
    */
   async getCRC32ForFiles(chunks: ArrayBuffer[]) {
-    if (this.crc32SingleWorkerPool === undefined) {
-      this.crc32SingleWorkerPool = await WorkerPoolForCrc32s.create(this.MAX_WORKERS)
+    if (this.crc32Pool === undefined) {
+      this.crc32Pool = await WorkerPoolForCrc32s.create(this.MAX_WORKERS)
     }
-    return this.crc32SingleWorkerPool.exec<string>(chunks)
+    return this.crc32Pool.exec<string>(chunks)
   }
 
   terminate() {
-    this.md5SingleWorkerPool && this.md5SingleWorkerPool.terminate()
-    this.crc32SingleWorkerPool && this.crc32SingleWorkerPool.terminate()
-    this.md5SingleWorkerPool = undefined
-    this.crc32SingleWorkerPool = undefined
+    this.md5Pool && this.md5Pool.terminate()
+    this.crc32Pool && this.crc32Pool.terminate()
+    this.md5Pool = undefined
+    this.crc32Pool = undefined
   }
 }

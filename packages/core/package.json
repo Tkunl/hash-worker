@@ -1,7 +1,7 @@
 {
   "name": "hash-worker",
   "version": "0.0.2",
-  "description": "hash-worker is a tool for quickly calculating file hash",
+  "description": "hash-worker is a tool for quickly calculating file's hash",
   "author": "https://github.com/Tkunl",
   "repository": "https://github.com/Tkunl/hash-worker",
   "type": "module",
@@ -38,9 +38,5 @@
   "license": "MIT",
   "dependencies": {
     "hash-wasm": "^4.11.0"
-  },
-  "_moduleAliases": {
-    "web-worker:./md5-single.web-worker.ts": "__tests__/fixture/mock-worker",
-    "web-worker:./crc32-single.web-worker.ts": "__tests__/fixture/mock-worker"
   }
 }

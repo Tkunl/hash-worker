@@ -3,7 +3,7 @@
 [English Document](./README.md)
 
 **Hash-worker** 是一个用于快速计算文件哈希值的库。
-它基于 hash-wasm 且利用了 WebWorkers 进行并行计算，从而加快了处理文件块时的计算速度。
+它基于 hash-wasm 且利用了 WebWorker 进行并行计算，从而加快了计算文件(分片)的计算速度。
 
 Hash-worker 支持两种哈希计算算法：MD5 和 CRC32。
 
@@ -78,7 +78,7 @@ export enum Strategy {
 }
 ```
 
-当采用 Strategy.mixed 策略时，若文件碎片数量少于 borderCount，将采用 md5 算法计算哈希值来构建 MerkleTree。
+当采用 Strategy.mixed 策略时，若文件分片数量少于 borderCount，将采用 md5 算法计算哈希值来构建 MerkleTree。
 否则，则切换至使用 crc32 算法进行 MerkleTree 的构建。
 
 **HashChksRes**
