@@ -1,18 +1,8 @@
-import { StatusEnum, WorkerMessage, WorkerWrapper } from '../../src/entity'
-import { WorkerLabelsEnum } from '../../src/enum'
-
-class WebWorker {
-  onmessage?: (event: any) => void
-  onerror?: (event: ErrorEvent) => void
-  postMessage = jest.fn().mockImplementation(() => {
-    this.onmessage &&
-      this.onmessage(new WorkerMessage(WorkerLabelsEnum.DONE, { result: 'hash-string' }))
-  })
-  terminate = jest.fn()
-}
+import { StatusEnum, WorkerWrapper } from '../../src/entity'
+import { MockWebWorker } from '../fixture/mock-web-worker'
 
 // 在全局空间中声明这个类，以模拟在浏览器中的 Worker 行为
-;(global as any).Worker = WebWorker
+;(global as any).Worker = MockWebWorker
 
 describe('WorkerWrapper', () => {
   it('should handle messages correctly in browser environment', async () => {

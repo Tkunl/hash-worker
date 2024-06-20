@@ -1,11 +1,11 @@
-import { WorkerPoolForMd5s } from './worker-pool-for-md5s'
-import { WorkerPoolForCrc32s } from './worker-pool-for-crc32s'
+import { WorkerPoolForMd5 } from './worker-pool-for-md5'
+import { WorkerPoolForCrc32 } from './worker-pool-for-crc32'
 
 export class WorkerService {
   MAX_WORKERS
 
-  md5Pool: WorkerPoolForMd5s | undefined
-  crc32Pool: WorkerPoolForCrc32s | undefined
+  md5Pool: WorkerPoolForMd5 | undefined
+  crc32Pool: WorkerPoolForCrc32 | undefined
 
   constructor(maxWorkers: number) {
     this.MAX_WORKERS = maxWorkers
@@ -17,7 +17,7 @@ export class WorkerService {
    */
   async getMD5ForFiles(chunks: ArrayBuffer[]) {
     if (this.md5Pool === undefined) {
-      this.md5Pool = await WorkerPoolForMd5s.create(this.MAX_WORKERS)
+      this.md5Pool = await WorkerPoolForMd5.create(this.MAX_WORKERS)
     }
     return this.md5Pool.exec<string>(chunks)
   }
@@ -28,7 +28,7 @@ export class WorkerService {
    */
   async getCRC32ForFiles(chunks: ArrayBuffer[]) {
     if (this.crc32Pool === undefined) {
-      this.crc32Pool = await WorkerPoolForCrc32s.create(this.MAX_WORKERS)
+      this.crc32Pool = await WorkerPoolForCrc32.create(this.MAX_WORKERS)
     }
     return this.crc32Pool.exec<string>(chunks)
   }
