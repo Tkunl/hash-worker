@@ -1,3 +1,6 @@
+import { FileMetaInfo } from '../interface'
+import { isBrowser, isNode } from './is'
+
 /**
  * 分割文件
  * @param file
@@ -65,4 +68,40 @@ export async function readFileAsArrayBuffer(path: string, start: number, end: nu
       rj(e)
     })
   })
+}
+
+/**
+ * 获取文件元数据
+ * @param file 文件
+ * @param filePath 文件路径
+ */
+export async function getFileMetadata(file?: File, filePath?: string): Promise<FileMetaInfo> {
+  if (file && isBrowser()) {
+    let fileType: string | undefined = ''
+
+    if (file.name.includes('.')) {
+      fileType = file.name.split('.').pop()
+      fileType = fileType !== void 0 ? '.' + fileType : ''
+    }
+
+    return {
+      name: file.name,
+      size: file.size / 1024,
+      lastModified: file.lastModified,
+      type: fileType,
+    }
+  }
+
+  if (filePath && isNode()) {
+    const fsp: typeof import('node:fs/promises') = await import('fs/promises')
+    const path: typeof import('node:path') = await import('path')
+    const stats = await fsp.stat(filePath)
+    return {
+      name: path.basename(filePath),
+      size: stats.size / 1024,
+      lastModified: stats.mtime.getTime(),
+      type: path.extname(filePath),
+    }
+  }
+  throw new Error('Unsupported environment')
 }

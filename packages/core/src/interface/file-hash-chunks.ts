@@ -9,18 +9,6 @@ export interface Config {
   isCloseWorkerImmediately?: boolean // 是否在计算 hash 后立即关闭 worker
 }
 
-interface BaseParam2 {
-  config: Required<Config>
-}
-
-export interface BrowserEnvParam2 extends BaseParam2 {
-  file: File
-}
-
-export interface NodeEnvParam2 extends BaseParam2 {
-  filePath: string
-}
-
 interface BaseParam {
   config?: Config
 }
