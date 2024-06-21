@@ -1,28 +1,6 @@
 import { FileMetaInfo } from './file-meta-info'
 import { Strategy } from '../enum'
 
-type RequiredDeep<T> = {
-  [P in keyof T]-?: T[P] extends object ? RequiredDeep<T[P]> : T[P]
-}
-type RequiredConfig = Required<Pick<HashChksParam, 'config'>>
-type FullyRequiredConfig = {
-  [K in keyof RequiredConfig]: RequiredDeep<RequiredConfig[K]>
-}
-
-/**
- * Node 环境下的参数
- */
-export type NodeHashChksParam = Required<Pick<HashChksParam, 'filePath'>> &
-  Omit<HashChksParam, 'filePath' | 'config'> &
-  FullyRequiredConfig
-
-/**
- * 浏览器环境下的参数
- */
-export type BrowserHashChksParam = Required<Pick<HashChksParam, 'file'>> &
-  Omit<HashChksParam, 'file' | 'config'> &
-  FullyRequiredConfig
-
 export interface Config {
   chunkSize?: number // 分片大小 MB
   workerCount?: number // worker 线程数量
@@ -31,11 +9,34 @@ export interface Config {
   isCloseWorkerImmediately?: boolean // 是否在计算 hash 后立即关闭 worker
 }
 
-export interface HashChksParam {
-  file?: File // 待计算 Hash 的文件 (浏览器环境)
-  filePath?: string // 待计算 Hash 的文件的 URL (Node 环境)
+interface BaseParam2 {
+  config: Required<Config>
+}
+
+export interface BrowserEnvParam2 extends BaseParam2 {
+  file: File
+}
+
+export interface NodeEnvParam2 extends BaseParam2 {
+  filePath: string
+}
+
+interface BaseParam {
   config?: Config
 }
+
+interface BrowserEnvParam extends BaseParam {
+  file: File // 待计算 Hash 的文件 (浏览器环境)
+  filePath?: never // 当 file 存在时，filePath 不能存在
+}
+
+interface NodeEnvParam extends BaseParam {
+  file?: never // 当 filePath 存在时，file 不能存在
+  filePath: string // 待计算 Hash 的文件的 URL (Node 环境)
+}
+
+// 使用交叉类型确保 file 和 filePath 二者之一必须存在
+export type HashChksParam = BrowserEnvParam | NodeEnvParam
 
 export interface HashChksRes {
   chunksBlob?: Blob[] // 文件分片的 Blob[]

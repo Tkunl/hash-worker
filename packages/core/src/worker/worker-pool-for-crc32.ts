@@ -14,7 +14,7 @@ export class WorkerPoolForCrc32 extends WorkerPool {
     if (isBrowser()) {
       instance.pool = countArr.map(() => {
         return new WorkerWrapper(
-          new Worker(new URL('./worker/crc32.web-worker.mjs', import.meta.url), { type: 'module' }),
+          new Worker(new URL('./worker/crc32.worker.mjs', import.meta.url), { type: 'module' }),
         )
       })
     }
@@ -23,7 +23,7 @@ export class WorkerPoolForCrc32 extends WorkerPool {
       const { Worker: NodeWorker } = await import('worker_threads')
       instance.pool = countArr.map(() => {
         return new WorkerWrapper(
-          new NodeWorker(new URL('./worker/crc32.web-worker.mjs', import.meta.url)),
+          new NodeWorker(new URL('./worker/crc32.worker.mjs', import.meta.url)),
         )
       })
     }

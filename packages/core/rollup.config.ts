@@ -48,8 +48,8 @@ export default defineConfig([
   },
   // Worker
   {
-    input: 'src/worker/crc32.web-worker.ts',
-    output: { file: 'dist/worker/crc32.web-worker.mjs', format: 'esm' },
+    input: 'src/worker/crc32.worker.ts',
+    output: { file: 'dist/worker/crc32.worker.mjs', format: 'esm' },
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
@@ -57,8 +57,8 @@ export default defineConfig([
     ],
   },
   {
-    input: 'src/worker/md5.web-worker.ts',
-    output: { file: 'dist/worker/md5.web-worker.mjs', format: 'esm' },
+    input: 'src/worker/md5.worker.ts',
+    output: { file: 'dist/worker/md5.worker.mjs', format: 'esm' },
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),

@@ -11,12 +11,12 @@ import {
 import { crc32, md5 } from 'hash-wasm'
 import { WorkerService } from './worker/worker-service'
 import {
-  BrowserHashChksParam,
+  BrowserEnvParam2,
   Config,
   FileMetaInfo,
   HashChksParam,
   HashChksRes,
-  NodeHashChksParam,
+  NodeEnvParam2,
 } from './interface'
 import { Strategy } from './enum'
 import { getRootHashByChunks } from './get-root-hash-by-chunks'
@@ -85,11 +85,11 @@ function normalizeParam(param: HashChksParam) {
   }
 
   if (isNodeEnv) {
-    return normalizedParam as NodeHashChksParam
+    return normalizedParam as NodeEnvParam2
   }
 
   if (isBrowserEnv) {
-    return normalizedParam as BrowserHashChksParam
+    return normalizedParam as BrowserEnvParam2
   }
 
   throw new Error('Unsupported environment')
