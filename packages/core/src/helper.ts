@@ -74,8 +74,8 @@ export async function getChunksHashSingle(strategy: Strategy, arrayBuffer: Array
 /**
  * 计算多个文件分片的 Hash
  * @param strategy hash 策略
- * @param arrayBuffers 文件分片的 arrayBuffer 数组
- * @param chunksCount TODO 此处存疑待优化
+ * @param arrayBuffers 当前文件分片的 arrayBuffer 数组 (组内)
+ * @param chunksCount 文件的全部分片数量
  * @param borderCount Strategy.mixed 时的边界个数
  * @param workerSvc WorkerService
  */
