@@ -1,6 +1,7 @@
 const projectsConfigWrapper = (configs) =>
   configs.map((config) => ({
     ...config,
+    coveragePathIgnorePatterns: ['/__tests__/fixture/'],
     preset: 'ts-jest',
     transform: {
       '^.+\\.tsx?$': [

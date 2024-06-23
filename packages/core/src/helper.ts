@@ -1,8 +1,17 @@
 import { crc32, md5 } from 'hash-wasm'
 import { Strategy } from './enum'
 import { WorkerService } from './worker/worker-service'
-import { HashChksParam } from './interface'
-import { isBrowser, isNode } from './utils'
+import { Config, HashChksParam } from './interface'
+import {
+  getArrayBufFromBlobs,
+  getArrParts,
+  getFileSliceLocations,
+  isBrowser,
+  isNode,
+  readFileAsArrayBuffer,
+  sliceFile,
+} from './utils'
+import { getRootHashByChunks } from './get-root-hash-by-chunks'
 
 const DEFAULT_MAX_WORKERS = 8
 const BORDER_COUNT = 100
@@ -96,4 +105,103 @@ export async function getChunksHashMultiple(
   }
 
   return processor[strategy]()
+}
+
+export async function processFileInBrowser(
+  file: File,
+  config: Required<Config>,
+  workerSvc: WorkerService,
+) {
+  const { chunkSize, strategy, workerCount, isCloseWorkerImmediately, borderCount } = config
+
+  // 文件分片
+  const chunksBlob = sliceFile(file, chunkSize)
+  let chunksHash: string[] = []
+
+  const singleChunkProcessor = async () => {
+    const arrayBuffer = await chunksBlob[0].arrayBuffer()
+    chunksHash = await getChunksHashSingle(strategy, arrayBuffer)
+  }
+
+  const multipleChunksProcessor = async () => {
+    let chunksBuf: ArrayBuffer[] = []
+    // 将文件分片进行分组, 组内任务并行执行, 组外任务串行执行
+    const chunksPart = getArrParts<Blob>(chunksBlob, workerCount)
+    const tasks = chunksPart.map((part) => async () => {
+      // 手动释放上一次用于计算 Hash 的 ArrayBuffer
+      chunksBuf.length = 0
+      chunksBuf = await getArrayBufFromBlobs(part)
+      // 执行不同的 hash 计算策略
+      return getChunksHashMultiple(strategy, chunksBuf, chunksBlob.length, borderCount, workerSvc)
+    })
+
+    for (const task of tasks) {
+      const result = await task()
+      chunksHash.push(...result)
+    }
+    chunksBuf.length = 0
+    isCloseWorkerImmediately && workerSvc.terminate()
+  }
+
+  chunksBlob.length === 1 ? await singleChunkProcessor() : await multipleChunksProcessor()
+  const fileHash = await getRootHashByChunks(chunksHash)
+
+  return {
+    chunksBlob,
+    chunksHash,
+    fileHash,
+  }
+}
+
+export async function processFileInNode(
+  filePath: string,
+  config: Required<Config>,
+  workerSvc: WorkerService,
+) {
+  const { chunkSize, strategy, workerCount, isCloseWorkerImmediately, borderCount } = config
+
+  // 文件分片
+  const { sliceLocation, endLocation } = await getFileSliceLocations(filePath, chunkSize)
+  let chunksHash: string[] = []
+
+  const singleChunkProcessor = async () => {
+    const arrayBuffer = await readFileAsArrayBuffer(filePath, 0, endLocation)
+    chunksHash = await getChunksHashSingle(strategy, arrayBuffer)
+  }
+
+  const multipleChunksProcessor = async () => {
+    let chunksBuf: ArrayBuffer[] = []
+    // 分组后的起始分割位置
+    const sliceLocationPart = getArrParts<[number, number]>(sliceLocation, workerCount)
+    const tasks = sliceLocationPart.map((partArr) => async () => {
+      // 手动释放上一次用于计算 Hash 的 ArrayBuffer
+      chunksBuf.length = 0
+      chunksBuf = await Promise.all(
+        partArr.map((part) => readFileAsArrayBuffer(filePath, part[0], part[1])),
+      )
+      // 执行不同的 hash 计算策略
+      return getChunksHashMultiple(
+        strategy,
+        chunksBuf,
+        sliceLocation.length,
+        borderCount,
+        workerSvc,
+      )
+    })
+
+    for (const task of tasks) {
+      const result = await task()
+      chunksHash.push(...result)
+    }
+    chunksBuf.length = 0
+    isCloseWorkerImmediately && workerSvc!.terminate()
+  }
+
+  sliceLocation.length === 1 ? await singleChunkProcessor() : await multipleChunksProcessor()
+  const fileHash = await getRootHashByChunks(chunksHash)
+
+  return {
+    chunksHash,
+    fileHash,
+  }
 }
