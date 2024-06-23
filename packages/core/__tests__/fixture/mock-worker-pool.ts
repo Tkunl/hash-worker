@@ -1,6 +1,6 @@
 import { WorkerPool } from '../../src/entity'
-import { MockWorkerWrapper } from './mock_worker_wrapper'
-import { MockMiniSubject } from './mock_mini_subject'
+import { MockMiniSubject } from './mock-mini-subject'
+import { MockWorkerWrapper } from './mock-worker-wrapper'
 
 export class MockWorkerPool extends WorkerPool {
   constructor(maxWorkers = 4) {

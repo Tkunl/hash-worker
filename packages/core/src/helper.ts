@@ -55,6 +55,8 @@ export function normalizeParam(param: HashChksParam) {
       file: param.file,
     }
   }
+
+  throw new Error('Unsupported environment')
 }
 
 /**
@@ -93,5 +95,5 @@ export async function getChunksHashMultiple(
         : workerSvc.getCRC32ForFiles(arrayBuffers),
   }
 
-  return processor[strategy]
+  return processor[strategy]()
 }

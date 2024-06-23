@@ -1,4 +1,5 @@
 import { getArrParts, getFileSliceLocations, readFileAsArrayBuffer } from '../../src/utils'
+import fs from 'fs/promises'
 import path from 'path'
 import { describe } from 'node:test'
 
@@ -55,24 +56,24 @@ test('getArrParts should handle size equal to array length', () => {
 describe('getFileSliceLocations function slices file as expected', async () => {
   let sliceLocation: [number, number][]
   let endLocation: number
+  const filePath = path.join(__dirname, './../fixture/mock-file.txt')
+
+  // 基于你的测试文件和 baseSize 计算出预期的分片
+  let expectedEndLocation: number
 
   // 在所有测试运行之前，执行一次异步操作。
   beforeAll(async () => {
     const baseSize = 1
-    const result = await getFileSliceLocations(
-      path.join(__dirname, './../fixture/mockFile.txt'),
-      baseSize,
-    )
+    const result = await getFileSliceLocations(filePath, baseSize)
+    const stats = await fs.stat(filePath)
 
     sliceLocation = result.sliceLocation
     endLocation = result.endLocation
+    expectedEndLocation = stats.size
   })
 
-  // 假设你知道fileContent的大小，可以根据它计算期望的sliceLocation值
+  // 假设你知道 fileContent 的大小，可以根据它计算期望的 sliceLocation 值
   const expectedSliceLocation = [[0, 1048575]]
-
-  // 基于你的测试文件和baseSize计算出预期的分片
-  const expectedEndLocation = 180
 
   it('sliceLocation should match expected value.', () => {
     expect(sliceLocation).toEqual(expectedSliceLocation)
@@ -84,18 +85,21 @@ describe('getFileSliceLocations function slices file as expected', async () => {
 })
 
 describe('readFileAsArrayBuffer reads specified range of file into ArrayBuffer', () => {
-  const filePath = path.join(__dirname, './../fixture/mockFile.txt')
+  const filePath = path.join(__dirname, './../fixture/mock-file.txt')
   const start = 0
-  const end = 180
+  let end: number
   let arrayBuffer: ArrayBuffer
-  const expectedLength = end - start
+  let expectedLength: number
 
   beforeAll(async () => {
     arrayBuffer = await readFileAsArrayBuffer(filePath, start, end)
+    const stats = await fs.stat(filePath)
+    end = stats.size
+    expectedLength = end - start
   })
 
   // ArrayBuffer 的 byteLength 应该与请求的字节长度一致
-  it(`ArrayBuffer should be ${expectedLength} bytes long`, () => {
+  it(`ArrayBuffer should be expectedLength bytes long`, () => {
     expect(arrayBuffer.byteLength).toBe(expectedLength)
   })
 })

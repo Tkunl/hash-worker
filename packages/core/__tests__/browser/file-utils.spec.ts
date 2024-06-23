@@ -1,5 +1,7 @@
-import { getArrayBufFromBlobs, sliceFile } from '../../src/utils'
-import { MockBlob } from '../fixture/mock_blob'
+import { getArrayBufFromBlobs, getFileMetadata, sliceFile } from '../../src/utils'
+import path from 'path'
+import fs from 'fs/promises'
+import { MockBlob } from '../fixture/mock-blob'
 
 // 在测试文件的顶部，模拟 Blob.prototype.arrayBuffer
 function mockArrayBuffer(): void {
@@ -54,5 +56,30 @@ describe('getArrayBufFromBlobs', () => {
     expect(result[1]).toBeInstanceOf(ArrayBuffer)
     expect(result[0].byteLength).toEqual(10)
     expect(result[1].byteLength).toEqual(20)
+  })
+})
+
+describe('getFileMetadata', () => {
+  it('should correctly return file metadata in browser env', async () => {
+    const fileName = 'test.pdf'
+    // 创建一个模拟的 File 对象
+    const file = new File([new ArrayBuffer(5 * 1024 * 1024)], fileName, {
+      type: 'application/pdf',
+    }) // 创建一个 5MB 的文件
+
+    const fileInfo = await getFileMetadata(file)
+    expect(fileInfo.name).toBe(fileName)
+    expect(fileInfo.type).toBe('.pdf')
+  })
+
+  it('should correctly return file metadata in node env', async () => {
+    const filePath = path.join(__dirname, './../fixture/mock-file.txt')
+
+    const fileInfo = await getFileMetadata(undefined, filePath)
+    const stats = await fs.stat(filePath)
+
+    expect(fileInfo.name).toBe('mock-file.txt')
+    expect(fileInfo.size).toBe(stats.size / 1024)
+    expect(fileInfo.type).toBe('.txt')
   })
 })
