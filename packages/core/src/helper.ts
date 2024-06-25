@@ -111,6 +111,8 @@ export async function processFileInBrowser(
   file: File,
   config: Required<Config>,
   workerSvc: WorkerService,
+  _getChunksHashSingle = getChunksHashSingle,
+  _getChunksHashMultiple = getChunksHashMultiple,
 ) {
   const { chunkSize, strategy, workerCount, isCloseWorkerImmediately, borderCount } = config
 
@@ -120,7 +122,7 @@ export async function processFileInBrowser(
 
   const singleChunkProcessor = async () => {
     const arrayBuffer = await chunksBlob[0].arrayBuffer()
-    chunksHash = await getChunksHashSingle(strategy, arrayBuffer)
+    chunksHash = await _getChunksHashSingle(strategy, arrayBuffer)
   }
 
   const multipleChunksProcessor = async () => {
@@ -132,14 +134,14 @@ export async function processFileInBrowser(
       chunksBuf.length = 0
       chunksBuf = await getArrayBufFromBlobs(part)
       // 执行不同的 hash 计算策略
-      return getChunksHashMultiple(strategy, chunksBuf, chunksBlob.length, borderCount, workerSvc)
+      return _getChunksHashMultiple(strategy, chunksBuf, chunksBlob.length, borderCount, workerSvc)
     })
 
     for (const task of tasks) {
       const result = await task()
       chunksHash.push(...result)
     }
-    chunksBuf.length = 0
+    chunksBuf && (chunksBuf.length = 0)
     isCloseWorkerImmediately && workerSvc.terminate()
   }
 
@@ -157,6 +159,8 @@ export async function processFileInNode(
   filePath: string,
   config: Required<Config>,
   workerSvc: WorkerService,
+  _getChunksHashSingle = getChunksHashSingle,
+  _getChunksHashMultiple = getChunksHashMultiple,
 ) {
   const { chunkSize, strategy, workerCount, isCloseWorkerImmediately, borderCount } = config
 
@@ -166,7 +170,7 @@ export async function processFileInNode(
 
   const singleChunkProcessor = async () => {
     const arrayBuffer = await readFileAsArrayBuffer(filePath, 0, endLocation)
-    chunksHash = await getChunksHashSingle(strategy, arrayBuffer)
+    chunksHash = await _getChunksHashSingle(strategy, arrayBuffer)
   }
 
   const multipleChunksProcessor = async () => {
@@ -180,7 +184,7 @@ export async function processFileInNode(
         partArr.map((part) => readFileAsArrayBuffer(filePath, part[0], part[1])),
       )
       // 执行不同的 hash 计算策略
-      return getChunksHashMultiple(
+      return _getChunksHashMultiple(
         strategy,
         chunksBuf,
         sliceLocation.length,

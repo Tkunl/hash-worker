@@ -27,7 +27,7 @@
   "scripts": {
     "dev": "rollup --config rollup.config.mjs --configPlugin swc3 --watch",
     "build": "pnpm lint && pnpm rm:dist && rollup --config rollup.config.mjs --configPlugin swc3",
-    "test": "pnpm lint && jest --coverage",
+    "test": "jest --coverage",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "rm:dist": "rimraf ./dist"
   },
