@@ -105,7 +105,7 @@ HashChksRes is the returned result after calculating the hash value.
 | lastModified | number | Timestamp of the last modification of the file  |
 | type         | string | file extension                                  |
 
-### Benchmark
+### Benchmark (MD5)
 
 | Wroker Count | Speed     |
 |--------------|-----------|

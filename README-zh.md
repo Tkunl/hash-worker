@@ -103,7 +103,7 @@ HashChksRes 是计算哈希值之后的返回结果。
 | lastModified | number | 文件最后一次修改的时间戳 |
 | type         | string | 文件后缀名             |
 
-### Benchmark
+### Benchmark (MD5)
 
 | Wroker Count | Speed     |
 |--------------|-----------|
@@ -112,7 +112,7 @@ HashChksRes 是计算哈希值之后的返回结果。
 | 8            | 851 MB/s  |
 | 12           | 1011 MB/s |
 
-* 这些测试是在 `Chrome v126` on a Zen3 desktop CPU
+* 这些测试是在 `Chrome v126` 和 Zen3 desktop CPU 下的
 
 ### LICENSE
 
