@@ -105,12 +105,12 @@ HashChksRes 是计算哈希值之后的返回结果。
 
 ### Benchmark
 
-| Wroker Count | Speed    |
-| ------------ | -------- |
-| 1            | 234 MB/s |
-| 4            | 477 MB/s |
-| 8            | 670 MB/s |
-| 12           | 720 MB/s |
+| Wroker Count | Speed     |
+|--------------|-----------|
+| 1            | 234 MB/s  |
+| 4            | 610 MB/s  |
+| 8            | 851 MB/s  |
+| 12           | 1011 MB/s |
 
 * 这些测试是在 `Chrome v126` on a Zen3 desktop CPU
 
