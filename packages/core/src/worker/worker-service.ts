@@ -1,6 +1,7 @@
 import { WorkerPoolForMd5 } from './worker-pool-for-md5'
 import { WorkerPoolForCrc32 } from './worker-pool-for-crc32'
 
+// TODO 考虑做成通用的 Pool 管理
 export class WorkerService {
   MAX_WORKERS
 
