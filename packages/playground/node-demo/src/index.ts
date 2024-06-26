@@ -3,7 +3,7 @@ import { getFileHashChunks, HashChksParam } from 'hash-worker'
 const param: HashChksParam = {
   filePath: 'D:/TestVideo.mp4',
   config: {
-    workerCount: 12
+    workerCount: 1
   }
 }
 
@@ -11,8 +11,10 @@ const beforeDate = Date.now()
 function main() {
   getFileHashChunks(param).then((res: any) => {
     const afterDate = Date.now()
-    console.log(res)
-    console.log(afterDate - beforeDate + 'ms')
+    const overTime = afterDate - beforeDate
+    // console.log(res)
+    console.log(overTime + 'ms')
+    console.log(696 / (overTime / 1000) + 'MB/s')
   })
 }
 

@@ -8,6 +8,7 @@
     "play": "pnpm rm:dist && pnpm build && node --trace-warnings dist/index.js"
   },
   "dependencies": {
+    "hash-wasm": "^4.11.0",
     "hash-worker": "workspace:*"
   }
 }

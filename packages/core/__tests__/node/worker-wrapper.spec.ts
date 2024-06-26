@@ -1,6 +1,5 @@
-import { WorkerMessage, WorkerWrapper } from '../../src/entity'
+import { WorkerWrapper } from '../../src/entity'
 import { Worker as NodeWorker } from 'worker_threads'
-import { WorkerLabelsEnum } from '../../src/enum'
 
 // 模拟 Node.js 的 'worker_threads' 模块
 jest.mock('worker_threads', () => {
@@ -9,15 +8,9 @@ jest.mock('worker_threads', () => {
   const mockTerminate = jest.fn()
   const mockOnMessage = jest.fn().mockImplementation((event, handler) => {
     if (event === 'message') {
-      setTimeout(
-        () =>
-          handler(
-            new WorkerMessage(WorkerLabelsEnum.DONE, {
-              result: 'hash-string',
-            }),
-          ),
-        0,
-      )
+      setTimeout(() => {
+        handler({ result: 'hash-string', chunk: new ArrayBuffer(1) })
+      }, 0)
     }
   })
 
@@ -37,9 +30,9 @@ describe('WorkerWrapper', () => {
 
     const worker = new NodeWorkerMock()
     const workerWrapper = new WorkerWrapper(worker)
-    const promise = workerWrapper.run(new ArrayBuffer(1), [new ArrayBuffer(5)], 0)
+    const res = await workerWrapper.run(new ArrayBuffer(1), [new ArrayBuffer(5)], 0)
 
-    await expect(promise).resolves.toBe('hash-string')
+    expect(res).toBe('hash-string')
     expect(worker.terminate).toHaveBeenCalledTimes(0) // 根据需要测试 terminate 被调用的次数
   })
 })

@@ -12,6 +12,9 @@ function App() {
   function handleGetHash() {
     const param: HashChksParam = {
       file: file!,
+      config: {
+        workerCount: 12,
+      },
     }
 
     getFileHashChunks(param).then((data: HashChksRes) => {

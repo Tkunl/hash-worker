@@ -1,3 +1,5 @@
+import { Strategy } from '../../src/interface'
+
 jest.mock('hash-wasm', () => ({
   crc32: jest.fn(() => Promise.resolve('crc32hash')),
   md5: jest.fn(() => Promise.resolve('md5hash')),
@@ -18,7 +20,6 @@ jest.mock('../../src/worker/worker-service', () => {
   }
 })
 
-import { Strategy } from '../../src/enum'
 import { getChunksHashMultiple, getChunksHashSingle, normalizeParam } from '../../src/helper'
 import * as is from '../../src/utils/is'
 import { WorkerService } from '../../src/worker/worker-service'

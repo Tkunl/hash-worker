@@ -1,6 +1,5 @@
-import { Strategy } from '../../src/enum'
 import * as helper from '../../src/helper'
-import { Config } from '../../src/interface'
+import { Config, Strategy } from '../../src/interface'
 import { getFileSliceLocations, readFileAsArrayBuffer, sliceFile } from '../../src/utils'
 import { WorkerService } from '../../src/worker/worker-service'
 import { MockBlob } from '../fixture/mock-blob'

@@ -9,6 +9,8 @@ Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
 
 Both browser `environments` and `Node.js` environments are now supported.
 
+Unit testing using Jest achieved 97% line coverage.
+
 > [!WARNING]
 > The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes.
 Note that this is not directly equivalent to a hash of the file itself.
@@ -26,7 +28,7 @@ $ npm install hash-worker
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
 
-function handleGetHash() {
+function handleGetHash(file: File) {
   const param: HashChksParam = {
     file: file,
     config: {
@@ -102,6 +104,17 @@ HashChksRes is the returned result after calculating the hash value.
 | size         | number | File size in KB                                 |
 | lastModified | number | Timestamp of the last modification of the file  |
 | type         | string | file extension                                  |
+
+### Benchmark
+
+| Wroker Count | Speed    |
+| ------------ | -------- |
+| 1            | 234 MB/s |
+| 4            | 477 MB/s |
+| 8            | 670 MB/s |
+| 12           | 720 MB/s |
+
+* These measurements were made with `Chrome v126` on a Zen3 desktop CPU
 
 ### LICENSE
 

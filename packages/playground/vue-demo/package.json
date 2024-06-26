@@ -6,8 +6,9 @@
     "play": "vite --port 3000"
   },
   "dependencies": {
-    "vue": "^3.4.21",
-    "hash-worker": "workspace:*"
+    "hash-wasm": "^4.11.0",
+    "hash-worker": "workspace:*",
+    "vue": "^3.4.21"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",

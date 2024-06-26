@@ -1,7 +1,6 @@
 import { crc32, md5 } from 'hash-wasm'
-import { Strategy } from './enum'
 import { WorkerService } from './worker/worker-service'
-import { Config, HashChksParam } from './interface'
+import { Config, HashChksParam, Strategy } from './interface'
 import {
   getArrayBufFromBlobs,
   getArrParts,
