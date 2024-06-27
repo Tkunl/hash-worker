@@ -7,7 +7,7 @@ export abstract class WorkerPool {
   curRunningCount = new MiniSubject(0)
   results: any[] = []
 
-  protected constructor(maxWorkers = navigator.hardwareConcurrency || 4) {
+  protected constructor(maxWorkers: number) {
     this.maxWorkerCount = maxWorkers
   }
 

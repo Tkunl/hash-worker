@@ -3,10 +3,9 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "play": "vite --port 3000"
+    "play": "vite --port 8888"
   },
   "dependencies": {
-    "hash-wasm": "^4.11.0",
     "hash-worker": "workspace:*",
     "vue": "^3.4.21"
   },

@@ -5,10 +5,10 @@
   "scripts": {
     "rm:dist": "rimraf ./dist",
     "build": "tsc",
-    "play": "pnpm rm:dist && pnpm build && node --trace-warnings dist/index.js"
+    "play": "pnpm rm:dist && pnpm build && node --trace-warnings dist/index.js",
+    "benchmark": "pnpm rm:dist && pnpm build && node dist/benchmark.js"
   },
   "dependencies": {
-    "hash-wasm": "^4.11.0",
     "hash-worker": "workspace:*"
   }
 }

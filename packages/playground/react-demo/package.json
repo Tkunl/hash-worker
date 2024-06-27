@@ -3,7 +3,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "play": "vite --port 3001"
+    "play": "vite --port 8889"
   },
   "dependencies": {
     "react": "^18.2.0",
