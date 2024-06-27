@@ -2,7 +2,6 @@ import { WorkerPool } from '../entity'
 import { WorkerWrapper } from '../entity'
 import { isBrowser, isNode } from '../utils'
 
-// TODO 考虑将两个 Worker Pool 合并
 export class WorkerPoolForMd5 extends WorkerPool {
   constructor(maxWorkers: number) {
     super(maxWorkers)
