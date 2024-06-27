@@ -1,9 +1,11 @@
-import { getFileHashChunks, HashChksParam } from 'hash-worker'
+import { getFileHashChunks, HashChksParam, Strategy } from 'hash-worker'
 
 const param: HashChksParam = {
-  filePath: 'D:/TestVideo.mp4',
+  // filePath: 'C:/MyFiles/Programs/WinTop.exe',
+  filePath: 'C:/MyFiles/Programs/chrome-win.zip',
   config: {
-    workerCount: 1
+    strategy: Strategy.crc32,
+    workerCount: 8
   }
 }
 
