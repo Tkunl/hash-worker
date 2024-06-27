@@ -41,6 +41,7 @@ describe('processFileInBrowser', () => {
     workerCount: 6,
     isCloseWorkerImmediately: true,
     borderCount: 2,
+    isShowLog: false,
   }
   const workerSvc = new WorkerService(1)
 
@@ -95,6 +96,7 @@ describe('processFileInNode function', () => {
     workerCount: 6,
     isCloseWorkerImmediately: true,
     borderCount: 2,
+    isShowLog: false,
   }
 
   const workerSvc = new WorkerService(1)

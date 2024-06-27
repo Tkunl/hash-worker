@@ -26,7 +26,7 @@ export function normalizeParam(param: HashChksParam) {
     throw new Error('Unsupported environment')
   })()
 
-  const { chunkSize, workerCount, strategy, borderCount, isCloseWorkerImmediately } =
+  const { chunkSize, workerCount, strategy, borderCount, isCloseWorkerImmediately, isShowLog } =
     param.config ?? {}
 
   const config = {
@@ -40,6 +40,8 @@ export function normalizeParam(param: HashChksParam) {
     borderCount: borderCount ?? BORDER_COUNT,
     // 默认计算 hash 后立即关闭 worker
     isCloseWorkerImmediately: isCloseWorkerImmediately ?? true,
+    // 是否显示速度 log
+    isShowLog: isShowLog ?? false,
   }
 
   if (env === 'node') {
@@ -113,7 +115,7 @@ export async function processFileInBrowser(
   _getChunksHashSingle = getChunksHashSingle,
   _getChunksHashMultiple = getChunksHashMultiple,
 ) {
-  const { chunkSize, strategy, workerCount, isCloseWorkerImmediately, borderCount } = config
+  const { chunkSize, strategy, workerCount, borderCount } = config
 
   // 文件分片
   const chunksBlob = sliceFile(file, chunkSize)
@@ -141,7 +143,6 @@ export async function processFileInBrowser(
       chunksHash.push(...result)
     }
     chunksBuf && (chunksBuf.length = 0)
-    isCloseWorkerImmediately && workerSvc.terminate()
   }
 
   chunksBlob.length === 1 ? await singleChunkProcessor() : await multipleChunksProcessor()
@@ -161,7 +162,7 @@ export async function processFileInNode(
   _getChunksHashSingle = getChunksHashSingle,
   _getChunksHashMultiple = getChunksHashMultiple,
 ) {
-  const { chunkSize, strategy, workerCount, isCloseWorkerImmediately, borderCount } = config
+  const { chunkSize, strategy, workerCount, borderCount } = config
 
   // 文件分片
   const { sliceLocation, endLocation } = await getFileSliceLocations(filePath, chunkSize)
@@ -197,7 +198,6 @@ export async function processFileInNode(
       chunksHash.push(...result)
     }
     chunksBuf.length = 0
-    isCloseWorkerImmediately && workerSvc!.terminate()
   }
 
   sliceLocation.length === 1 ? await singleChunkProcessor() : await multipleChunksProcessor()

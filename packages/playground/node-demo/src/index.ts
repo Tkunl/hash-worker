@@ -1,20 +1,18 @@
-import { getFileHashChunks, HashChksParam } from 'hash-worker'
+import { getFileHashChunks, HashChksParam, Strategy } from 'hash-worker'
 
 const param: HashChksParam = {
-  filePath: 'D:/TestVideo.mp4',
+  filePath: 'filePath...',
   config: {
-    workerCount: 1
+    strategy: Strategy.md5,
+    workerCount: 8,
+    isShowLog: true,
   }
 }
 
 const beforeDate = Date.now()
 function main() {
   getFileHashChunks(param).then((res: any) => {
-    const afterDate = Date.now()
-    const overTime = afterDate - beforeDate
-    // console.log(res)
-    console.log(overTime + 'ms')
-    console.log(696 / (overTime / 1000) + 'MB/s')
+    console.log(res)
   })
 }
 
