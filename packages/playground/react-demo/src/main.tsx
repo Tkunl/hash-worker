@@ -13,7 +13,7 @@ function App() {
     const param: HashChksParam = {
       file: file!,
       config: {
-        workerCount: 12,
+        workerCount: 8,
       },
     }
 

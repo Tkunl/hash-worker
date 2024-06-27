@@ -1,11 +1,11 @@
 import { getFileHashChunks, HashChksParam, Strategy } from 'hash-worker'
 
 const param: HashChksParam = {
-  // filePath: 'C:/MyFiles/Programs/WinTop.exe',
-  filePath: 'C:/MyFiles/Programs/chrome-win.zip',
+  filePath: 'filePath...',
   config: {
-    strategy: Strategy.crc32,
-    workerCount: 8
+    strategy: Strategy.md5,
+    workerCount: 8,
+    isShowLog: true,
   }
 }
 
