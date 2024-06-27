@@ -1,6 +1,6 @@
 {
   "name": "hash-worker",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "hash-worker is a tool for quickly calculating file's hash",
   "author": "https://github.com/Tkunl",
   "repository": "https://github.com/Tkunl/hash-worker",
@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "dev": "rollup --config rollup.config.mjs --configPlugin swc3 --watch",
-    "build": "pnpm lint && pnpm rm:dist && rollup --config rollup.config.mjs --configPlugin swc3",
+    "build": "pnpm lint && pnpm rm:dist && rollup --config rollup.config.ts --configPlugin swc3",
     "test": "jest --coverage",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "rm:dist": "rimraf ./dist"
@@ -38,5 +38,8 @@
   "license": "MIT",
   "dependencies": {
     "hash-wasm": "^4.11.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2"
   }
 }

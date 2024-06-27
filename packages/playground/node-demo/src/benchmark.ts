@@ -1,4 +1,4 @@
-import { createLargeFile, deleteFile, sleep } from './helper.js'
+import { createLargeFile, deleteFile, sleep } from './helper'
 import { getFileHashChunks, HashChksParam, Strategy } from 'hash-worker'
 
 const filePath = './data.txt'

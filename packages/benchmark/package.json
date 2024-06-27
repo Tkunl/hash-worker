@@ -1,0 +1,12 @@
+{
+  "name": "hash-worker-benchmark",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "rm:dist": "rimraf ./dist",
+    "build": "pnpm rm:dist && tsup --config tsup.config.ts"
+  },
+  "dependencies": {
+    "hash-worker": "workspace:*"
+  }
+}

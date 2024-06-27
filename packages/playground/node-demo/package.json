@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "rm:dist": "rimraf ./dist",
-    "build": "tsc",
+    "build": "pnpm rm:dist && tsup --config tsup.config.ts",
     "play": "pnpm rm:dist && pnpm build && node --trace-warnings dist/index.js",
     "benchmark": "pnpm rm:dist && pnpm build && node dist/benchmark.js"
   },
