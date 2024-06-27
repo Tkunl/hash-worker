@@ -9,6 +9,8 @@ Hash-worker 支持两种哈希计算算法：MD5 和 CRC32。
 
 现在同时支持浏览器环境和 Node.js 环境。
 
+采用 Jest 进行单元测试，达到了 97% 的行覆盖率。
+
 > [!WARNING]
 > Hash-worker 计算出的 merkleHash 是基于文件块哈希值构建的 MerkleTree 的根哈希值。请注意，这并不直接等同于文件本身的哈希值。
 
@@ -25,7 +27,7 @@ $ npm install hash-worker
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
 
-function handleGetHash() {
+function handleGetHash(file: File) {
   const param: HashChksParam = {
     file: file,
     config: {
@@ -100,6 +102,17 @@ HashChksRes 是计算哈希值之后的返回结果。
 | size         | number | 文件大小，单位：KB       |
 | lastModified | number | 文件最后一次修改的时间戳 |
 | type         | string | 文件后缀名             |
+
+### Benchmark
+
+| Wroker Count | Speed     |
+|--------------|-----------|
+| 1            | 234 MB/s  |
+| 4            | 610 MB/s  |
+| 8            | 851 MB/s  |
+| 12           | 1011 MB/s |
+
+* 这些测试是在 `Chrome v126` on a Zen3 desktop CPU
 
 ### LICENSE
 

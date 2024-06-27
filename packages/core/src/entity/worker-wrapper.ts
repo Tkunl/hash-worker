@@ -1,7 +1,6 @@
-import { WorkerMessage, WorkerRep } from './worker-message'
-import { WorkerLabelsEnum } from '../enum'
 import { Worker as NodeWorker } from 'worker_threads'
 import { isBrowser, isNode } from '../utils'
+import { WorkerRes } from '../interface/worker-res'
 
 type Resolve<T = any> = (value: T | PromiseLike<T>) => void
 type Reject = (reason?: any) => void
@@ -24,19 +23,19 @@ export class WorkerWrapper {
     this.status = StatusEnum.RUNNING
 
     const onMessage = (rs: Resolve) => (dataFromWorker: unknown) => {
-      let data: WorkerMessage<{ result: string; chunk: ArrayBuffer }>
+      let data: WorkerRes<string>
 
       if (isBrowser()) {
-        data = (dataFromWorker as WorkerRep).data
+        data = (dataFromWorker as { data: WorkerRes }).data
       }
       if (isNode()) {
-        data = dataFromWorker as WorkerMessage<{ result: string; chunk: ArrayBuffer }>
+        data = dataFromWorker as WorkerRes
       }
-      const { label, content } = data!
-      if (label === WorkerLabelsEnum.DONE && content) {
-        params[index] = content.chunk
+      const { result, chunk } = data!
+      if (result && chunk) {
+        params[index] = chunk
         this.status = StatusEnum.WAITING
-        rs(content.result as T)
+        rs(result as T)
       }
     }
 

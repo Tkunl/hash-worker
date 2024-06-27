@@ -1,5 +1,5 @@
 import { FileMetaInfo } from './file-meta-info'
-import { Strategy } from '../enum'
+import { Strategy } from './strategy'
 
 export interface Config {
   chunkSize?: number // 分片大小 MB
