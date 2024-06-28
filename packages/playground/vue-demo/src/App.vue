@@ -1,12 +1,13 @@
 <script lang="ts" setup>
 import { useFileHashInfo } from './hooks/useFileHashInfo'
-import { useBenchmark } from './hooks/useBenchmark'
-import { Strategy } from 'hash-worker'
+import { benchmark, BenchmarkOptions } from 'hash-worker-benchmark'
 
 const { handleInputChange, handleGetHash, handleDestroyWorkerPool } = useFileHashInfo()
 
 function handleDoBenchmark() {
-  useBenchmark('data.txt', 500, Strategy.md5)
+  const options: BenchmarkOptions = {}
+  benchmark(options).then(() => {
+  })
 }
 
 </script>

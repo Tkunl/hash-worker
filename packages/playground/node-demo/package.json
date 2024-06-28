@@ -1,14 +1,16 @@
 {
   "name": "node-demo",
+  "private": true,
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "rm:dist": "rimraf ./dist",
-    "build": "pnpm rm:dist && tsup --config tsup.config.ts",
     "play": "pnpm rm:dist && pnpm build && node --trace-warnings dist/index.js",
-    "benchmark": "pnpm rm:dist && pnpm build && node dist/benchmark.js"
+    "benchmark": "pnpm rm:dist && pnpm build && node dist/benchmark.js",
+    "build": "pnpm rm:dist && tsup --config tsup.config.ts",
+    "rm:dist": "rimraf ./dist"
   },
   "dependencies": {
-    "hash-worker": "workspace:*"
+    "hash-worker": "workspace:*",
+    "hash-worker-benchmark": "workspace:*"
   }
 }

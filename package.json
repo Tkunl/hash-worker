@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "pnpm --filter=./packages/core run dev",
     "build": "pnpm --filter=./packages/core run build",
+    "build:benchmark": "pnpm --filter=./packages/benchmark run build",
     "test": "pnpm --filter=./packages/core run test",
     "lint": "pnpm --filter=./packages/core run lint",
     "play-vue": "pnpm run build && pnpm --filter=./packages/playground/vue-demo run play",
@@ -24,6 +25,7 @@
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "browserslist": "^4.23.0",
+    "dts-bundle-generator": "^9.5.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",

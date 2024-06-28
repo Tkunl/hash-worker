@@ -1,5 +1,3 @@
-import { randomBytes } from 'crypto'
-import { createWriteStream, unlinkSync } from 'fs'
 import { BenchmarkOptions } from './types'
 import { Strategy } from 'hash-worker'
 
@@ -29,11 +27,11 @@ export async function sleep(ms: number) {
   await new Promise<void>((rs) => setTimeout(() => rs(), ms))
 }
 
-export function generateRandomData(size: number): string {
-  return randomBytes(size).toString('hex')
-}
-
 export async function createMockFileInLocal(filePath: string, sizeInMB: number): Promise<void> {
+  const { createWriteStream } = await import('fs')
+  const { randomBytes } = await import('crypto')
+  const generateRandomData = (size: number) => randomBytes(size).toString('hex')
+
   const stream = createWriteStream(filePath)
   const size = 1024 * 1024 * sizeInMB // 总大小转换为字节
   const chunkSize = 1024 * 512 // 每次写入512KB
@@ -66,7 +64,8 @@ export async function createMockFileInLocal(filePath: string, sizeInMB: number):
   })
 }
 
-export function deleteLocalFile(path: string) {
+export async function deleteLocalFile(path: string) {
+  const { unlinkSync } = await import('fs')
   unlinkSync(path)
 }
 
