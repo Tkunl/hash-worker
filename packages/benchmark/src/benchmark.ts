@@ -43,8 +43,17 @@ function buildParamsForNode(options: BenchmarkOptions): NormalizeOptions {
 }
 
 export async function benchmark(options: BenchmarkOptions = {}) {
-  const colorYellow = 'color: #FFB049;'
-  console.log('%cHash Worker Benchmark 🎯', colorYellow)
+  let chalk: any
+  let chalkYellow: any
+  if (isNode()) {
+    chalk = await import('chalk')
+    console.log('chalk', chalk)
+    console.log('chalk.yellow', chalk.yellow)
+    chalkYellow = chalk.yellow
+  }
+  const yellow = 'color: #FFB049;'
+  isBrowser() && console.log('%cHash Worker Benchmark 🎯', yellow)
+  isNode() && console.log(`${ chalkYellow('Hash Worker Benchmark') } 🎯`)
 
   let normalizeOptions: NormalizeOptions
   if (isBrowser()) {
@@ -68,16 +77,19 @@ export async function benchmark(options: BenchmarkOptions = {}) {
 
   const getAverageSpeed = (workerCount = 0) => {
     const averageSpeed = preSpeed.reduce((acc, cur) => acc + cur, 0) / preSpeed.length
-    console.log(`Average speed: %c${averageSpeed} Mb/s`, colorYellow)
+    isBrowser() && console.log(`Average speed: %c${ averageSpeed } Mb/s`, yellow)
+    isNode() && console.log(`Average speed: ${ chalkYellow(averageSpeed + 'Mb/s') }`)
     preWorkerCount = workerCount
     preSpeed.length = 0
   }
 
-  console.log(
-    `Running benchmark for %c${normalizeOptions.params[0].config?.strategy} %cstrategy 🚀`,
-    colorYellow,
+  isBrowser() && console.log(
+    `Running benchmark for %c${ normalizeOptions.params[0].config?.strategy } %cstrategy 🚀`,
+    yellow,
     '',
   )
+  isNode() && console.log(`Running benchmark for ${ chalkYellow(normalizeOptions.params[0].config?.strategy + 'strategy') } 🚀`)
+
   for (const param of params) {
     const workerCount = param.config!.workerCount!
     if (workerCount !== preWorkerCount) getAverageSpeed(workerCount)
@@ -86,13 +98,16 @@ export async function benchmark(options: BenchmarkOptions = {}) {
     const overTime = Date.now() - beforeDate
     const speed = sizeInMB / (overTime / 1000)
     if (workerCount === preWorkerCount) preSpeed.push(speed)
-    console.log(
-      `Get file hash in: %c${overTime} ms%c by using %c${workerCount} worker%c, speed: %c${speed} Mb/s`,
-      colorYellow, // 为 overTime 设置黄色
+    isBrowser() && console.log(
+      `Get file hash in: %c${ overTime } ms%c by using %c${ workerCount } worker%c, speed: %c${ speed } Mb/s`,
+      yellow, // 为 overTime 设置黄色
       '', // 重置为默认颜色
-      colorYellow, // 为 workerCount 设置黄色
+      yellow, // 为 workerCount 设置黄色
       '', // 重置为默认颜色
-      colorYellow, // 为 speed 设置黄色
+      yellow, // 为 speed 设置黄色
+    )
+    isNode() && console.log(
+      `Get file hash in: ${chalkYellow(overTime + ' ms')} by using ${chalkYellow(workerCount) + ' worker'}, speed: ${chalkYellow(speed + ' Mb/s')}`
     )
     await sleep(1000)
   }
@@ -103,7 +118,8 @@ export async function benchmark(options: BenchmarkOptions = {}) {
     await deleteLocalFile(filePath)
   }
 
-  console.log('%cDone 🎈', colorYellow)
+  isBrowser() && console.log('%cDone 🎈', yellow)
+  isNode() && console.log(chalkYellow('Done ') + '🎈')
 
   if (isBrowser()) {
     alert('Please check the console for benchmark information ~')

@@ -1,11 +1,15 @@
 ## Introduce
 
-**Hash-worker** is a library for fast calculation of file hashes.
-It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, which speeds up computation when processing file blocks.
+[中文文档](./README-zh.md)
+
+**Hash-worker** is a library for fast calculation of file hashes. 
+It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, which speeds up computation when processing file blocks. 
 
 Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
 
 Both browser `environments` and `Node.js` environments are now supported.
+
+Unit testing using Jest achieved 97% line coverage.
 
 > [!WARNING]
 > The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes.
@@ -24,7 +28,7 @@ $ npm install hash-worker
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
 
-function handleGetHash() {
+function handleGetHash(file: File) {
   const param: HashChksParam = {
     file: file,
     config: {
@@ -60,13 +64,13 @@ HashChksParam is used to configure the parameters needed to calculate the hash .
 
 **Config**
 
-| filed                    | type     | default        | description              |
-| ------------------------ | -------- | -------------- |--------------------------|
-| chunkSize                | number   | 10 (MB)        |                          |
-| workerCount              | number   | 8              | Number of workers turned on at the same time as the hash is calculated|
-| strategy                 | Strategy | Strategy.mixed | Hash computation strategy|
-| borderCount              | number   | 100            | The cutoff for the hash calculation rule in 'mixed' mode|
-| isCloseWorkerImmediately | boolean  | true           | Whether to destroy the worker thread immediately when the calculation is complete|
+| filed                    | type     | default        | description                                                  |
+| ------------------------ | -------- | -------------- | ------------------------------------------------------------ |
+| chunkSize                | number   | 10 (MB)        | Size of the file slice                                       |
+| workerCount              | number   | 8              | Number of workers turned on at the same time as the hash is calculated |
+| strategy                 | Strategy | Strategy.mixed | Hash computation strategy                                    |
+| borderCount              | number   | 100            | The cutoff for the hash calculation rule in 'mixed' mode     |
+| isCloseWorkerImmediately | boolean  | true           | Whether to destroy the worker thread immediately when the calculation is complete |
 
 ```ts
 // strategy.ts
@@ -100,6 +104,17 @@ HashChksRes is the returned result after calculating the hash value.
 | size         | number | File size in KB                                 |
 | lastModified | number | Timestamp of the last modification of the file  |
 | type         | string | file extension                                  |
+
+### Benchmark (MD5)
+
+| Wroker Count | Speed     |
+|--------------|-----------|
+| 1            | 234 MB/s  |
+| 4            | 610 MB/s  |
+| 8            | 851 MB/s  |
+| 12           | 1011 MB/s |
+
+* These measurements were made with `Chrome v126` on a Zen3 desktop CPU
 
 ### LICENSE
 
