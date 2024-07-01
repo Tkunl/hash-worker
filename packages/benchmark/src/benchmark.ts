@@ -1,4 +1,4 @@
-import { getFileHashChunks, isBrowser, isNode } from 'hash-worker'
+import { getFileHashChunks, isBrowser, isNode, Strategy } from 'hash-worker'
 import { BenchmarkOptions, NormalizeOptions } from './types'
 import {
   createMockFile,
@@ -44,21 +44,19 @@ function buildParamsForNode(options: BenchmarkOptions): NormalizeOptions {
 }
 
 export async function benchmark(options: BenchmarkOptions = {}) {
-  let chalk: ChalkInstance
-  let chalkYellow: ChalkInstance
-  if (isNode()) {
-    chalk = (await import('chalk')).default
-    chalkYellow = chalk.hex('#FFB049')
-  }
+  const isNodeEnv = isNode()
+  const isBrowserEnv = isBrowser()
   const yellow = 'color: #FFB049;'
-  isBrowser() && console.log('%cHash Worker Benchmark 🎯', yellow)
-  isNode() && console.log(`${chalkYellow!('Hash Worker Benchmark')} 🎯`)
+  let chalkYellow: ChalkInstance
 
+  await initChalk()
+
+  logInitialMsg()
   let normalizeOptions: NormalizeOptions
-  if (isBrowser()) {
+  if (isBrowserEnv) {
     console.log('Creating mock file ⏳')
     normalizeOptions = buildParamsForBrowser(options)
-  } else if (isNode()) {
+  } else if (isNodeEnv) {
     normalizeOptions = buildParamsForNode(options)
   } else {
     throw new Error('Unsupported environment')
@@ -66,7 +64,7 @@ export async function benchmark(options: BenchmarkOptions = {}) {
 
   const { sizeInMB, params } = normalizeOptions
 
-  if (isNode()) {
+  if (isNodeEnv) {
     console.log('Creating mock file ⏳')
     await createMockFileInLocal(filePath, sizeInMB)
   }
@@ -76,23 +74,12 @@ export async function benchmark(options: BenchmarkOptions = {}) {
 
   const getAverageSpeed = (workerCount = 0) => {
     const averageSpeed = preSpeed.reduce((acc, cur) => acc + cur, 0) / preSpeed.length
-    isBrowser() && console.log(`Average speed: %c${averageSpeed} Mb/s`, yellow)
-    isNode() && console.log(`Average speed: ${chalkYellow!(averageSpeed + 'Mb/s')}`)
-
+    logAvgSpeed(averageSpeed)
     preWorkerCount = workerCount
     preSpeed.length = 0
   }
 
-  isBrowser() &&
-    console.log(
-      `Running benchmark for %c${normalizeOptions.params[0].config?.strategy} %cstrategy 🚀`,
-      yellow,
-      '',
-    )
-  isNode() &&
-    console.log(
-      `Running benchmark for ${chalkYellow!(normalizeOptions.params[0].config?.strategy + ' strategy')} 🚀`,
-    )
+  logStrategy(normalizeOptions.params[0].config?.strategy)
 
   for (const param of params) {
     const workerCount = param.config!.workerCount!
@@ -102,32 +89,62 @@ export async function benchmark(options: BenchmarkOptions = {}) {
     const overTime = Date.now() - beforeDate
     const speed = sizeInMB / (overTime / 1000)
     if (workerCount === preWorkerCount) preSpeed.push(speed)
-    isBrowser() &&
+    logCurSpeed(overTime, workerCount, speed)
+    await sleep(1000)
+  }
+  getAverageSpeed(preWorkerCount)
+
+  if (isNodeEnv) {
+    console.log('Clearing temp file ⏳')
+    await deleteLocalFile(filePath)
+  }
+
+  logCompletion()
+
+  async function initChalk() {
+    if (isNodeEnv) {
+      const chalk = (await import('chalk')).default
+      chalkYellow = chalk.hex('#FFB049')
+    }
+  }
+
+  function logInitialMsg() {
+    isBrowserEnv && console.log('%cHash Worker Benchmark 🎯', yellow)
+    isNodeEnv && console.log(`${chalkYellow!('Hash Worker Benchmark')} 🎯`)
+  }
+
+  function logStrategy(strategy?: Strategy) {
+    isBrowserEnv && console.log(`Running benchmark for %c${strategy} %cstrategy 🚀`, yellow, '')
+    isNodeEnv && console.log(`Running benchmark for ${chalkYellow!(strategy + ' strategy')} 🚀`)
+  }
+
+  function logAvgSpeed(averageSpeed: number) {
+    isBrowserEnv && console.log(`Average speed: %c${averageSpeed.toFixed(2)} Mb/s`, yellow)
+    isNodeEnv && console.log(`Average speed: ${chalkYellow!(averageSpeed.toFixed(2) + 'Mb/s')}`)
+  }
+
+  function logCurSpeed(overTime: number, workerCount: number, speed: number) {
+    isBrowserEnv &&
       console.log(
-        `Get file hash in: %c${overTime} ms%c by using %c${workerCount} worker%c, speed: %c${speed} Mb/s`,
+        `Get file hash in: %c${overTime} ms%c by using %c${workerCount} worker%c, speed: %c${speed.toFixed(2)} Mb/s`,
         yellow, // 为 overTime 设置黄色
         '', // 重置为默认颜色
         yellow, // 为 workerCount 设置黄色
         '', // 重置为默认颜色
         yellow, // 为 speed 设置黄色
       )
-    isNode() &&
+    isNodeEnv &&
       console.log(
-        `Get file hash in: ${chalkYellow!(overTime + ' ms')} by using ${chalkYellow!(workerCount) + ' worker'}, speed: ${chalkYellow!(speed + ' Mb/s')}`,
+        `Get file hash in: ${chalkYellow!(overTime + ' ms')} by using ${chalkYellow!(workerCount) + ' worker'}, ` +
+          `speed: ${chalkYellow!(speed.toFixed(2) + ' Mb/s')}`,
       )
-    await sleep(1000)
-  }
-  getAverageSpeed(preWorkerCount)
-
-  if (isNode()) {
-    console.log('Clearing temp file ⏳')
-    await deleteLocalFile(filePath)
   }
 
-  isBrowser() && console.log('%cDone 🎈', yellow)
-  isNode() && console.log(chalkYellow!('Done ') + '🎈')
-
-  if (isBrowser()) {
-    alert('Please check the console for benchmark information ~')
+  function logCompletion() {
+    isBrowserEnv && console.log('%cDone 🎈', yellow)
+    isNodeEnv && console.log(chalkYellow!('Done ') + '🎈')
+    if (isBrowserEnv) {
+      alert('Please check the console for benchmark information ~')
+    }
   }
 }

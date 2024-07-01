@@ -1,3 +1,5 @@
+# Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker)
+
 ## Introduce
 
 [中文文档](./README-zh.md)

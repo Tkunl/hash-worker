@@ -41,6 +41,12 @@ importers:
       browserslist:
         specifier: ^4.23.0
         version: 4.23.0
+      chalk:
+        specifier: ^5.3.0
+        version: 5.3.0
+      dts-bundle-generator:
+        specifier: ^9.5.1
+        version: 9.5.1
       eslint:
         specifier: ^8.56.0
         version: 8.57.0
@@ -106,11 +112,23 @@ importers:
         specifier: ^10.9.2
         version: 10.9.2(@swc/core@1.5.24)(@types/node@20.14.2)(typescript@5.4.5)
 
+  packages/playground/benchmark:
+    dependencies:
+      hash-worker:
+        specifier: workspace:*
+        version: link:../../core
+      hash-worker-benchmark:
+        specifier: workspace:*
+        version: link:../../benchmark
+
   packages/playground/node-demo:
     dependencies:
       hash-worker:
         specifier: workspace:*
         version: link:../../core
+      hash-worker-benchmark:
+        specifier: workspace:*
+        version: link:../../benchmark
 
   packages/playground/react-demo:
     dependencies:
@@ -142,6 +160,9 @@ importers:
       hash-worker:
         specifier: workspace:*
         version: link:../../core
+      hash-worker-benchmark:
+        specifier: workspace:*
+        version: link:../../benchmark
       vue:
         specifier: ^3.4.21
         version: 3.4.27(typescript@5.4.5)
@@ -1332,6 +1353,10 @@ packages:
     resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
     engines: {node: '>=10'}
 
+  chalk@5.3.0:
+    resolution: {integrity: sha512-dLitG79d+GV1Nb/VYcCDFivJeK1hiukt9QjRNVOsUtTy1rR1YJsmpGGTZ3qJos+uw7WmWF4wUwBd9jxjocFC2w==}
+    engines: {node: ^12.17.0 || ^14.13 || >=16.0.0}
+
   char-regex@1.0.2:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
     engines: {node: '>=10'}
@@ -1469,6 +1494,11 @@ packages:
     resolution: {integrity: sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==}
     engines: {node: '>=12'}
     deprecated: Use your platform's native DOMException instead
+
+  dts-bundle-generator@9.5.1:
+    resolution: {integrity: sha512-DxpJOb2FNnEyOzMkG11sxO2dmxPjthoVWxfKqWYJ/bI/rT1rvTMktF5EKjAYrRZu6Z6t3NhOUZ0sZ5ZXevOfbA==}
+    engines: {node: '>=14.0.0'}
+    hasBin: true
 
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
@@ -4002,6 +4032,8 @@ snapshots:
       ansi-styles: 4.3.0
       supports-color: 7.2.0
 
+  chalk@5.3.0: {}
+
   char-regex@1.0.2: {}
 
   chokidar@3.6.0:
@@ -4122,6 +4154,11 @@ snapshots:
   domexception@4.0.0:
     dependencies:
       webidl-conversions: 7.0.0
+
+  dts-bundle-generator@9.5.1:
+    dependencies:
+      typescript: 5.4.5
+      yargs: 17.7.2
 
   eastasianwidth@0.2.0: {}
 
