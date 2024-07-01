@@ -1,8 +1,8 @@
 ## Introduce for benchmark
 
-It is used to test the hash calculation speed of the Hash worker under different threads.
+This project is used to test the hash calculation speed of Hash worker in different threads.
 
-Both `browser` environments and `node` environments are now supported.
+It supports both `browser` and `Node.js` environments.
 
 ### Usage
 
@@ -22,7 +22,7 @@ benchmark(options)
 | ------------------- | -------- | --------------------------------------- | -------------------------- |
 | sizeInMB            | number   | 500                                     | File size for testing (MB)    |
 | strategy            | Strategy | Strategy.md5                            | Hash computation strategy     |
-| workerCountTobeTest | number[] | [1, 1, 1, 4, 4, 4, 8, 8, 8, 12, 12, 12] | Each test is performed three times with 1, 4, 8, and 12 threads |
+| workerCountTobeTest | number[] | [1, 1, 1, 4, 4, 4, 8, 8, 8, 12, 12, 12] | Hashing performance was measured 3 times in each of the 1/4/8/12 threads |
 
 ```ts
 // strategy.ts

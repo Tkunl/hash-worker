@@ -1,8 +1,8 @@
 ## Introduce for benchmark
 
-用于测试 Hash worker 在不同线程下的 hash 计算速度
+该项目用于测试 Hash worker 在不同线程下的哈希计算速度
 
-同时支持浏览器环境和 Node.js 环境
+它同时支持浏览器环境和 Node.js 环境
 
 ### Usage
 
@@ -18,11 +18,11 @@ benchmark(options)
 
 **BenchmarkOptions**
 
-| filed               | type     | default                                 | description                |
-| ------------------- | -------- | --------------------------------------- | -------------------------- |
-| sizeInMB            | number   | 500                                     | 用于测试的文件大小 (MB)    |
-| strategy            | Strategy | Strategy.md5                            | hash 计算策略              |
-| workerCountTobeTest | number[] | [1, 1, 1, 4, 4, 4, 8, 8, 8, 12, 12, 12] | 1, 4, 8, 12 线程各测试三次 |
+| filed               | type     | default                                 | description         |
+| ------------------- | -------- | --------------------------------------- |---------------------|
+| sizeInMB            | number   | 500                                     | 用于测试的文件大小 (MB)      |
+| strategy            | Strategy | Strategy.md5                            | hash 计算策略           |
+| workerCountTobeTest | number[] | [1, 1, 1, 4, 4, 4, 8, 8, 8, 12, 12, 12] | 1/4/8/12 线程下各测试 3 次 |
 
 ```ts
 // strategy.ts

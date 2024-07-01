@@ -73,6 +73,7 @@ export async function benchmark(options: BenchmarkOptions = {}) {
   const preSpeed: number[] = []
 
   const getAverageSpeed = (workerCount = 0) => {
+    if (preSpeed.length === 0) return
     const averageSpeed = preSpeed.reduce((acc, cur) => acc + cur, 0) / preSpeed.length
     logAvgSpeed(averageSpeed)
     preWorkerCount = workerCount
