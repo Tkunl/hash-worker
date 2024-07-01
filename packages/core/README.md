@@ -1,6 +1,9 @@
-# Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker)
+## Hash Worker [![hash worker version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker)
 
-## Introduce
+<p align="center">
+<img src="https://socialify.git.ci/Tkunl/hash-worker/image?font=Inter&language=1&name=1&owner=1&pattern=Plus&theme=Auto" width="640" height="320" />
+</p>
+### Introduce
 
 [中文文档](./README-zh.md)
 
@@ -9,7 +12,7 @@ It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, w
 
 Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
 
-Both browser `environments` and `Node.js` environments are now supported.
+Both `browser` and `node.js` are supported.
 
 Unit testing using Jest achieved 97% line coverage.
 
@@ -17,7 +20,7 @@ Unit testing using Jest achieved 97% line coverage.
 > The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes.
 Note that this is not directly equivalent to a hash of the file itself.
 
-## Install
+### Install
 
 ```bash
 $ yarn add hash-worker
@@ -25,7 +28,7 @@ $ yarn add hash-worker
 $ npm install hash-worker
 ```
 
-## Usage
+### Usage
 
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
@@ -52,7 +55,26 @@ function handleDestroyWorkerPool() {
 }
 ```
 
-## Options
+**[WARNING]**
+
+If you are using `Vite` as a build tool and are experiencing dependency optimization issues with the hash-worker package, you can exclude the hash-worker package from dependency optimization in the `vite.config.js` file.
+
+Attention: Old version of `vite` may not emit errors.
+
+```js
+// vite.config.js
+import {defineConfig} from 'vite';
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  optimizeDeps: {
+    exclude: ['hash-worker'] // new added
+  }
+})
+```
+
+### Options
 
 **HashChksParam**
 
@@ -107,7 +129,7 @@ HashChksRes is the returned result after calculating the hash value.
 | lastModified | number | Timestamp of the last modification of the file  |
 | type         | string | file extension                                  |
 
-### Benchmark (MD5)
+### [Benchmark (MD5)](./packages/benchmark/README.md)
 
 | Wroker Count | Speed     |
 |--------------|-----------|
@@ -116,7 +138,7 @@ HashChksRes is the returned result after calculating the hash value.
 | 8            | 851 MB/s  |
 | 12           | 1011 MB/s |
 
-* These measurements were made with `Chrome v126` on a Zen3 desktop CPU
+* These measurements were made with `Chrome v126` on a `Zen3 Desktop` CPU
 
 ### LICENSE
 

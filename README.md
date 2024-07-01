@@ -55,6 +55,25 @@ function handleDestroyWorkerPool() {
 }
 ```
 
+**[WARNING]**
+
+If you are using `Vite` as a build tool and are experiencing dependency optimization issues with the hash-worker package, you can exclude the hash-worker package from dependency optimization in the `vite.config.js` file.
+
+Attention: Old version of `vite` may not emit errors.
+
+```js
+// vite.config.js
+import {defineConfig} from 'vite';
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  optimizeDeps: {
+    exclude: ['hash-worker'] // new added
+  }
+})
+```
+
 ### Options
 
 **HashChksParam**
