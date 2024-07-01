@@ -1,9 +1,10 @@
-## Hash Worker [![hash worker version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker)
+# Hash Worker [![hash worker version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker)
 
 <p align="center">
 <img src="https://socialify.git.ci/Tkunl/hash-worker/image?font=Inter&language=1&name=1&owner=1&pattern=Plus&theme=Auto" width="640" height="320" />
 </p>
-### Introduce
+
+## Introduce
 
 [中文文档](./README-zh.md)
 
@@ -20,7 +21,7 @@ Unit testing using Jest achieved 97% line coverage.
 > The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes.
 Note that this is not directly equivalent to a hash of the file itself.
 
-### Install
+## Install
 
 ```bash
 $ yarn add hash-worker
@@ -28,7 +29,7 @@ $ yarn add hash-worker
 $ npm install hash-worker
 ```
 
-### Usage
+## Usage
 
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
@@ -74,7 +75,7 @@ export default defineConfig({
 })
 ```
 
-### Options
+## Options
 
 **HashChksParam**
 
@@ -129,7 +130,7 @@ HashChksRes is the returned result after calculating the hash value.
 | lastModified | number | Timestamp of the last modification of the file  |
 | type         | string | file extension                                  |
 
-### [Benchmark (MD5)](./packages/benchmark/README.md)
+## [Benchmark (MD5)](./packages/benchmark/README.md)
 
 | Wroker Count | Speed     |
 |--------------|-----------|
@@ -140,15 +141,15 @@ HashChksRes is the returned result after calculating the hash value.
 
 * These measurements were made with `Chrome v126` on a `Zen3 Desktop` CPU
 
-### LICENSE
+## LICENSE
 
 [MIT](./LICENSE)
 
-### Contributions
+## Contributions
 
 Contributions are welcome! If you find a bug or want to add a new feature, please open an issue or submit a pull request.
 
-### Author and contributors
+## Author and contributors
 
 <p align="center">
   <a href="https://github.com/Tkunl">

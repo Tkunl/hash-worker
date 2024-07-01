@@ -3,7 +3,8 @@
 <p align="center">
 <img src="https://socialify.git.ci/Tkunl/hash-worker/image?font=Inter&language=1&name=1&owner=1&pattern=Plus&theme=Auto" width="640" height="320" />
 </p>
-### Introduce
+
+## Introduce
 
 [English Document](./README.md)
 
@@ -19,7 +20,7 @@ Hash-worker 支持两种哈希计算算法：MD5 和 CRC32。
 > [!WARNING]
 > Hash-worker 计算出的 merkleHash 是基于文件块哈希值构建的 MerkleTree 的根哈希值。请注意，这并不直接等同于文件本身的哈希值。
 
-### Install
+## Install
 
 ```bash
 $ yarn add hash-worker
@@ -27,7 +28,7 @@ $ yarn add hash-worker
 $ npm install hash-worker
 ```
 
-### Usage
+## Usage
 
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
@@ -73,7 +74,7 @@ export default defineConfig({
 })
  ```
 
-### Options
+## Options
 
 **HashChksParam**
 
@@ -127,7 +128,7 @@ HashChksRes 是计算哈希值之后的返回结果。
 | lastModified | number | 文件最后一次修改的时间戳 |
 | type         | string | 文件后缀名             |
 
-### [Benchmark (MD5)](./packages/benchmark/README-zh.md)
+## [Benchmark (MD5)](./packages/benchmark/README-zh.md)
 
 | Wroker Count | Speed     |
 |--------------|-----------|
@@ -139,15 +140,15 @@ HashChksRes 是计算哈希值之后的返回结果。
 * 这些测试是运行在 `Chrome v126` 和 `Zen3 Desktop` CPU 下得到的
 
 
-### LICENSE
+## LICENSE
 
 [MIT](./LICENSE)
 
-### Contributions
+## Contributions
 
 欢迎贡献代码！如果你发现了一个 bug 或者想添加一个新功能，请提交一个 issue 或 pull request。
 
-### Author and contributors
+## Author and contributors
 
 <p align="center">
   <a href="https://github.com/Tkunl">
