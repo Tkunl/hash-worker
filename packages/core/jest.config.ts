@@ -1,4 +1,5 @@
-const projectsConfigWrapper = (configs) =>
+import type { Config } from 'jest'
+const projectsConfigWrapper = (configs: Record<string, any>[]): any[] =>
   configs.map((config) => ({
     ...config,
     coveragePathIgnorePatterns: ['/__tests__/fixture/'],
@@ -26,8 +27,7 @@ const projectsConfigWrapper = (configs) =>
     },
   }))
 
-/** @type {import('ts-jest').JestConfigWithTsJest} */
-export default {
+const config: Config = {
   collectCoverage: true,
   coverageReporters: ['lcov'],
   projects: projectsConfigWrapper([
@@ -43,3 +43,5 @@ export default {
     },
   ]),
 }
+
+export default config

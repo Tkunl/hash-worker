@@ -1,0 +1,29 @@
+{
+  "name": "hash-worker-benchmark",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "tsup --config tsup.config.ts --watch",
+    "build": "pnpm rm:dist && tsup --config tsup.config.ts && pnpm build:dts",
+    "build:dts": "dts-bundle-generator --config dts-bundle.config.json",
+    "rm:dist": "rimraf ./dist"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "hash-worker": "workspace:*"
+  },
+  "peerDependencies": {
+    "hash-worker": "workspace:*"
+  }
+}

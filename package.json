@@ -3,16 +3,22 @@
   "scripts": {
     "dev": "pnpm --filter=./packages/core run dev",
     "build": "pnpm --filter=./packages/core run build",
-    "test": "pnpm --filter=./packages/core run test",
-    "lint": "pnpm --filter=./packages/core run lint",
+    "build:benchmark": "pnpm --filter=./packages/benchmark run build",
+    "benchmark": "pnpm --filter=./packages/playground/benchmark run play",
     "play-vue": "pnpm run build && pnpm --filter=./packages/playground/vue-demo run play",
     "play-react": "pnpm run build && pnpm --filter=./packages/playground/react-demo run play",
-    "play-node": "pnpm run build && pnpm --filter=./packages/playground/node-demo run play"
+    "play-node": "pnpm run build && pnpm --filter=./packages/playground/node-demo run play",
+    "lint": "pnpm --filter=./packages/core run lint",
+    "test": "pnpm --filter=./packages/core run test"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "hash-worker",
+    "hash"
+  ],
+  "author": "Tkunl",
   "license": "ISC",
   "devDependencies": {
+    "@jest/types": "^29.6.3",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@swc/core": "^1.5.7",
     "@types/jest": "^29.5.12",
@@ -23,6 +29,8 @@
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "@typescript-eslint/parser": "^7.8.0",
     "browserslist": "^4.23.0",
+    "chalk": "^5.3.0",
+    "dts-bundle-generator": "^9.5.1",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
@@ -36,6 +44,7 @@
     "rollup-plugin-swc3": "^0.11.2",
     "ts-jest": "^29.1.5",
     "ts-jest-mock-import-meta": "^1.2.0",
+    "tsup": "^8.1.0",
     "tsx": "^4.11.0",
     "typescript": "^5.4.5"
   }

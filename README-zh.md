@@ -1,3 +1,5 @@
+# Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker)
+
 ## Introduce
 
 [English Document](./README.md)
@@ -103,7 +105,7 @@ HashChksRes 是计算哈希值之后的返回结果。
 | lastModified | number | 文件最后一次修改的时间戳 |
 | type         | string | 文件后缀名             |
 
-### Benchmark (MD5)
+### [Benchmark (MD5)](./packages/benchmark/README.md)
 
 | Wroker Count | Speed     |
 |--------------|-----------|
@@ -112,7 +114,8 @@ HashChksRes 是计算哈希值之后的返回结果。
 | 8            | 851 MB/s  |
 | 12           | 1011 MB/s |
 
-* 这些测试是在 `Chrome v126` 和 Zen3 desktop CPU 下的
+* 这些测试是运行在 `Chrome v126` 和 `Zen3 Desktop` CPU 下得到的
+
 
 ### LICENSE
 
@@ -120,7 +123,7 @@ HashChksRes 是计算哈希值之后的返回结果。
 
 ### Contributions
 
-Contributions are welcome! If you find a bug or want to add a new feature, please open an issue or submit a pull request.
+欢迎贡献代码！如果你发现了一个 bug 或者想添加一个新功能，请提交一个 issue 或 pull request。
 
 ### Author and contributors
 

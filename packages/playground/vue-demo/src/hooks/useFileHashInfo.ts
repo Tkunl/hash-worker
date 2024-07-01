@@ -18,7 +18,6 @@ export function useFileHashInfo() {
       },
     }
 
-    const beforeDate = Date.now()
     getFileHashChunks(param).then((res: HashChksRes) => {
       console.log(res)
     })

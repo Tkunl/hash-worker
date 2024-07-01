@@ -1,4 +1,5 @@
 export * from './entity'
 export * from './interface'
+export * from './utils'
 export * from './get-file-hash-chunks'
 export * from './get-root-hash-by-chunks'

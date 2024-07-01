@@ -1,3 +1,5 @@
+# Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker)
+
 ## Introduce
 
 [中文文档](./README-zh.md)
@@ -105,7 +107,7 @@ HashChksRes is the returned result after calculating the hash value.
 | lastModified | number | Timestamp of the last modification of the file  |
 | type         | string | file extension                                  |
 
-### Benchmark (MD5)
+### [Benchmark (MD5)](./packages/benchmark/README.md)
 
 | Wroker Count | Speed     |
 |--------------|-----------|
@@ -114,7 +116,7 @@ HashChksRes is the returned result after calculating the hash value.
 | 8            | 851 MB/s  |
 | 12           | 1011 MB/s |
 
-* These measurements were made with `Chrome v126` on a Zen3 desktop CPU
+* These measurements were made with `Chrome v126` on a `Zen3 Desktop` CPU
 
 ### LICENSE
 
