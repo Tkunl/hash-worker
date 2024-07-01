@@ -1,15 +1,15 @@
 ## Introduce for benchmark
 
-It is used to test the hash calculation speed of the Hash worker under different threads.
+用于测试 Hash worker 在不同线程下的 hash 计算速度
 
-Both `browser` environments and `node` environments are now supported.
+同时支持浏览器环境和 Node.js 环境
 
 ### Usage
 
 ```ts
 import { benchmark, BenchmarkOptions } from 'hash-worker-benchmark'
 
-// options is optional.
+// options 是可选的
 const options: BenchmarkOptions = {}
 benchmark(options)
 ```
@@ -20,9 +20,9 @@ benchmark(options)
 
 | filed               | type     | default                                 | description                |
 | ------------------- | -------- | --------------------------------------- | -------------------------- |
-| sizeInMB            | number   | 500                                     | File size for testing (MB)    |
-| strategy            | Strategy | Strategy.md5                            | Hash computation strategy     |
-| workerCountTobeTest | number[] | [1, 1, 1, 4, 4, 4, 8, 8, 8, 12, 12, 12] | Each test is performed three times with 1, 4, 8, and 12 threads |
+| sizeInMB            | number   | 500                                     | 用于测试的文件大小 (MB)    |
+| strategy            | Strategy | Strategy.md5                            | hash 计算策略              |
+| workerCountTobeTest | number[] | [1, 1, 1, 4, 4, 4, 8, 8, 8, 12, 12, 12] | 1, 4, 8, 12 线程各测试三次 |
 
 ```ts
 // strategy.ts

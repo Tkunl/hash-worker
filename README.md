@@ -1,6 +1,6 @@
-# Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker)
+## Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker)
 
-## Introduce
+### Introduce
 
 [中文文档](./README-zh.md)
 
@@ -9,7 +9,7 @@ It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, w
 
 Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
 
-Both browser `environments` and `Node.js` environments are now supported.
+Both `browser` and `node.js` are supported.
 
 Unit testing using Jest achieved 97% line coverage.
 
@@ -17,7 +17,7 @@ Unit testing using Jest achieved 97% line coverage.
 > The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes.
 Note that this is not directly equivalent to a hash of the file itself.
 
-## Install
+### Install
 
 ```bash
 $ yarn add hash-worker
@@ -25,7 +25,7 @@ $ yarn add hash-worker
 $ npm install hash-worker
 ```
 
-## Usage
+### Usage
 
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
@@ -52,7 +52,7 @@ function handleDestroyWorkerPool() {
 }
 ```
 
-## Options
+### Options
 
 **HashChksParam**
 
