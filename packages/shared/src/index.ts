@@ -15,6 +15,8 @@ export default {
   ...is,
 }
 
+export type * from './types'
+
 /**
  * 兼容 import { someFunctionFromRand } from './utils' 写法
  */

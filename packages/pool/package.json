@@ -1,5 +1,5 @@
 {
-  "name": "hash-worker-benchmark",
+  "name": "pool",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -21,10 +21,9 @@
   },
   "license": "MIT",
   "dependencies": {
-    "hash-worker": "workspace:*",
     "shared-tools": "workspace:*"
   },
   "peerDependencies": {
-    "hash-worker": "workspace:*"
+    "shared-tools": "workspace:*"
   }
 }

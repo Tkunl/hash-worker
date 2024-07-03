@@ -1,6 +1,5 @@
-import { WorkerPool } from '../entity'
-import { WorkerWrapper } from '../entity'
-import { isBrowser, isNode } from '../utils'
+import { WorkerPool, WorkerWrapper } from 'pool'
+import { isBrowser, isNode } from 'shared-tools'
 
 export class WorkerPoolForMd5 extends WorkerPool {
   constructor(maxWorkers: number) {

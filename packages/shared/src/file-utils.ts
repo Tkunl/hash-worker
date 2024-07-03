@@ -1,5 +1,5 @@
-import { FileMetaInfo } from '../interface'
 import { isBrowser, isNode } from './is'
+import { FileMetaInfo } from './types'
 
 /**
  * 分割文件

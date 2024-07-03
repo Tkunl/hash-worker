@@ -1,5 +1,5 @@
 {
-  "name": "hash-worker-benchmark",
+  "name": "shared-tools",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -19,12 +19,5 @@
     "build:dts": "dts-bundle-generator --config dts-bundle.config.json",
     "rm:dist": "rimraf ./dist"
   },
-  "license": "MIT",
-  "dependencies": {
-    "hash-worker": "workspace:*",
-    "shared-tools": "workspace:*"
-  },
-  "peerDependencies": {
-    "hash-worker": "workspace:*"
-  }
+  "license": "MIT"
 }

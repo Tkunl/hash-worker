@@ -1,6 +1,7 @@
 import { crc32, md5 } from 'hash-wasm'
 import { WorkerService } from './worker/worker-service'
 import { Config, HashChksParam, Strategy } from './interface'
+import { getRootHashByChunks } from './get-root-hash-by-chunks'
 import {
   getArrayBufFromBlobs,
   getArrParts,
@@ -9,8 +10,7 @@ import {
   isNode,
   readFileAsArrayBuffer,
   sliceFile,
-} from './utils'
-import { getRootHashByChunks } from './get-root-hash-by-chunks'
+} from 'shared-tools'
 
 const DEFAULT_MAX_WORKERS = 8
 const BORDER_COUNT = 100

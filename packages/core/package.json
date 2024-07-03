@@ -40,9 +40,8 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "hash-wasm": "^4.11.0"
-  },
-  "devDependencies": {
-    "ts-node": "^10.9.2"
+    "hash-wasm": "^4.11.0",
+    "shared-tools": "workspace:*",
+    "pool": "workspace:*"
   }
 }

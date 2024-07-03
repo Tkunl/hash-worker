@@ -1,6 +1,6 @@
 import { Worker as NodeWorker } from 'worker_threads'
-import { isBrowser, isNode } from '../utils'
-import { WorkerRes } from '../interface/worker-res'
+import { isBrowser, isNode } from 'shared-tools'
+import { WorkerRes } from './types'
 
 type Resolve<T = any> = (value: T | PromiseLike<T>) => void
 type Reject = (reason?: any) => void

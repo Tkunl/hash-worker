@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
 
 import { md5 } from 'hash-wasm'
-import { isBrowser2, isNode } from '../utils'
+import { isBrowser2, isNode } from 'shared-tools'
 
 if (isBrowser2()) {
   addEventListener('message', async ({ data }: { data: ArrayBuffer }) => {

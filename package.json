@@ -2,7 +2,10 @@
   "private": true,
   "scripts": {
     "dev": "pnpm --filter=./packages/core run dev",
-    "build": "pnpm --filter=./packages/core run build",
+    "build": "pnpm run build:shared-tools && pnpm run build:pool && pnpm run build:core && pnpm run build:benchmark",
+    "build:core": "pnpm --filter=./packages/core run build",
+    "build:pool": "pnpm --filter=./packages/pool run build",
+    "build:shared-tools": "pnpm --filter=./packages/shared run build",
     "build:benchmark": "pnpm --filter=./packages/benchmark run build",
     "benchmark": "pnpm --filter=./packages/playground/benchmark run play",
     "play-vue": "pnpm run build && pnpm --filter=./packages/playground/vue-demo run play",
@@ -43,5 +46,8 @@
     "tsup": "^8.1.0",
     "tsx": "^4.11.0",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2"
   }
 }

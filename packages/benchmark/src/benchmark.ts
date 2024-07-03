@@ -1,4 +1,4 @@
-import { getFileHashChunks, isBrowser, isNode, Strategy } from 'hash-worker'
+import { getFileHashChunks, Strategy } from 'hash-worker'
 import { BenchmarkOptions, NormalizeOptions } from './types'
 import {
   createMockFile,
@@ -8,6 +8,7 @@ import {
   sleep,
 } from './helper'
 import { ChalkInstance } from 'chalk'
+import { isBrowser, isNode } from 'shared-tools'
 
 const filePath = './data.txt'
 const fileName = 'data.txt'

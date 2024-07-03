@@ -1,7 +1,7 @@
-import { getFileMetadata, isBrowser, isNode } from './utils'
 import { WorkerService } from './worker/worker-service'
 import { HashChksParam, HashChksRes } from './interface'
 import { normalizeParam, processFileInBrowser, processFileInNode } from './helper'
+import { getFileMetadata, isBrowser, isNode } from 'shared-tools'
 
 let workerService: WorkerService | null = null
 let curWorkerCount: number = 0

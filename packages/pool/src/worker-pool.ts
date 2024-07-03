@@ -1,5 +1,5 @@
 import { StatusEnum, WorkerWrapper } from './worker-wrapper'
-import { MiniSubject } from '../utils'
+import { MiniSubject } from 'shared-tools'
 
 export abstract class WorkerPool {
   pool: WorkerWrapper[] = []
