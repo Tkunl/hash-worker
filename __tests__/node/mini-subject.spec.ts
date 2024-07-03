@@ -1,4 +1,4 @@
-import { MiniSubject } from '../../src/utils'
+import { MiniSubject } from '../../packages/shared/src'
 
 test('MiniSubject initializes with a value and can get the value', () => {
   const initial = 10

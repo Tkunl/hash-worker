@@ -1,4 +1,4 @@
-import { isBrowser, isBrowser2, isEmpty, isNode } from '../../src/utils'
+import { isBrowser, isBrowser2, isEmpty, isNode } from '../../packages/shared/src'
 
 test('isEmpty correctly identifies empty values', () => {
   expect(isEmpty(undefined)).toBe(true)

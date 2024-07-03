@@ -1,5 +1,5 @@
 import { MockWebWorker } from '../fixture/mock-web-worker'
-import { WorkerPoolForMd5 } from '../../src/worker/worker-pool-for-md5'
+import { WorkerPoolForMd5 } from '../../packages/core/src/worker/worker-pool-for-md5'
 
 // 模拟浏览器下的 Web Worker
 ;(global as any).Worker = MockWebWorker

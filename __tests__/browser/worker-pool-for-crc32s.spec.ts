@@ -1,5 +1,5 @@
 import { MockWebWorker } from '../fixture/mock-web-worker'
-import { WorkerPoolForCrc32 } from '../../src/worker/worker-pool-for-crc32'
+import { WorkerPoolForCrc32 } from '../../packages/core/src/worker/worker-pool-for-crc32'
 
 // 模拟浏览器下的 Web Worker
 ;(global as any).Worker = MockWebWorker

@@ -30,6 +30,7 @@ const projectsConfigWrapper = (configs: Record<string, any>[]): any[] =>
 const config: Config = {
   collectCoverage: true,
   coverageReporters: ['lcov'],
+  extensionsToTreatAsEsm: ['.ts'],
   projects: projectsConfigWrapper([
     {
       displayName: 'node',

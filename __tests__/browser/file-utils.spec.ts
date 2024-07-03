@@ -1,7 +1,7 @@
-import { getArrayBufFromBlobs, getFileMetadata, sliceFile } from '../../src/utils'
 import path from 'path'
 import fs from 'fs/promises'
 import { MockBlob } from '../fixture/mock-blob'
+import { getArrayBufFromBlobs, getFileMetadata, sliceFile } from '../../packages/shared/src'
 
 // 在测试文件的顶部，模拟 Blob.prototype.arrayBuffer
 function mockArrayBuffer(): void {

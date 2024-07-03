@@ -1,4 +1,4 @@
-import { StatusEnum, WorkerWrapper } from '../../src/entity'
+import { StatusEnum, WorkerWrapper } from '../../packages/pool/src'
 
 export class MockWorkerWrapper extends WorkerWrapper {
   constructor() {

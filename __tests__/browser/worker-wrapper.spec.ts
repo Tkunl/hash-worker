@@ -1,4 +1,4 @@
-import { StatusEnum, WorkerWrapper } from '../../src/entity'
+import { StatusEnum, WorkerWrapper } from '../../packages/pool/src'
 import { MockWebWorker } from '../fixture/mock-web-worker'
 
 // 在全局空间中声明这个类，以模拟在浏览器中的 Worker 行为

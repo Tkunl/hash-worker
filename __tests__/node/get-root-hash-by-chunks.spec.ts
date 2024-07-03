@@ -1,4 +1,4 @@
-import { getRootHashByChunks } from '../../src/get-root-hash-by-chunks'
+import { getRootHashByChunks } from '../../packages/core/src/get-root-hash-by-chunks'
 
 describe('getRootHashByChunks', () => {
   it('should return the root hash', async () => {

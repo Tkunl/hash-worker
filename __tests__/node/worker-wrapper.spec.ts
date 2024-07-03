@@ -1,4 +1,4 @@
-import { WorkerWrapper } from '../../src/entity'
+import { WorkerWrapper } from '../../packages/pool/src'
 import { Worker as NodeWorker } from 'worker_threads'
 
 // 模拟 Node.js 的 'worker_threads' 模块

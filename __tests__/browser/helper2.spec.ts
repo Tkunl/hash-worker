@@ -1,33 +1,33 @@
-import * as helper from '../../src/helper'
-import { Config, Strategy } from '../../src/interface'
-import { getFileSliceLocations, readFileAsArrayBuffer, sliceFile } from '../../src/utils'
-import { WorkerService } from '../../src/worker/worker-service'
+import * as helper from '../../packages/core/src/helper'
+import { Config, Strategy } from '../../packages/core/src/interface'
+import { getFileSliceLocations, readFileAsArrayBuffer, sliceFile } from '../../packages/shared/src'
+import { WorkerService } from '../../packages/core/src/worker/worker-service'
 import { MockBlob } from '../fixture/mock-blob'
-import { getRootHashByChunks } from '../../src/get-root-hash-by-chunks'
-import { processFileInBrowser, processFileInNode } from '../../src/helper'
+import { getRootHashByChunks } from '../../packages/core/src/get-root-hash-by-chunks'
+import { processFileInBrowser, processFileInNode } from '../../packages/core/src/helper'
 
 global.Blob = MockBlob
 
-jest.mock('../../src/worker/worker-service', () => ({
+jest.mock('../../packages/core/src/worker/worker-service', () => ({
   WorkerService: jest.fn().mockImplementation(() => ({
     terminate: jest.fn(),
   })),
 }))
 
-jest.mock('../../src/utils/file-utils', () => ({
+jest.mock('../../packages/shared/src/file-utils', () => ({
   sliceFile: jest.fn(),
   getArrayBufFromBlobs: jest.fn(),
   getFileSliceLocations: jest.fn(),
   readFileAsArrayBuffer: jest.fn(),
 }))
 
-jest.mock('../../src/helper', () => ({
-  ...jest.requireActual('../../src/helper'), // 从中导入所有原始实现
+jest.mock('../../packages/core/src/helper', () => ({
+  ...jest.requireActual('../../packages/core/src/helper'), // 从中导入所有原始实现
   getChunksHashSingle: jest.fn(),
   getChunksHashMultiple: jest.fn(),
 }))
 
-jest.mock('../../src/get-root-hash-by-chunks', () => ({
+jest.mock('../../packages/core/src/get-root-hash-by-chunks', () => ({
   getRootHashByChunks: jest.fn(),
 }))
 

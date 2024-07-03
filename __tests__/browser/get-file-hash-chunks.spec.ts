@@ -1,24 +1,22 @@
-import { getFileHashChunks } from '../../src/get-file-hash-chunks'
-
-jest.mock('../../src/utils/is', () => ({
+jest.mock('../../packages/shared/src/is', () => ({
   isNode: jest.fn(() => false),
   isBrowser: jest.fn(() => false),
 }))
 
-jest.mock('../../src/worker/worker-service', () => ({
+jest.mock('../../packages/core/src/worker/worker-service', () => ({
   WorkerService: jest.fn(() => ({
     terminate: jest.fn(),
   })),
 }))
 
-jest.mock('../../src/utils/file-utils', () => ({
+jest.mock('../../packages/shared/src/file-utils', () => ({
   getFileMetadata: jest.fn(() => ({
     name: 'fakeFileName.txt',
   })),
 }))
 
-jest.mock('../../src/helper', () => ({
-  ...jest.requireActual('../../src/helper'), // 从中导入所有原始实现
+jest.mock('../../packages/core/src/helper', () => ({
+  ...jest.requireActual('../../packages/core/src/helper'), // 从中导入所有原始实现
   processFileInBrowser: jest.fn(() => ({
     chunksBlob: [],
     chunksHash: ['hash in browser'],
@@ -30,8 +28,9 @@ jest.mock('../../src/helper', () => ({
   })),
 }))
 
-import * as is from '../../src/utils/is'
-import { HashChksParam } from '../../src/interface'
+import * as is from '../../packages/shared/src/is'
+import { getFileHashChunks } from '../../packages/core/src/get-file-hash-chunks'
+import { HashChksParam } from '../../packages/core/src/interface'
 
 function setBrowserEnv() {
   ;(is.isNode as jest.Mock).mockImplementation(() => false)

@@ -1,4 +1,4 @@
-import { MiniSubject } from '../../src/utils'
+import { MiniSubject } from '../../packages/shared/src'
 
 export class MockMiniSubject<T> extends MiniSubject<T> {
   constructor(value: T) {

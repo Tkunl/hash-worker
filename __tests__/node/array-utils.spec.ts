@@ -1,4 +1,4 @@
-import { getArrParts, getFileSliceLocations, readFileAsArrayBuffer } from '../../src/utils'
+import { getArrParts, getFileSliceLocations, readFileAsArrayBuffer } from '../../packages/shared/src'
 import fs from 'fs/promises'
 import path from 'path'
 import { describe } from 'node:test'

@@ -1,16 +1,16 @@
-import { Strategy } from '../../src/interface'
+import { Strategy } from '../../packages/core/src/interface'
 
 jest.mock('hash-wasm', () => ({
   crc32: jest.fn(() => Promise.resolve('crc32hash')),
   md5: jest.fn(() => Promise.resolve('md5hash')),
 }))
 
-jest.mock('../../src/utils/is', () => ({
+jest.mock('../../packages/shared/src/is', () => ({
   isNode: jest.fn(() => false),
   isBrowser: jest.fn(() => false),
 }))
 
-jest.mock('../../src/worker/worker-service', () => {
+jest.mock('../../packages/core/src/worker/worker-service', () => {
   return {
     WorkerService: jest.fn().mockImplementation(() => ({
       getMD5ForFiles: jest.fn(),
@@ -20,9 +20,13 @@ jest.mock('../../src/worker/worker-service', () => {
   }
 })
 
-import { getChunksHashMultiple, getChunksHashSingle, normalizeParam } from '../../src/helper'
-import * as is from '../../src/utils/is'
-import { WorkerService } from '../../src/worker/worker-service'
+import {
+  getChunksHashMultiple,
+  getChunksHashSingle,
+  normalizeParam,
+} from '../../packages/core/src/helper'
+import * as is from '../../packages/shared/src/is'
+import { WorkerService } from '../../packages/core/src/worker/worker-service'
 
 function setNodeEnv() {
   ;(is.isNode as jest.Mock).mockImplementation(() => true)
@@ -32,6 +36,11 @@ function setNodeEnv() {
 function setBrowserEnv() {
   ;(is.isNode as jest.Mock).mockImplementation(() => false)
   ;(is.isBrowser as jest.Mock).mockImplementation(() => true)
+}
+
+function setUnsupportedEnv() {
+  ;(is.isNode as jest.Mock).mockImplementation(() => false)
+  ;(is.isBrowser as jest.Mock).mockImplementation(() => false)
 }
 
 describe('normalizeParam', () => {
@@ -44,6 +53,7 @@ describe('normalizeParam', () => {
   })
 
   it('throws an error for unsupported environment', () => {
+    setUnsupportedEnv()
     expect(() => {
       normalizeParam({ filePath: '' })
     }).toThrow('Unsupported environment')

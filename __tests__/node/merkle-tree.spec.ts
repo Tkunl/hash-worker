@@ -1,5 +1,5 @@
 import { md5 } from 'hash-wasm'
-import { MerkleTree } from '../../src/entity'
+import { MerkleTree } from '../../packages/core/src/entity'
 
 async function createHash(data: string): Promise<string> {
   return md5(data)
