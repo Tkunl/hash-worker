@@ -32,6 +32,17 @@ $ npm install hash-worker
 
 ## Usage
 
+### CDN (Global)
+
+```html
+<script src="https://unpkg.com/hash-worker/dist/global.js"></script>
+<script>
+  HashWorker.getFileHashChunks()
+</script>
+```
+
+### ESM
+
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
 

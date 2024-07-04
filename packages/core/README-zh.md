@@ -30,6 +30,17 @@ $ npm install hash-worker
 
 ## Usage
 
+### CDN (Global)
+
+```html
+<script src="https://unpkg.com/hash-worker/dist/global.js"></script>
+<script>
+  HashWorker.getFileHashChunks()
+</script>
+```
+
+### ESM
+
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
 
@@ -128,7 +139,7 @@ HashChksRes 是计算哈希值之后的返回结果。
 | lastModified | number | 文件最后一次修改的时间戳 |
 | type         | string | 文件后缀名             |
 
-## [Benchmark (MD5)](./packages/benchmark/README-zh.md)
+### [Benchmark (MD5)](./packages/benchmark/README-zh.md)
 
 | Wroker Count | Speed     |
 |--------------|-----------|

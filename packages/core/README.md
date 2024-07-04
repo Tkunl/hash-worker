@@ -31,6 +31,17 @@ $ npm install hash-worker
 
 ## Usage
 
+### CDN (Global)
+
+```html
+<script src="https://unpkg.com/hash-worker/dist/global.js"></script>
+<script>
+  HashWorker.getFileHashChunks()
+</script>
+```
+
+### ESM
+
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
 
@@ -130,7 +141,7 @@ HashChksRes is the returned result after calculating the hash value.
 | lastModified | number | Timestamp of the last modification of the file  |
 | type         | string | file extension                                  |
 
-## [Benchmark (MD5)](./packages/benchmark/README.md)
+### [Benchmark (MD5)](./packages/benchmark/README.md)
 
 | Wroker Count | Speed     |
 |--------------|-----------|
