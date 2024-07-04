@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: 22
       - name: Install Dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
       - name: Run Test
         run: pnpm test
       - name: Upload coverage reports to Codecov
