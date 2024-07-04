@@ -1,4 +1,4 @@
-# Hash Worker [![hash worker version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker)
+# Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker) [![codecov](https://codecov.io/gh/Tkunl/hash-worker/graph/badge.svg?token=G7GYAPEPYS)](https://codecov.io/gh/Tkunl/hash-worker)
 
 <p align="center">
 <img src="https://socialify.git.ci/Tkunl/hash-worker/image?font=Inter&language=1&name=1&owner=1&pattern=Plus&theme=Auto" width="640" height="320" />
