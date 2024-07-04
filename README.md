@@ -79,7 +79,7 @@ export default defineConfig({
 
 **HashChksParam**
 
-HashChksParam is used to configure the parameters needed to calculate the hash .
+HashChksParam is used to configure the parameters needed to calculate the hash.
 
 | filed | type   | default | description                                                                         |
 | -------- | ------ | ------- |-------------------------------------------------------------------------------------|
