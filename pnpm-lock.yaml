@@ -129,6 +129,9 @@ importers:
       hash-worker-benchmark:
         specifier: workspace:*
         version: link:../../benchmark
+      pool:
+        specifier: workspace:*
+        version: link:../../pool
 
   packages/playground/react-demo:
     dependencies:
@@ -2475,7 +2478,7 @@ packages:
     resolution: {integrity: sha512-SHSKFHadjVA5oR4PPqhtAVdcBWwRYVd6g6cAXnIbRiIwc2EhPrTuKUBdSLvlEKyIP3GCf89fltvcZiP9MMFA1w==}
 
   source-map@0.6.1:
-    resolution: {integrity: sha1-dHIq8y6WFOnCh6jQu95IteLxomM=}
+    resolution: {integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==}
     engines: {node: '>=0.10.0'}
 
   source-map@0.8.0-beta.0:

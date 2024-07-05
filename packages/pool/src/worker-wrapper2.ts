@@ -1,26 +1,28 @@
 import { Worker as NodeWorker } from 'worker_threads'
 import { isBrowser, isNode } from 'shared-tools'
-import { WorkerRes } from './types'
+import { WorkerReq, WorkerRes } from './types'
 
 type Resolve<T = any> = (value: T | PromiseLike<T>) => void
 type Reject = (reason?: any) => void
 
-export enum StatusEnum {
+export enum StatusEnum2 {
   RUNNING = 'running',
   WAITING = 'waiting',
 }
 
 export class WorkerWrapper2 {
   worker: Worker | NodeWorker
-  status: StatusEnum
+  status: StatusEnum2
 
   constructor(worker: Worker | NodeWorker) {
     this.worker = worker
-    this.status = StatusEnum.WAITING
+    this.status = StatusEnum2.WAITING
   }
 
-  run<T>(param: ArrayBuffer, params: ArrayBuffer[], index: number) {
-    this.status = StatusEnum.RUNNING
+  run<T>(param: any, index: number, option: WorkerReq) {
+    this.status = StatusEnum2.RUNNING
+    const { fn, transferList, transferBackFn } = option
+    console.log('running worker app...')
 
     const onMessage = (rs: Resolve) => (dataFromWorker: unknown) => {
       let data: WorkerRes<string>
@@ -33,15 +35,24 @@ export class WorkerWrapper2 {
       }
       const { result, chunk } = data!
       if (result && chunk) {
-        params[index] = chunk
-        this.status = StatusEnum.WAITING
+        // params[index] = chunk
+        if (transferList && transferBackFn) {
+          transferBackFn(chunk, transferList, index)
+        }
+        this.status = StatusEnum2.WAITING
         rs(result as T)
       }
     }
 
     const onError = (rj: Reject) => (ev: ErrorEvent) => {
-      this.status = StatusEnum.WAITING
+      this.status = StatusEnum2.WAITING
       rj(ev)
+    }
+
+    const workerMsg = {
+      fn: fn.toString(),
+      fnArgs: [param],
+      // transferList,
     }
 
     if (isBrowser()) {
@@ -49,7 +60,7 @@ export class WorkerWrapper2 {
       return new Promise<T>((rs, rj) => {
         worker.onmessage = onMessage(rs)
         worker.onerror = onError(rj)
-        worker.postMessage(param, [param])
+        worker.postMessage(workerMsg, [...(transferList ?? [])])
       })
     }
 
@@ -60,7 +71,9 @@ export class WorkerWrapper2 {
         worker.setMaxListeners(1024)
         worker.on('message', onMessage(rs))
         worker.on('error', onError(rj))
-        worker.postMessage(param, [param])
+        console.log('begin post msg to worker ...', workerMsg)
+        // worker.postMessage(workerMsg, [...(transferList ?? [])])
+        worker.postMessage(workerMsg)
       })
     }
 

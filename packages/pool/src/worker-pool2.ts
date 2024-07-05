@@ -1,8 +1,9 @@
-import { StatusEnum, WorkerWrapper } from './worker-wrapper'
+import { StatusEnum2, WorkerWrapper2 } from './worker-wrapper2'
 import { isBrowser, isNode, MiniSubject } from 'shared-tools'
+import { WorkerReq } from './types'
 
 export class WorkerPool2 {
-  pool: WorkerWrapper[] = []
+  pool: WorkerWrapper2[] = []
   maxWorkerCount: number
   curRunningCount = new MiniSubject(0)
   results: any[] = []
@@ -11,14 +12,13 @@ export class WorkerPool2 {
     this.maxWorkerCount = maxWorkers
   }
 
-  static async create(maxWorkers: number) {
-    const instance = new WorkerPool2(maxWorkers)
+  async create(maxWorkers: number) {
     const countArr = Array.from({ length: maxWorkers })
 
     if (isBrowser()) {
-      instance.pool = countArr.map(
+      this.pool = countArr.map(
         () =>
-          new WorkerWrapper(
+          new WorkerWrapper2(
             new Worker(new URL('./worker-container.js', import.meta.url), { type: 'module' }),
           ),
       )
@@ -26,15 +26,17 @@ export class WorkerPool2 {
 
     if (isNode()) {
       const { Worker: NodeWorker } = await import('worker_threads')
-      instance.pool = countArr.map(
-        () => new WorkerWrapper(new NodeWorker(new URL('./worker-container.js', import.meta.url))),
+      this.pool = countArr.map(
+        () => new WorkerWrapper2(new NodeWorker(new URL('./worker-container.js', import.meta.url))),
       )
     }
   }
 
-  exec<T>(params: ArrayBuffer[]) {
+  exec<T>(option: WorkerReq<T>) {
     this.results.length = 0
+    const { fnArgs: params } = option
     const workerParams = params.map((param, index) => ({ data: param, index }))
+    console.log('pool exec...', workerParams)
 
     return new Promise<T[]>((rs) => {
       this.curRunningCount.subscribe((count) => {
@@ -46,9 +48,9 @@ export class WorkerPool2 {
           }
 
           // 此时可以用来执行任务的 Worker
-          const canUseWorker: WorkerWrapper[] = []
+          const canUseWorker: WorkerWrapper2[] = []
           for (const worker of this.pool) {
-            if (worker.status === StatusEnum.WAITING) {
+            if (worker.status === StatusEnum2.WAITING) {
               canUseWorker.push(worker)
               if (canUseWorker.length === curTaskCount) {
                 break
@@ -63,7 +65,7 @@ export class WorkerPool2 {
           canUseWorker.forEach((workerApp, index) => {
             const param = paramsToRun[index]
             workerApp
-              .run<string>(param.data, params, param.index)
+              .run<string>(param.data, param.index, option)
               .then((res) => {
                 this.results[param.index] = res
               })

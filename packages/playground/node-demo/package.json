@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "hash-worker": "workspace:*",
-    "hash-worker-benchmark": "workspace:*"
+    "hash-worker-benchmark": "workspace:*",
+    "pool": "workspace:*"
   }
 }

@@ -7,6 +7,7 @@ export interface WorkerRes<T = any> {
 
 export interface WorkerReq<T = any> {
   fn: AngFn
-  params: T[]
+  fnArgs: T[]
   transferList?: ArrayBuffer[]
+  transferBackFn?: (transferable: ArrayBuffer, transferList: ArrayBuffer[], index: number) => void
 }
