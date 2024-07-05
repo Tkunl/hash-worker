@@ -16,8 +16,6 @@ Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
 
 Both `browser` and `node.js` are supported.
 
-Unit testing using Jest achieved 97% line coverage.
-
 > [!WARNING]
 > The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes.
 Note that this is not directly equivalent to a hash of the file itself.
@@ -40,6 +38,10 @@ $ npm install hash-worker
   HashWorker.getFileHashChunks()
 </script>
 ```
+
+Don't forget to copy `dist/worker` folder to your project.
+
+The `worker` folder should be located in the same directory as your `index.html`.
 
 ### ESM
 

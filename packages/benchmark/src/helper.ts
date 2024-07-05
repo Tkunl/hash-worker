@@ -30,7 +30,6 @@ export async function sleep(ms: number) {
 export async function createMockFileInLocal(filePath: string, sizeInMB: number): Promise<void> {
   const { createWriteStream } = await import('fs')
   const { randomBytes } = await import('crypto')
-  const generateRandomData = (size: number) => randomBytes(size).toString('hex')
 
   const stream = createWriteStream(filePath)
   const size = 1024 * 1024 * sizeInMB // 总大小转换为字节
@@ -43,8 +42,8 @@ export async function createMockFileInLocal(filePath: string, sizeInMB: number):
     const write = (): void => {
       let ok = true
       do {
-        const chunk = generateRandomData(chunkSize > size - written ? size - written : chunkSize)
-        written += chunk.length / 2 // 更新已写入的长度，除以2因为hex字符串表示的字节长度是实际长度的一半
+        const chunk = randomBytes(chunkSize > size - written ? size - written : chunkSize)
+        written += chunk.length // 更新已写入的长度
 
         if (written >= size) {
           // 如果达到或超过预定大小，则写入最后一个块并结束

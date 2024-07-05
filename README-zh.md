@@ -15,8 +15,6 @@ Hash-worker 支持两种哈希计算算法：MD5 和 CRC32。
 
 同时支持 `浏览器` 和 `node.js` 环境。
 
-采用 Jest 进行单元测试，达到了 97% 的行覆盖率。
-
 > [!WARNING]
 > Hash-worker 计算出的 merkleHash 是基于文件块哈希值构建的 MerkleTree 的根哈希值。请注意，这并不直接等同于文件本身的哈希值。
 
@@ -38,6 +36,10 @@ $ npm install hash-worker
   HashWorker.getFileHashChunks()
 </script>
 ```
+
+不要忘记将 `dist/worker` 文件夹复制到你的项目中.
+
+`worker` 文件夹应当和你的 `index.html` 位于同一个目录下.
 
 ### ESM
 
