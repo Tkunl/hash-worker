@@ -1,8 +1,8 @@
 import { benchmark, BenchmarkOptions } from 'hash-worker-benchmark'
 
 const options: BenchmarkOptions = {
-  sizeInMB: 1024,
-  // workerCountTobeTest: [ 8, 8, 8 ],
+  sizeInMB: 110,
+  workerCountTobeTest: [ 8 ],
 }
 
 // const toMB = (bytes: number) => (bytes / 1024 / 1024).toFixed(2)

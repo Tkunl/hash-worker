@@ -1,4 +1,12 @@
+export type AngFn = (...args: any[]) => any
+
 export interface WorkerRes<T = any> {
   result: T
   chunk: ArrayBuffer
+}
+
+export interface WorkerReq<T = any> {
+  fn: AngFn
+  params: T[]
+  transferList?: ArrayBuffer[]
 }

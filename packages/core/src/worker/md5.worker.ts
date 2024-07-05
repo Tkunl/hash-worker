@@ -6,6 +6,7 @@ import { isBrowser2, isNode } from 'shared-tools'
 if (isBrowser2()) {
   addEventListener('message', async ({ data }: { data: ArrayBuffer }) => {
     const hash = await md5(new Uint8Array(data))
+    console.log('hash', hash)
     const res = {
       result: hash,
       chunk: data,
@@ -21,6 +22,7 @@ if (isNode()) {
     parentPort &&
       parentPort.on('message', async (data: ArrayBuffer) => {
         const hash = await md5(new Uint8Array(data))
+        console.log('hash', hash)
         const res = {
           result: hash,
           chunk: data,
