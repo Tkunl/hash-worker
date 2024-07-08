@@ -3,7 +3,8 @@
   "packageManager": "pnpm@9.4.0",
   "scripts": {
     "dev": "pnpm --filter=./packages/core run dev",
-    "build": "pnpm --filter=./packages/core run build",
+    "bootstrap": "pnpm run build:core && pnpm run build:benchmark",
+    "build:core": "pnpm --filter=./packages/core run build",
     "build:benchmark": "pnpm --filter=./packages/benchmark run build",
     "benchmark": "pnpm --filter=./packages/playground/benchmark run play",
     "play-vue": "pnpm run build && pnpm --filter=./packages/playground/vue-demo run play",

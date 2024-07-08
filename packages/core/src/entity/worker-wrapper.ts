@@ -1,6 +1,6 @@
 import { Worker as NodeWorker } from 'worker_threads'
 import { isBrowser, isNode } from '../utils'
-import { WorkerRes } from '../interface/worker-res'
+import { getFn, restoreFn, WorkerRes } from '../interface'
 
 type Resolve<T = any> = (value: T | PromiseLike<T>) => void
 type Reject = (reason?: any) => void
@@ -19,7 +19,7 @@ export class WorkerWrapper {
     this.status = StatusEnum.WAITING
   }
 
-  run<T>(param: ArrayBuffer, params: ArrayBuffer[], index: number) {
+  run<T, U>(param: U, params: U[], index: number, getFn: getFn<U>, restoreFn: restoreFn<U>) {
     this.status = StatusEnum.RUNNING
 
     const onMessage = (rs: Resolve) => (dataFromWorker: unknown) => {
@@ -33,7 +33,8 @@ export class WorkerWrapper {
       }
       const { result, chunk } = data!
       if (result && chunk) {
-        params[index] = chunk
+        // params[index] = chunk
+        restoreFn(params, chunk, index)
         this.status = StatusEnum.WAITING
         rs(result as T)
       }
@@ -49,7 +50,7 @@ export class WorkerWrapper {
       return new Promise<T>((rs, rj) => {
         worker.onmessage = onMessage(rs)
         worker.onerror = onError(rj)
-        worker.postMessage(param, [param])
+        worker.postMessage(param, [getFn(param)])
       })
     }
 
@@ -60,7 +61,7 @@ export class WorkerWrapper {
         worker.setMaxListeners(1024)
         worker.on('message', onMessage(rs))
         worker.on('error', onError(rj))
-        worker.postMessage(param, [param])
+        worker.postMessage(param, [getFn(param)])
       })
     }
 

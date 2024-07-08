@@ -1,34 +1,45 @@
-import { WorkerPoolForMd5 } from './worker-pool-for-md5'
-import { WorkerPoolForCrc32 } from './worker-pool-for-crc32'
+import { WorkerPoolForHash } from './worker-pool-for-hash'
+import { getFn, restoreFn, Strategy, WorkerReq } from '../interface'
 
 export class WorkerService {
   MAX_WORKERS
-
-  md5Pool: WorkerPoolForMd5 | undefined
-  crc32Pool: WorkerPoolForCrc32 | undefined
+  pool: WorkerPoolForHash | undefined
 
   constructor(maxWorkers: number) {
     this.MAX_WORKERS = maxWorkers
   }
 
-  async getMD5ForFiles(chunks: ArrayBuffer[]) {
-    if (this.md5Pool === undefined) {
-      this.md5Pool = await WorkerPoolForMd5.create(this.MAX_WORKERS)
+  private async getHashForFiles(chunks: ArrayBuffer[], strategy: Strategy) {
+    if (this.pool === undefined) {
+      this.pool = await WorkerPoolForHash.create(this.MAX_WORKERS)
     }
-    return this.md5Pool.exec<string>(chunks)
+    const params: WorkerReq[] = chunks.map((chunk) => ({
+      chunk,
+      strategy,
+    }))
+
+    const getFn: getFn<WorkerReq> = (param: WorkerReq) => param.chunk
+    const restoreFn: restoreFn<WorkerReq> = (
+      params: WorkerReq[],
+      param: ArrayBuffer,
+      index: number,
+    ) => {
+      params[index].chunk = param
+    }
+
+    return this.pool.exec<string, WorkerReq>(params, getFn, restoreFn)
   }
 
-  async getCRC32ForFiles(chunks: ArrayBuffer[]) {
-    if (this.crc32Pool === undefined) {
-      this.crc32Pool = await WorkerPoolForCrc32.create(this.MAX_WORKERS)
-    }
-    return this.crc32Pool.exec<string>(chunks)
+  getMD5ForFiles(chunks: ArrayBuffer[]) {
+    return this.getHashForFiles(chunks, Strategy.md5)
+  }
+
+  getCRC32ForFiles(chunks: ArrayBuffer[]) {
+    return this.getHashForFiles(chunks, Strategy.crc32)
   }
 
   terminate() {
-    this.md5Pool && this.md5Pool.terminate()
-    this.crc32Pool && this.crc32Pool.terminate()
-    this.md5Pool = undefined
-    this.crc32Pool = undefined
+    this.pool && this.pool.terminate()
+    this.pool = undefined
   }
 }

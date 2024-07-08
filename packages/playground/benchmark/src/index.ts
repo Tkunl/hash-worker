@@ -1,8 +1,10 @@
 import { benchmark, BenchmarkOptions } from 'hash-worker-benchmark'
+import { Strategy } from 'hash-worker'
 
 const options: BenchmarkOptions = {
-  sizeInMB: 1024,
-  // workerCountTobeTest: [ 8, 8, 8 ],
+  sizeInMB: 100,
+  workerCountTobeTest: [ 8, 8, 8 ],
+  strategy: Strategy.crc32
 }
 
 // const toMB = (bytes: number) => (bytes / 1024 / 1024).toFixed(2)

@@ -1,5 +1,6 @@
 import { StatusEnum, WorkerWrapper } from './worker-wrapper'
 import { MiniSubject } from '../utils'
+import { getFn, restoreFn } from '../interface'
 
 export abstract class WorkerPool {
   pool: WorkerWrapper[] = []
@@ -11,7 +12,7 @@ export abstract class WorkerPool {
     this.maxWorkerCount = maxWorkers
   }
 
-  exec<T>(params: ArrayBuffer[]) {
+  exec<T, U>(params: U[], getFn: getFn<U>, restoreFn: restoreFn<U>) {
     this.results.length = 0
     const workerParams = params.map((param, index) => ({ data: param, index }))
 
@@ -42,7 +43,7 @@ export abstract class WorkerPool {
           canUseWorker.forEach((workerApp, index) => {
             const param = paramsToRun[index]
             workerApp
-              .run<string>(param.data, params, param.index)
+              .run<T, U>(param.data, params, param.index, getFn, restoreFn)
               .then((res) => {
                 this.results[param.index] = res
               })

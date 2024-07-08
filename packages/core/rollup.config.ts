@@ -48,17 +48,8 @@ export default defineConfig([
   },
   // Worker
   {
-    input: 'src/worker/crc32.worker.ts',
-    output: { file: 'dist/worker/crc32.worker.mjs', format: 'esm' },
-    plugins: [
-      nodeResolve(),
-      swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true }),
-    ],
-  },
-  {
-    input: 'src/worker/md5.worker.ts',
-    output: { file: 'dist/worker/md5.worker.mjs', format: 'esm' },
+    input: 'src/worker/hash.worker.ts',
+    output: { file: 'dist/worker/hash.worker.mjs', format: 'esm' },
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
