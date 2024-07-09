@@ -40,6 +40,10 @@ $ npm install hash-worker
 </script>
 ```
 
+其中 `global.js` 和 `hash.worker.mjs` 是执行 `package.json` 中的 `build:core` 后的打包产物
+
+打包产物位于 `packages/core/dist` 目录下
+
 ### ESM
 
 ``` ts

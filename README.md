@@ -42,6 +42,10 @@ $ npm install hash-worker
 </script>
 ```
 
+The `global.js` and `hash.worker.mjs` are the build artifacts resulting from executing `build:core` in `package.json`.
+
+The build artifacts are located in the `packages/core/dist` directory.
+
 ### ESM
 
 ``` ts
