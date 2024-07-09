@@ -1,2 +1,8 @@
+interface restoreFnOption {
+  bufs?: ArrayBuffer[]
+  buf: ArrayBuffer
+  index: number
+}
+
 export type getFn<T> = (param: T) => ArrayBuffer
-export type restoreFn<T> = (params: T[], param: ArrayBuffer, index: number) => void
+export type restoreFn = (options: restoreFnOption) => void

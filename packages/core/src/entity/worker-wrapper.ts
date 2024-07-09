@@ -19,7 +19,7 @@ export class WorkerWrapper {
     this.status = StatusEnum.WAITING
   }
 
-  run<T, U>(param: U, params: U[], index: number, getFn: getFn<U>, restoreFn: restoreFn<U>) {
+  run<T, U>(param: U, params: U[], index: number, getFn: getFn<U>, restoreFn: restoreFn) {
     this.status = StatusEnum.RUNNING
 
     const onMessage = (rs: Resolve) => (dataFromWorker: unknown) => {
@@ -33,8 +33,10 @@ export class WorkerWrapper {
       }
       const { result, chunk } = data!
       if (result && chunk) {
-        // params[index] = chunk
-        restoreFn(params, chunk, index)
+        restoreFn({
+          buf: chunk,
+          index,
+        })
         this.status = StatusEnum.WAITING
         rs(result as T)
       }

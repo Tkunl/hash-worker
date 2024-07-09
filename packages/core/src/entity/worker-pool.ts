@@ -12,7 +12,7 @@ export abstract class WorkerPool {
     this.maxWorkerCount = maxWorkers
   }
 
-  exec<T, U>(params: U[], getFn: getFn<U>, restoreFn: restoreFn<U>) {
+  exec<T, U>(params: U[], getFn: getFn<U>, restoreFn: restoreFn) {
     this.results.length = 0
     const workerParams = params.map((param, index) => ({ data: param, index }))
 

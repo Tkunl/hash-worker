@@ -19,12 +19,9 @@ export class WorkerService {
     }))
 
     const getFn: getFn<WorkerReq> = (param: WorkerReq) => param.chunk
-    const restoreFn: restoreFn<WorkerReq> = (
-      params: WorkerReq[],
-      param: ArrayBuffer,
-      index: number,
-    ) => {
-      params[index].chunk = param
+    const restoreFn: restoreFn = (options) => {
+      const { index, buf } = options
+      chunks[index] = buf
     }
 
     return this.pool.exec<string, WorkerReq>(params, getFn, restoreFn)
