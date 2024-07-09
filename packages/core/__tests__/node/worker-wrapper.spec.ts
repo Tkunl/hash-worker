@@ -30,7 +30,16 @@ describe('WorkerWrapper', () => {
 
     const worker = new NodeWorkerMock()
     const workerWrapper = new WorkerWrapper(worker)
-    const res = await workerWrapper.run(new ArrayBuffer(1), [new ArrayBuffer(5)], 0)
+
+    const getFn = (param: ArrayBuffer) => param
+    const restoreFn: any = () => {}
+
+    const res = await workerWrapper.run<string, ArrayBuffer>(
+      new ArrayBuffer(1),
+      0,
+      getFn,
+      restoreFn,
+    )
 
     expect(res).toBe('hash-string')
     expect(worker.terminate).toHaveBeenCalledTimes(0) // 根据需要测试 terminate 被调用的次数

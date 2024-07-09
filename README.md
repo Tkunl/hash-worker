@@ -36,6 +36,7 @@ $ npm install hash-worker
 
 ```html
 <script src="https://unpkg.com/hash-worker/dist/global.js"></script>
+<script src="https://unpkg.com/hash-worker/dist/worker/hash.worker.mjs"></script>
 <script>
   HashWorker.getFileHashChunks()
 </script>

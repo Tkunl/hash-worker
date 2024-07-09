@@ -6,7 +6,10 @@ describe('WorkerPool', () => {
     const workerPool = new MockWorkerPool(2)
     const params = [new ArrayBuffer(8), new ArrayBuffer(8)]
 
-    const results = await workerPool.exec<string>(params)
+    const getFn = (param: ArrayBuffer) => param
+    const restoreFn: any = () => {}
+
+    const results = await workerPool.exec<string, ArrayBuffer>(params, getFn, restoreFn)
 
     // 使用 Jest 的 toEqual 进行深度比较
     expect(results).toEqual(['result', 'result'])
@@ -30,7 +33,10 @@ describe('WorkerPool', () => {
     const workerPool = new MockWorkerPool(2)
     const params = [new ArrayBuffer(8), new ArrayBuffer(8)]
 
-    const results = await workerPool.exec<string>(params)
+    const getFn = (param: ArrayBuffer) => param
+    const restoreFn: any = () => {}
+
+    const results = await workerPool.exec<string, ArrayBuffer>(params, getFn, restoreFn)
 
     expect(results).toEqual(['result', 'result'])
   })

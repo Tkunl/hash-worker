@@ -19,7 +19,7 @@ export class WorkerWrapper {
     this.status = StatusEnum.WAITING
   }
 
-  run<T, U>(param: U, params: U[], index: number, getFn: getFn<U>, restoreFn: restoreFn) {
+  run<T, U>(param: U, index: number, getFn: getFn<U>, restoreFn: restoreFn) {
     this.status = StatusEnum.RUNNING
 
     const onMessage = (rs: Resolve) => (dataFromWorker: unknown) => {

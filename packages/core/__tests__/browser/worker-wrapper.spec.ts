@@ -7,9 +7,10 @@ import { MockWebWorker } from '../fixture/mock-web-worker'
 describe('WorkerWrapper', () => {
   it('should handle messages correctly in browser environment', async () => {
     const webWorker = new Worker('')
-
     const workerWrapper = new WorkerWrapper(webWorker)
-    const promise = workerWrapper.run(new ArrayBuffer(1), [new ArrayBuffer(5)], 0)
+    const getFn = (param: ArrayBuffer) => param
+    const restoreFn: any = () => {}
+    const promise = workerWrapper.run(new ArrayBuffer(1), 0, getFn, restoreFn)
 
     await expect(promise).resolves.toBe('hash-string')
     expect(workerWrapper.status).toBe(StatusEnum.WAITING)

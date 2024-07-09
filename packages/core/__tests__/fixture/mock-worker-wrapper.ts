@@ -9,7 +9,7 @@ export class MockWorkerWrapper extends WorkerWrapper {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  run<T>(param: ArrayBuffer, params: ArrayBuffer[], index: number) {
+  run<T, U>(param: U, index: number, getFn: any, restoreFn: any) {
     return Promise.resolve('result' as unknown as T)
   }
 }
