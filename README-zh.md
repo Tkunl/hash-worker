@@ -9,32 +9,32 @@
 [English Document](./README.md)
 
 **Hash-worker** 是一个用于快速计算文件哈希值的库。
-它基于 hash-wasm 且利用了 WebWorker 进行并行计算，从而加快了计算文件(分片)的计算速度。
+
+它基于 hash-wasm 且利用了 WebWorker 进行并行计算，从而加快了计算文件分片的计算速度。
 
 Hash-worker 支持两种哈希计算算法：MD5 和 CRC32。
 
-同时支持 `浏览器` 和 `node.js` 环境。
+同时支持 `浏览器` 和 `Node.js` 环境。
 
-采用 Jest 进行单元测试，达到了 97% 的行覆盖率。
-
-> [!WARNING]
-> Hash-worker 计算出的 merkleHash 是基于文件块哈希值构建的 MerkleTree 的根哈希值。请注意，这并不直接等同于文件本身的哈希值。
+<div style="padding: 16px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
+  <div><strong>WARNING：</strong></div>
+  <div>Hash-worker 计算出的 MerkleHash 是基于文件块哈希值构建的 MerkleTree 的根哈希值。请注意，这并不直接等同于文件本身的哈希值。</div>
+</div>
 
 ## Install
 
 ```bash
-$ yarn add hash-worker
-# or
-$ npm install hash-worker
+$ pnpm install hash-worker
 ```
 
 ## Usage
 
-### CDN (Global)
+### Global
 
 ```html
-<script src="https://unpkg.com/hash-worker/dist/global.js"></script>
-<script src="https://unpkg.com/hash-worker/dist/worker/hash.worker.mjs"></script>
+
+<script src="./global.js"></script>
+<script src="./worker/hash.worker.mjs"></script>
 <script>
   HashWorker.getFileHashChunks()
 </script>
@@ -42,7 +42,7 @@ $ npm install hash-worker
 
 其中 `global.js` 和 `hash.worker.mjs` 是执行 `package.json` 中的 `build:core` 后的打包产物
 
-打包产物位于 `packages/core/dist` 目录下
+打包产物位于 `packages/core/dist` 目录
 
 ### ESM
 
@@ -73,19 +73,20 @@ function handleDestroyWorkerPool() {
 
 **[WARNING]**
 
-如果你在使用 `Vite` 作为构建工具, 并且遇到了 hash-worker 包的依赖优化问题, 可以在 `vite.config.js` 文件中将 hash-worker 包排除在依赖优化之外
+如果你在使用 `Vite` 作为构建工具, 并且遇到了 hash-worker 包的依赖优化问题, 可以在 `vite.config.js` 文件中将 hash-worker
+包排除在依赖优化之外
 
 注意: 旧版本的 `Vite` 可能不会报错
 
  ```js
 // vite.config.js
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [ vue() ],
   optimizeDeps: {
-    exclude: ['hash-worker'] // new added
+    exclude: [ 'hash-worker' ] // new added
   }
 })
  ```
@@ -96,21 +97,21 @@ export default defineConfig({
 
 HashChksParam 是用于配置计算哈希值所需的参数。
 
-| filed | type   | default | description                                 |
-| -------- | ------ | ------- | ------------------------------------------- |
-| file     | File   | /       | 需要计算 Hash 的文件（浏览器环境下必填）    |
+| filed    | type   | default | description                 |
+|----------|--------|---------|-----------------------------|
+| file     | File   | /       | 需要计算 Hash 的文件（浏览器环境下必填）     |
 | filePath | string | /       | 需要计算 Hash 的文件路径 （Node环境下必填） |
-|config|Config|Config|计算 Hash 时的参数|
+| config   | Config | Config  | 计算 Hash 时的参数                |
 
 **Config**
 
-| filed                    | type     | default        | description                            |
-| ------------------------ | -------- | -------------- | -------------------------------------- |
-| chunkSize                | number   | 10 (MB)        | 文件分片的大小                         |
-| workerCount              | number   | 8              | 计算 Hash 时同时开启的 worker 数量     |
-| strategy                 | Strategy | Strategy.mixed | hash 计算策略                          |
-| borderCount              | number   | 100            | 'mixed' 模式下 hash 计算规则的分界点   |
-| isCloseWorkerImmediately | boolean  | true           | 当计算完成时, 是否立即销毁 Worker 线程 |
+| filed                    | type     | default        | description               |
+|--------------------------|----------|----------------|---------------------------|
+| chunkSize                | number   | 10 (MB)        | 文件分片的大小                   |
+| workerCount              | number   | 8              | 计算 Hash 时同时开启的 worker 数量  |
+| strategy                 | Strategy | Strategy.mixed | hash 计算策略                 |
+| borderCount              | number   | 100            | 'mixed' 模式下 hash 计算规则的分界点 |
+| isCloseWorkerImmediately | boolean  | true           | 当计算完成时, 是否立即销毁 Worker 线程  |
 
 ```ts
 // strategy.ts
@@ -128,25 +129,25 @@ export enum Strategy {
 
 HashChksRes 是计算哈希值之后的返回结果。
 
-| filed | type | description |
-| ----- | ---- | ----------- |
-| chunksBlob | Blob[] | 仅在浏览器环境下，会返回文件分片的 Blob[] |
-| chunksHash | string[] | 文件分片的 Hash[] |
-| merkleHash | string | 文件的 merkleHash |
-| metadata | FileMetaInfo | 文件的 metadata |
+| filed      | type         | description              |
+|------------|--------------|--------------------------|
+| chunksBlob | Blob[]       | 仅在浏览器环境下，会返回文件分片的 Blob[] |
+| chunksHash | string[]     | 文件分片的 Hash[]             |
+| merkleHash | string       | 文件的 merkleHash           |
+| metadata   | FileMetaInfo | 文件的 metadata             |
 
 **FileMetaInfo**
 
-| filed        | type   | description             |
-| ------------ | ------ | ----------------------- |
-| name         | string | 用于计算 hash 的文件名   |
-| size         | number | 文件大小，单位：KB       |
-| lastModified | number | 文件最后一次修改的时间戳 |
-| type         | string | 文件后缀名             |
+| filed        | type   | description    |
+|--------------|--------|----------------|
+| name         | string | 用于计算 hash 的文件名 |
+| size         | number | 文件大小，单位：KB     |
+| lastModified | number | 文件最后一次修改的时间戳   |
+| type         | string | 文件后缀名          |
 
 ### [Benchmark (MD5)](./packages/benchmark/README-zh.md)
 
-| Wroker Count | Speed     |
+| Worker Count | Speed     |
 |--------------|-----------|
 | 1            | 234 MB/s  |
 | 4            | 610 MB/s  |
@@ -154,7 +155,6 @@ HashChksRes 是计算哈希值之后的返回结果。
 | 12           | 1011 MB/s |
 
 * 这些测试是运行在 `Chrome v126` 和 `Zen3 Desktop` CPU 下得到的
-
 
 ## LICENSE
 

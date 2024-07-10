@@ -1,6 +1,5 @@
 # Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker) [![codecov](https://codecov.io/gh/Tkunl/hash-worker/graph/badge.svg?token=G7GYAPEPYS)](https://codecov.io/gh/Tkunl/hash-worker) ![GitHub License](https://img.shields.io/github/license/Tkunl/hash-worker)
 
-
 <p align="center">
 <img src="https://socialify.git.ci/Tkunl/hash-worker/image?font=Inter&language=1&name=1&owner=1&pattern=Plus&theme=Auto" width="640" height="320" />
 </p>
@@ -9,34 +8,35 @@
 
 [中文文档](./README-zh.md)
 
-**Hash-worker** is a library for fast calculation of file hashes. 
-It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, which speeds up computation when processing file blocks. 
+**Hash-worker** is a library for fast calculation of file chunk hashes.
+
+It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, which speeds up computation when
+processing file blocks.
 
 Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
 
-Both `browser` and `node.js` are supported.
+Both `browser` and `Node.js` are supported.
 
-Unit testing using Jest achieved 97% line coverage.
-
-> [!WARNING]
-> The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes.
-Note that this is not directly equivalent to a hash of the file itself.
+<div style="padding: 16px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
+  <div><strong>WARNING：</strong></div>
+  <div>The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes.
+Note that this is not directly equivalent to a hash of the file itself.</div>
+</div>
 
 ## Install
 
 ```bash
-$ yarn add hash-worker
-# or
-$ npm install hash-worker
+$ pnpm install hash-worker
 ```
 
 ## Usage
 
-### CDN (Global)
+### Global
 
 ```html
-<script src="https://unpkg.com/hash-worker/dist/global.js"></script>
-<script src="https://unpkg.com/hash-worker/dist/worker/hash.worker.mjs"></script>
+
+<script src="./global.js"></script>
+<script src="./worker/hash.worker.mjs"></script>
 <script>
   HashWorker.getFileHashChunks()
 </script>
@@ -75,19 +75,20 @@ function handleDestroyWorkerPool() {
 
 **[WARNING]**
 
-If you are using `Vite` as a build tool and are experiencing dependency optimization issues with the hash-worker package, you can exclude the hash-worker package from dependency optimization in the `vite.config.js` file.
+If you are using `Vite` as a build tool and are experiencing dependency optimization issues with the hash-worker
+package, you can exclude the hash-worker package from dependency optimization in the `vite.config.js` file.
 
 Attention: Old version of `vite` may not emit errors.
 
 ```js
 // vite.config.js
-import {defineConfig} from 'vite';
+import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [ vue() ],
   optimizeDeps: {
-    exclude: ['hash-worker'] // new added
+    exclude: [ 'hash-worker' ] // new added
   }
 })
 ```
@@ -98,20 +99,20 @@ export default defineConfig({
 
 HashChksParam is used to configure the parameters needed to calculate the hash.
 
-| filed | type   | default | description                                                                         |
-| -------- | ------ | ------- |-------------------------------------------------------------------------------------|
-| file     | File   | /       | Files that need to calculate the hash (required for browser environments)           |
+| filed    | type   | default | description                                                                          |
+|----------|--------|---------|--------------------------------------------------------------------------------------|
+| file     | File   | /       | Files that need to calculate the hash (required for browser environments)            |
 | filePath | string | /       | Path to the file where the hash is to be calculated (required for Node environments) |
-|config|Config|Config| Parameters for calculating the Hash                                                 |
+| config   | Config | Config  | Parameters for calculating the Hash                                                  |
 
 **Config**
 
-| filed                    | type     | default        | description                                                  |
-| ------------------------ | -------- | -------------- | ------------------------------------------------------------ |
-| chunkSize                | number   | 10 (MB)        | Size of the file slice                                       |
-| workerCount              | number   | 8              | Number of workers turned on at the same time as the hash is calculated |
-| strategy                 | Strategy | Strategy.mixed | Hash computation strategy                                    |
-| borderCount              | number   | 100            | The cutoff for the hash calculation rule in 'mixed' mode     |
+| filed                    | type     | default        | description                                                                       |
+|--------------------------|----------|----------------|-----------------------------------------------------------------------------------|
+| chunkSize                | number   | 10 (MB)        | Size of the file slice                                                            |
+| workerCount              | number   | 8              | Number of workers turned on at the same time as the hash is calculated            |
+| strategy                 | Strategy | Strategy.mixed | Hash computation strategy                                                         |
+| borderCount              | number   | 100            | The cutoff for the hash calculation rule in 'mixed' mode                          |
 | isCloseWorkerImmediately | boolean  | true           | Whether to destroy the worker thread immediately when the calculation is complete |
 
 ```ts
@@ -123,25 +124,25 @@ export enum Strategy {
 }
 ```
 
-When Strategy.mixed strategy is used, if the number of file fragments is less than borderCount, the md5 algorithm will be used to calculate the hash value to build the MerkleTree.
+When Strategy.mixed strategy is used, if the number of file fragments is less than borderCount, the md5 algorithm will
+be used to calculate the hash value to build the MerkleTree.
 Otherwise, it switches to using the crc32 algorithm for MerkleTree construction.
 
 **HashChksRes**
 
 HashChksRes is the returned result after calculating the hash value.
 
-| filed | type | description                                                          |
-| ----- | ---- |----------------------------------------------------------------------|
-| chunksBlob | Blob[] | In a browser environment only, the Blob[] of the file slice is returned |
-| chunksHash | string[] | Hash[] for file slicing                                              |
-| merkleHash | string | The merkleHash of the file                                           |
-| metadata | FileMetaInfo | The metadata of the file                                             |
-
+| filed      | type         | description                                                             |
+|------------|--------------|-------------------------------------------------------------------------|
+| chunksBlob | Blob[]       | In a browser environment only, the Blob[] of the file slice is returned |
+| chunksHash | string[]     | Hash[] for file slicing                                                 |
+| merkleHash | string       | The merkleHash of the file                                              |
+| metadata   | FileMetaInfo | The metadata of the file                                                |
 
 **FileMetaInfo**
 
 | filed        | type   | description                                     |
-| ------------ | ------ |-------------------------------------------------|
+|--------------|--------|-------------------------------------------------|
 | name         | string | The name of the file used to calculate the hash |
 | size         | number | File size in KB                                 |
 | lastModified | number | Timestamp of the last modification of the file  |
@@ -149,7 +150,7 @@ HashChksRes is the returned result after calculating the hash value.
 
 ### [Benchmark (MD5)](./packages/benchmark/README.md)
 
-| Wroker Count | Speed     |
+| Worker Count | Speed     |
 |--------------|-----------|
 | 1            | 234 MB/s  |
 | 4            | 610 MB/s  |
@@ -164,7 +165,8 @@ HashChksRes is the returned result after calculating the hash value.
 
 ## Contributions
 
-Contributions are welcome! If you find a bug or want to add a new feature, please open an issue or submit a pull request.
+Contributions are welcome! If you find a bug or want to add a new feature, please open an issue or submit a pull
+request.
 
 ## Author and contributors
 
@@ -172,10 +174,10 @@ Contributions are welcome! If you find a bug or want to add a new feature, pleas
   <a href="https://github.com/Tkunl">
     <img src="https://avatars.githubusercontent.com/u/19854081?v=4" width="40" height="40" alt="Tkunl">
   </a>
-  <a href="https://github.com/nonzzz">
-    <img src="https://avatars.githubusercontent.com/u/52351095?v=4&s=40" width="40" height="40" alt="Kanno">
-  </a>
   <a href="https://github.com/Eternal-could">
     <img src="https://avatars.githubusercontent.com/u/74654896?v=4" width="40" height="40" alt="Eternal-could">
+  </a>
+  <a href="https://github.com/nonzzz">
+    <img src="https://avatars.githubusercontent.com/u/52351095?v=4&s=40" width="40" height="40" alt="Kanno">
   </a>
 </p>
