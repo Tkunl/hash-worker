@@ -16,10 +16,9 @@ Hash-worker 支持两种哈希计算算法：MD5 和 CRC32。
 
 同时支持 `浏览器` 和 `Node.js` 环境。
 
-<div style="padding: 16px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
-  <div><strong>WARNING：</strong></div>
-  <div>Hash-worker 计算出的 MerkleHash 是基于文件块哈希值构建的 MerkleTree 的根哈希值。请注意，这并不直接等同于文件本身的哈希值。</div>
-</div>
+> WARNING：
+> 
+> Hash-worker 计算出的 MerkleHash 是基于文件块哈希值构建的 MerkleTree 的根哈希值。请注意，这并不直接等同于文件本身的哈希值。
 
 ## Install
 
@@ -71,12 +70,12 @@ function handleDestroyWorkerPool() {
 }
 ```
 
-**[WARNING]**
-
-如果你在使用 `Vite` 作为构建工具, 并且遇到了 hash-worker 包的依赖优化问题, 可以在 `vite.config.js` 文件中将 hash-worker
-包排除在依赖优化之外
-
-注意: 旧版本的 `Vite` 可能不会报错
+> WARNING!
+> 
+> 如果你在使用 `Vite` 作为构建工具, 并且遇到了 hash-worker 包的依赖优化问题, 可以在 `vite.config.js` 文件中将 hash-worker
+包排除在依赖优化之外 
+> 
+> 注意: 旧版本的 `Vite` 可能不会报错
 
  ```js
 // vite.config.js

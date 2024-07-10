@@ -17,12 +17,9 @@ Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
 
 Both `browser` and `Node.js` are supported.
 
-<div style="padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
-  <p>
-    <div><strong>WARNING：</strong></div>
-    <div>The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes. Note that this is not directly equivalent to a hash of the file itself.</div>
-  </p>
-</div>
+> WARNING:
+> 
+> The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes. Note that this is not directly equivalent to a hash of the file itself.
 
 ## Install
 
@@ -74,12 +71,12 @@ function handleDestroyWorkerPool() {
 }
 ```
 
-**[WARNING]**
-
-If you are using `Vite` as a build tool and are experiencing dependency optimization issues with the hash-worker
+> WARNING!
+> 
+> If you are using `Vite` as a build tool and are experiencing dependency optimization issues with the hash-worker
 package, you can exclude the hash-worker package from dependency optimization in the `vite.config.js` file.
-
-Attention: Old version of `vite` may not emit errors.
+> 
+> Attention: Old version of `vite` may not emit errors.
 
 ```js
 // vite.config.js
