@@ -16,10 +16,14 @@ Hash-worker 支持两种哈希计算算法：MD5 和 CRC32。
 
 同时支持 `浏览器` 和 `Node.js` 环境。
 
-<div style="padding: 16px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
-  <div><strong>WARNING：</strong></div>
-  <div>Hash-worker 计算出的 MerkleHash 是基于文件块哈希值构建的 MerkleTree 的根哈希值。请注意，这并不直接等同于文件本身的哈希值。</div>
+
+<div style="padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
+  <p>
+    <div><strong>WARNING：</strong></div>
+    <div>Hash-worker 计算出的 MerkleHash 是基于文件块哈希值构建的 MerkleTree 的根哈希值。请注意，这并不直接等同于文件本身的哈希值。</div>
+  </p>
 </div>
+
 
 ## Install
 

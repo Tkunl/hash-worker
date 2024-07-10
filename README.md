@@ -17,10 +17,11 @@ Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
 
 Both `browser` and `Node.js` are supported.
 
-<div style="padding: 16px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
-  <div><strong>WARNING：</strong></div>
-  <div>The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes.
-Note that this is not directly equivalent to a hash of the file itself.</div>
+<div style="padding: 10px; background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; border-radius: 4px;">
+  <p>
+    <div><strong>WARNING：</strong></div>
+    <div>The merkleHash computed by the Hash-worker is the root hash of a MerkleTree constructed based on file block hashes. Note that this is not directly equivalent to a hash of the file itself.</div>
+  </p>
 </div>
 
 ## Install
