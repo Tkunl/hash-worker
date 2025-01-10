@@ -53,9 +53,6 @@ importers:
       jest-environment-jsdom:
         specifier: ^29.7.0
         version: 29.7.0
-      module-alias:
-        specifier: ^2.2.3
-        version: 2.2.3
       prettier:
         specifier: ^3.2.5
         version: 3.3.0
@@ -2149,9 +2146,6 @@ packages:
   minipass@7.1.2:
     resolution: {integrity: sha512-qOOzS1cBTWYF4BH8fVePDBOO9iptMnGUEZwNc/cMWnTV2nVLZ7VoNWEPHkYczZA0pdoA7dl6e7FL659nX9S2aw==}
     engines: {node: '>=16 || 14 >=14.17'}
-
-  module-alias@2.2.3:
-    resolution: {integrity: sha512-23g5BFj4zdQL/b6tor7Ji+QY4pEfNH784BMslY9Qb0UnJWRAt+lQGLYmRaM0KDBwIG23ffEBELhZDP2rhi9f/Q==}
 
   ms@2.1.2:
     resolution: {integrity: sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==}
@@ -5050,8 +5044,6 @@ snapshots:
       brace-expansion: 2.0.1
 
   minipass@7.1.2: {}
-
-  module-alias@2.2.3: {}
 
   ms@2.1.2: {}
 
