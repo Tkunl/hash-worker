@@ -7,9 +7,10 @@
     "build:core": "pnpm --filter=./packages/core run build",
     "build:benchmark": "pnpm --filter=./packages/benchmark run build",
     "benchmark": "pnpm --filter=./packages/playground/benchmark run play",
-    "play-vue": "pnpm run build && pnpm --filter=./packages/playground/vue-vite-demo run play",
-    "play-react": "pnpm run build && pnpm --filter=./packages/playground/react-vite-demo run play",
-    "play-node": "pnpm run build && pnpm --filter=./packages/playground/node-demo run play",
+    "play-node": "pnpm run build:core && pnpm --filter=./packages/playground/node-demo run play",
+    "play-vue-vite": "pnpm run build:core && pnpm --filter=./packages/playground/vue-vite-demo run play",
+    "play-react-vite": "pnpm run build:core && pnpm --filter=./packages/playground/react-vite-demo run play",
+    "play-react-webpack": "pnpm run build:core && pnpm --filter=./packages/playground/react-webpack-demo run play",
     "lint": "pnpm --filter=./packages/core run lint",
     "test": "pnpm --filter=./packages/core run test"
   },
