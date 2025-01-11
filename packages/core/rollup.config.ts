@@ -18,7 +18,11 @@ export default defineConfig([
       { file: 'dist/index.mjs', format: 'esm', exports: 'named' },
       { file: 'dist/index.js', format: 'cjs', exports: 'named' },
     ],
-    plugins: [nodeResolve(), swc({ sourceMaps: true })],
+    plugins: [
+      nodeResolve(),
+      swc({ sourceMaps: true }),
+      minify({ mangle: true, module: true, compress: true, sourceMap: true }),
+    ],
     external: ['worker_threads'],
   },
   // esm 类型产物

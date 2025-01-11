@@ -20,6 +20,7 @@ export function useFileHashInfo() {
 
     getFileHashChunks(param).then((res: HashChksRes) => {
       console.log(res)
+      alert('Calculation complete, please check the console!')
     })
   }
 

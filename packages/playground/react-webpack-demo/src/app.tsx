@@ -18,6 +18,7 @@ const App: React.FC = () => {
 
     getFileHashChunks(param).then((data: HashChksRes) => {
       console.log(data)
+      alert('Calculation complete, please check the console!')
     })
   }
 
