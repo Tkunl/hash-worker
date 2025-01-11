@@ -12,14 +12,14 @@
   "jsdelivr": "./dist/global.js",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/index.mjs"
     },
     "./global": {
+      "types": "./dist/global.d.ts",
       "require": "./dist/global.js",
-      "import": "./dist/global.js",
-      "types": "./dist/global.d.ts"
+      "import": "./dist/global.js"
     }
   },
   "files": [
