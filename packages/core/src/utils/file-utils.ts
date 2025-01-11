@@ -61,7 +61,7 @@ export async function readFileAsArrayBuffer(path: string, start: number, end: nu
     readStream.on('end', () => {
       const buf = Buffer.concat(chunks) // 合并所有数据块构成 Buffer
       const arrayBuf = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
-      rs(arrayBuf)
+      rs(arrayBuf as ArrayBuffer)
     })
 
     readStream.on('error', (e) => {
