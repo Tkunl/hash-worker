@@ -1,5 +1,11 @@
 import { ref } from 'vue'
-import { destroyWorkerPool, getFileHashChunks, HashChksParam, HashChksRes, Strategy } from 'hash-worker'
+import {
+  destroyWorkerPool,
+  getFileHashChunks,
+  HashChksParam,
+  HashChksRes,
+  Strategy,
+} from 'hash-worker'
 
 export function useFileHashInfo() {
   const file = ref<File>()

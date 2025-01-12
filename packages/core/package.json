@@ -33,7 +33,6 @@
     "dev": "rollup --config rollup.config.ts --configPlugin swc3 --watch",
     "build": "pnpm lint && pnpm rm:dist && rollup --config rollup.config.ts --configPlugin swc3",
     "test": "jest --coverage",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "rm:dist": "rimraf ./dist"
   },
   "keywords": [

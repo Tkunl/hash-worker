@@ -26,8 +26,8 @@ function App() {
   return (
     <>
       <div>Hello</div>
-      <input type="file" onChange={ handleInputChange } />
-      <button onClick={ handleGetHash }>get Hash</button>
+      <input type="file" onChange={handleInputChange} />
+      <button onClick={handleGetHash}>get Hash</button>
     </>
   )
 }
