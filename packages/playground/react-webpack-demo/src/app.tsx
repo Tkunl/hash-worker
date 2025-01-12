@@ -18,14 +18,15 @@ const App: React.FC = () => {
 
     getFileHashChunks(param).then((data: HashChksRes) => {
       console.log(data)
+      alert('Calculation complete, please check the console!')
     })
   }
 
   return (
     <>
       <div>Hello</div>
-      <input type="file" onChange={ handleInputChange } />
-      <button onClick={ handleGetHash }>get Hash</button>
+      <input type="file" onChange={handleInputChange} />
+      <button onClick={handleGetHash}>get Hash</button>
     </>
   )
 }

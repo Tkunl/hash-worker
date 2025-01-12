@@ -6,7 +6,7 @@ const param: HashChksParam = {
     strategy: Strategy.md5,
     workerCount: 8,
     isShowLog: true,
-  }
+  },
 }
 
 const beforeDate = Date.now()
@@ -17,5 +17,3 @@ function main() {
 }
 
 main()
-
-
