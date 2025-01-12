@@ -20,15 +20,15 @@ module.exports = {
         'chore', // 其他改动
       ],
     ],
-    'type-empty': [2, 'never'], // never: type不能为空; always: type必须为空
-    'type-case': [0, 'always', 'lower-case'], // type必须小写，upper-case大写，camel-case小驼峰，kebab-case短横线，pascal-case大驼峰，等等
+    'type-empty': [2, 'never'], // never: type 不能为空; always: type 必须为空
+    'type-case': [0, 'always', 'lower-case'], // type 必须小写，upper-case大写，camel-case小驼峰，kebab-case短横线，pascal-case大驼峰，等等
     'scope-empty': [0],
     'scope-case': [0],
     'subject-empty': [2, 'never'], // subject不能为空
     'subject-case': [0],
-    'subject-full-stop': [0, 'never', '.'], // subject以.为结束标记
-    'header-max-length': [2, 'always', 72], // header最长72
-    'body-leading-blank': [0], // body换行
-    'footer-leading-blank': [0, 'always'], // footer以空行开头
+    'subject-full-stop': [0, 'never', '.'], // subject 以.为结束标记
+    'header-max-length': [2, 'always', 72], // header 最长72
+    'body-leading-blank': [0], // body 换行
+    'footer-leading-blank': [0, 'always'], // footer 以空行开头
   },
 }
