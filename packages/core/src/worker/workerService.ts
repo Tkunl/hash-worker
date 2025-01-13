@@ -28,11 +28,15 @@ export class WorkerService {
   }
 
   getMD5ForFiles(chunks: ArrayBuffer[]) {
-    return this.getHashForFiles(chunks, Strategy.MD5)
+    return this.getHashForFiles(chunks, Strategy.md5)
   }
 
   getCRC32ForFiles(chunks: ArrayBuffer[]) {
-    return this.getHashForFiles(chunks, Strategy.CRC32)
+    return this.getHashForFiles(chunks, Strategy.crc32)
+  }
+
+  getXxHash64ForFiles(chunks: ArrayBuffer[]) {
+    return this.getHashForFiles(chunks, Strategy.xxHash64)
   }
 
   terminate() {

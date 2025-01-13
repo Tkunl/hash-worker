@@ -77,16 +77,40 @@ function handleDestroyWorkerPool() {
 
  ```js
 // vite.config.js
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
-  plugins: [ vue() ],
+  plugins: [vue()],
   optimizeDeps: {
-    exclude: [ 'hash-worker' ] // new added
+    exclude: ['hash-worker'] // new added
   }
 })
  ```
+
+> [!WARNING]
+> 如果你在使用 `Webpack` 作为构建工具, 需要在 Webpack 的配置文件中, 添加如下配置, 用于排除 node 相关模块的解析
+
+```js
+// webpack.config.js
+module.exports = {
+  // 其他配置
+  resolve: {
+    fallback: {
+      fs: false,
+      path: false,
+      'fs/promises': false,
+      worker_threads: false,
+    },
+  },
+  externals: {
+    fs: 'commonjs fs',
+    path: 'commonjs path',
+    'fs/promises': 'commonjs fs/promises',
+    worker_threads: 'commonjs worker_threads',
+  },
+}
+```
 
 ## Options
 
@@ -151,7 +175,7 @@ HashChksRes 是计算哈希值之后的返回结果。
 | 8            | 851 MB/s  |
 | 12           | 1011 MB/s |
 
-* 这些测试是运行在 `Chrome v126` 和 `Zen3 Desktop` CPU 下得到的
+* 这些测试是运行在 `Chrome v126` 和 `AMD Ryzen9 5950X` CPU 下的
 
 ## LICENSE
 

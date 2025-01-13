@@ -139,6 +139,7 @@ HashChksParam 是用于配置计算哈希值所需的参数。
 export enum Strategy {
   md5 = 'md5',
   crc32 = 'crc32',
+  xxHash64 = 'xxHash64',
   mixed = 'mixed',
 }
 ```
@@ -175,7 +176,7 @@ HashChksRes 是计算哈希值之后的返回结果。
 | 8            | 851 MB/s  |
 | 12           | 1011 MB/s |
 
-* 这些测试是运行在 `Chrome v126` 和 `Zen3 Desktop` CPU 下得到的
+* 这些测试是运行在 `Chrome v126` 和 `AMD Ryzen9 5950X` CPU 下的
 
 ## LICENSE
 

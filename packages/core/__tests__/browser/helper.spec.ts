@@ -3,6 +3,7 @@ import { Strategy } from '../../src/interface'
 jest.mock('hash-wasm', () => ({
   crc32: jest.fn(() => Promise.resolve('crc32hash')),
   md5: jest.fn(() => Promise.resolve('md5hash')),
+  xxhash64: jest.fn(() => Promise.resolve('xxhash64')),
 }))
 
 jest.mock('../../src/utils/is', () => ({
@@ -15,6 +16,7 @@ jest.mock('../../src/worker/workerService', () => {
     WorkerService: jest.fn().mockImplementation(() => ({
       getMD5ForFiles: jest.fn(),
       getCRC32ForFiles: jest.fn(),
+      getXxHash64ForFiles: jest.fn(),
       terminate: jest.fn(),
     })),
   }
@@ -80,18 +82,23 @@ describe('getChunksHashSingle', () => {
   const testArrayBuffer = new Uint8Array([1, 2, 3]).buffer
 
   it('should use md5 hashing strategy for md5 strategy option', async () => {
-    const result = await getChunksHashSingle(Strategy.MD5, testArrayBuffer)
+    const result = await getChunksHashSingle(Strategy.md5, testArrayBuffer)
     expect(result).toEqual(['md5hash'])
   })
 
-  it('should use md5 hashing strategy for mixed strategy option', async () => {
-    const result = await getChunksHashSingle(Strategy.MIXED, testArrayBuffer)
+  it('should use mixed hashing strategy for mixed strategy option', async () => {
+    const result = await getChunksHashSingle(Strategy.mixed, testArrayBuffer)
     expect(result).toEqual(['md5hash'])
   })
 
   it('should use crc32 hashing strategy for crc32 strategy option', async () => {
-    const result = await getChunksHashSingle(Strategy.CRC32, testArrayBuffer)
+    const result = await getChunksHashSingle(Strategy.crc32, testArrayBuffer)
     expect(result).toEqual(['crc32hash'])
+  })
+
+  it('should use xxHash64 hashing strategy for xxHash64 strategy option', async () => {
+    const result = await getChunksHashSingle(Strategy.xxHash64, testArrayBuffer)
+    expect(result).toEqual(['xxhash64'])
   })
 })
 
@@ -104,22 +111,27 @@ describe('getChunksHashMultiple', () => {
   })
 
   it('should use MD5 hashing for MD5 strategy', async () => {
-    await getChunksHashMultiple(Strategy.MD5, arrayBuffers, 5, 3, workerSvc)
+    await getChunksHashMultiple(Strategy.md5, arrayBuffers, 5, 3, workerSvc)
     expect(workerSvc.getMD5ForFiles).toHaveBeenCalledWith(arrayBuffers)
   })
 
   it('should use CRC32 hashing for CRC32 strategy', async () => {
-    await getChunksHashMultiple(Strategy.CRC32, arrayBuffers, 5, 3, workerSvc)
+    await getChunksHashMultiple(Strategy.crc32, arrayBuffers, 5, 3, workerSvc)
     expect(workerSvc.getCRC32ForFiles).toHaveBeenCalledWith(arrayBuffers)
   })
 
+  it('should use xxHash64 hashing for xxHash64 strategy', async () => {
+    await getChunksHashMultiple(Strategy.xxHash64, arrayBuffers, 5, 3, workerSvc)
+    expect(workerSvc.getXxHash64ForFiles).toHaveBeenCalledWith(arrayBuffers)
+  })
+
   it('should use MD5 hashing for mixed strategy when chunksCount <= borderCount', async () => {
-    await getChunksHashMultiple(Strategy.MIXED, arrayBuffers, 2, 3, workerSvc)
+    await getChunksHashMultiple(Strategy.mixed, arrayBuffers, 2, 3, workerSvc)
     expect(workerSvc.getMD5ForFiles).toHaveBeenCalledWith(arrayBuffers)
   })
 
   it('should use CRC32 hashing for mixed strategy when chunksCount > borderCount', async () => {
-    await getChunksHashMultiple(Strategy.MIXED, arrayBuffers, 4, 3, workerSvc)
+    await getChunksHashMultiple(Strategy.mixed, arrayBuffers, 4, 3, workerSvc)
     expect(workerSvc.getCRC32ForFiles).toHaveBeenCalledWith(arrayBuffers)
   })
 })

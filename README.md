@@ -141,6 +141,7 @@ HashChksParam is used to configure the parameters needed to calculate the hash.
 export enum Strategy {
   md5 = 'md5',
   crc32 = 'crc32',
+  xxHash64 = 'xxHash64',
   mixed = 'mixed',
 }
 ```
@@ -178,7 +179,7 @@ HashChksRes is the returned result after calculating the hash value.
 | 8            | 851 MB/s  |
 | 12           | 1011 MB/s |
 
-* These measurements were made with `Chrome v126` on a `Zen3 Desktop` CPU
+* These measurements were made with `Chrome v126` on `AMD Ryzen9 5950X` CPU
 
 ## LICENSE
 

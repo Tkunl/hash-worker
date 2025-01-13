@@ -1,5 +1,6 @@
 export enum Strategy {
-  MD5 = 'MD5',
-  CRC32 = 'CRC32',
-  MIXED = 'MIXED',
+  md5 = 'md5',
+  crc32 = 'crc32',
+  xxHash64 = 'xxHash64',
+  mixed = 'mixed',
 }

@@ -37,7 +37,7 @@ describe('processFileInBrowser', () => {
   })
   const config: Required<Config> = {
     chunkSize: 10,
-    strategy: Strategy.MD5,
+    strategy: Strategy.md5,
     workerCount: 6,
     isCloseWorkerImmediately: true,
     borderCount: 2,
@@ -92,7 +92,7 @@ describe('processFileInBrowser', () => {
 describe('processFileInNode function', () => {
   const config: Required<Config> = {
     chunkSize: 10,
-    strategy: Strategy.MD5,
+    strategy: Strategy.md5,
     workerCount: 6,
     isCloseWorkerImmediately: true,
     borderCount: 2,

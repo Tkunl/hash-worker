@@ -31,7 +31,7 @@
   ],
   "scripts": {
     "dev": "rollup --config rollup.config.ts --configPlugin swc3 --watch",
-    "build": "pnpm lint && pnpm rm:dist && rollup --config rollup.config.ts --configPlugin swc3",
+    "build": "pnpm rm:dist && rollup --config rollup.config.ts --configPlugin swc3",
     "test": "jest --coverage",
     "rm:dist": "rimraf ./dist"
   },

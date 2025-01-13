@@ -3,6 +3,7 @@ import * as arr from './arrayUtils'
 import * as miniSubject from './miniSubject'
 import * as fileUtils from './fileUtils'
 import * as is from './is'
+import * as getHashStrategy from './getHashStrategy'
 
 /**
  * 兼容 import utils from './utils'; utils.someFn() 写法
@@ -12,6 +13,7 @@ export default {
   ...arr,
   ...miniSubject,
   ...fileUtils,
+  ...getHashStrategy,
   ...is,
 }
 
@@ -23,3 +25,4 @@ export * from './arrayUtils'
 export * from './miniSubject'
 export * from './fileUtils'
 export * from './is'
+export * from './getHashStrategy'
