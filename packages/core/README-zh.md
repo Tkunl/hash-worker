@@ -139,6 +139,7 @@ HashChksParam 是用于配置计算哈希值所需的参数。
 export enum Strategy {
   md5 = 'md5',
   crc32 = 'crc32',
+  xxHash64 = 'xxHash64',
   mixed = 'mixed',
 }
 ```
