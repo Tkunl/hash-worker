@@ -1,0 +1,9 @@
+{
+  "name": "browser-demo",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "prepare": "node prepare.js",
+    "play": "node server.js"
+  }
+}
