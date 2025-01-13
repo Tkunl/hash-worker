@@ -18,7 +18,7 @@
     "prepare": "husky",
     "pre-commit": "lint-staged",
     "commitlint": "commitlint --config commitlint.config.js -e -V",
-    "sync-readme": "node scripts/syncReadme.cjs"
+    "sync-readme": "node scripts/syncReadme.js"
   },
   "keywords": [
     "hash-worker",

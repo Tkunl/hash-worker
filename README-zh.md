@@ -70,10 +70,7 @@ function handleDestroyWorkerPool() {
 ```
 
 > [!WARNING]
-> 如果你在使用 `Vite` 作为构建工具, 并且遇到了 hash-worker 包的依赖优化问题, 可以在 `vite.config.js` 文件中将 hash-worker
-包排除在依赖优化之外 
-> 
-> 注意: 旧版本的 `Vite` 可能不会报错
+> 如果你在使用 `Vite` 作为构建工具, 需要在 `Vite` 的配置文件中, 添加如下配置, 用于排除 vite 的依赖优化
 
  ```js
 // vite.config.js
@@ -82,8 +79,9 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
+  // other configurations ...
   optimizeDeps: {
-    exclude: ['hash-worker'] // new added
+    exclude: ['hash-worker'] // new added..
   }
 })
  ```
@@ -94,8 +92,8 @@ export default defineConfig({
 ```js
 // webpack.config.js
 module.exports = {
-  // 其他配置
-  resolve: {
+  // new added..
+  resolve: { 
     fallback: {
       fs: false,
       path: false,
@@ -103,6 +101,7 @@ module.exports = {
       worker_threads: false,
     },
   },
+  // new added..
   externals: {
     fs: 'commonjs fs',
     path: 'commonjs path',
