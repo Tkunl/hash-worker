@@ -1,16 +1,16 @@
-import { WorkerService } from './worker/workerService'
+import { crc32, md5, xxhash64 } from 'hash-wasm'
+import { getRootHashByChunks } from './getRootHashByChunks'
 import { Config, HashChksParam, Strategy } from './interface'
 import {
   getArrayBufFromBlobs,
   getArrParts,
   getFileSliceLocations,
-  getHashStrategy,
   isBrowser,
   isNode,
   readFileAsArrayBuffer,
   sliceFile,
 } from './utils'
-import { getRootHashByChunks } from './getRootHashByChunks'
+import { WorkerService } from './worker/workerService'
 
 const DEFAULT_MAX_WORKERS = 8
 const BORDER_COUNT = 100
@@ -76,6 +76,13 @@ export function normalizeParam(param: HashChksParam) {
  */
 export async function getChunksHashSingle(strategy: Strategy, arrayBuffer: ArrayBuffer) {
   const unit8Array = new Uint8Array(arrayBuffer)
+  const getHashStrategy = (strategy: Strategy) => {
+    if (strategy === Strategy.md5) return md5
+    if (strategy === Strategy.crc32) return crc32
+    if (strategy === Strategy.xxHash64) return xxhash64
+    throw Error('Unknown strategy')
+  }
+
   return [await getHashStrategy(strategy === Strategy.mixed ? Strategy.md5 : strategy)(unit8Array)]
 }
 

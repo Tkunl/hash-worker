@@ -1,13 +1,17 @@
 /// <reference lib="webworker" />
 
+import { crc32, md5, xxhash64 } from 'hash-wasm'
+import { Strategy, WorkerReq } from '../interface'
 import { isBrowser2, isNode } from '../utils'
-import { getHashStrategy } from '../utils/getHashStrategy'
-import { WorkerReq } from '../interface'
 
 async function calculateHash(req: WorkerReq) {
   const { chunk: buf, strategy } = req
-  const hashFn = await getHashStrategy(strategy)
-  const hash = await hashFn(new Uint8Array(buf))
+
+  let hash = ''
+  // const u8 = new Uint8Array(buf)
+  if (strategy === Strategy.md5) hash = await md5(new Uint8Array(buf))
+  if (strategy === Strategy.crc32) hash = await crc32(new Uint8Array(buf))
+  if (strategy === Strategy.xxHash64) hash = await xxhash64(new Uint8Array(buf))
 
   return {
     result: hash,

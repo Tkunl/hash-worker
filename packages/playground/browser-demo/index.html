@@ -1,43 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Browser Demo</title>
 </head>
+
 <body>
-<script src="./global.js"></script>
-<script src="./hash.worker.mjs"></script>
-<script>
-  // let file
-  //
-  // function handleInputChange(e) {
-  //   file = e.target.files[0]
-  // }
-  //
-  // function handleGetHash() {
-  //   const param = {
-  //     file,
-  //     config: {
-  //       workerCount: 8,
-  //     },
-  //   }
-  //
-  //   console.log('HashWorker', HashWorker)
-  //   console.log('HashWorker.getFileHashChunks', HashWorker.getFileHashChunks)
+  <script src="./global.js"></script>
+  <script src="./worker/hash.worker.mjs"></script>
+  <script>
+    let file
 
-    // HashWorker.getFileHashChunks(param).then((data) => {
-    //   console.log(data)
-    //   alert('Calculation complete, please check the console!')
-    // })
-  // }
-</script>
+    function handleInputChange(e) {
+      file = e.target.files[0]
+    }
 
-<div>
-  <div>Hello</div>
-<!--  <input type="file" onchange="handleInputChange()" />-->
-<!--  <button onclick="handleGetHash()">get Hash</button>-->
-</div>
+    function handleGetHash() {
+      console.log('handleGetHash')
+      const param = {
+        file,
+        config: {
+          workerCount: 8,
+        },
+      }
+
+      HashWorker.getFileHashChunks(param).then((data) => {
+        console.log(data)
+        alert('Calculation complete, please check the console!')
+      })
+    }
+  </script>
+
+  <div>
+    <div>Hello</div>
+    <input type="file" onchange="handleInputChange(event)" />
+    <button onclick="handleGetHash()">get Hash</button>
+  </div>
 
 </body>
+
 </html>

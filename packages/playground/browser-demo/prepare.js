@@ -62,7 +62,7 @@ const filesToCopy = [
   },
   {
     src: path.resolve(rootDir, '../../core/dist/worker/hash.worker.mjs'),
-    dest: path.resolve(rootDir, 'hash.worker.mjs'),
+    dest: path.resolve(rootDir, './worker/hash.worker.mjs'),
   },
 ]
 
