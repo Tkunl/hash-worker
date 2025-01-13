@@ -56,7 +56,7 @@ test('getArrParts should handle size equal to array length', () => {
 describe('getFileSliceLocations function slices file as expected', async () => {
   let sliceLocation: [number, number][]
   let endLocation: number
-  const filePath = path.join(__dirname, './../fixture/mock-file.txt')
+  const filePath = path.join(__dirname, './../fixture/mockFile.txt')
 
   // 基于你的测试文件和 baseSize 计算出预期的分片
   let expectedEndLocation: number
@@ -85,7 +85,7 @@ describe('getFileSliceLocations function slices file as expected', async () => {
 })
 
 describe('readFileAsArrayBuffer reads specified range of file into ArrayBuffer', () => {
-  const filePath = path.join(__dirname, './../fixture/mock-file.txt')
+  const filePath = path.join(__dirname, './../fixture/mockFile.txt')
   const start = 0
   let end: number
   let arrayBuffer: ArrayBuffer

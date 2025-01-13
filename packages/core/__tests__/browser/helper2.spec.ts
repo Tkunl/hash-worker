@@ -1,20 +1,20 @@
 import * as helper from '../../src/helper'
 import { Config, Strategy } from '../../src/interface'
 import { getFileSliceLocations, readFileAsArrayBuffer, sliceFile } from '../../src/utils'
-import { WorkerService } from '../../src/worker/worker-service'
-import { MockBlob } from '../fixture/mock-blob'
-import { getRootHashByChunks } from '../../src/get-root-hash-by-chunks'
+import { WorkerService } from '../../src/worker/workerService'
+import { MockBlob } from '../fixture/mockBlob'
+import { getRootHashByChunks } from '../../src/getRootHashByChunks'
 import { processFileInBrowser, processFileInNode } from '../../src/helper'
 
 global.Blob = MockBlob
 
-jest.mock('../../src/worker/worker-service', () => ({
+jest.mock('../../src/worker/workerService', () => ({
   WorkerService: jest.fn().mockImplementation(() => ({
     terminate: jest.fn(),
   })),
 }))
 
-jest.mock('../../src/utils/file-utils', () => ({
+jest.mock('../../src/utils/fileUtils', () => ({
   sliceFile: jest.fn(),
   getArrayBufFromBlobs: jest.fn(),
   getFileSliceLocations: jest.fn(),
@@ -27,7 +27,7 @@ jest.mock('../../src/helper', () => ({
   getChunksHashMultiple: jest.fn(),
 }))
 
-jest.mock('../../src/get-root-hash-by-chunks', () => ({
+jest.mock('../../src/getRootHashByChunks', () => ({
   getRootHashByChunks: jest.fn(),
 }))
 
@@ -37,7 +37,7 @@ describe('processFileInBrowser', () => {
   })
   const config: Required<Config> = {
     chunkSize: 10,
-    strategy: Strategy.md5,
+    strategy: Strategy.MD5,
     workerCount: 6,
     isCloseWorkerImmediately: true,
     borderCount: 2,
@@ -92,7 +92,7 @@ describe('processFileInBrowser', () => {
 describe('processFileInNode function', () => {
   const config: Required<Config> = {
     chunkSize: 10,
-    strategy: Strategy.md5,
+    strategy: Strategy.MD5,
     workerCount: 6,
     isCloseWorkerImmediately: true,
     borderCount: 2,

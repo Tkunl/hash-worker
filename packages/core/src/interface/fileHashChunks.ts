@@ -1,4 +1,4 @@
-import { FileMetaInfo } from './file-meta-info'
+import { FileMetaInfo } from './fileMetaInfo'
 import { Strategy } from './strategy'
 
 export interface Config {

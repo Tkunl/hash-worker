@@ -1,5 +1,5 @@
 import { crc32, md5 } from 'hash-wasm'
-import { WorkerService } from './worker/worker-service'
+import { WorkerService } from './worker/workerService'
 import { Config, HashChksParam, Strategy } from './interface'
 import {
   getArrayBufFromBlobs,
@@ -10,7 +10,7 @@ import {
   readFileAsArrayBuffer,
   sliceFile,
 } from './utils'
-import { getRootHashByChunks } from './get-root-hash-by-chunks'
+import { getRootHashByChunks } from './getRootHashByChunks'
 
 const DEFAULT_MAX_WORKERS = 8
 const BORDER_COUNT = 100
@@ -35,7 +35,7 @@ export function normalizeParam(param: HashChksParam) {
     // 默认使用 8个 Worker 线程
     workerCount: workerCount ?? DEFAULT_MAX_WORKERS,
     // 默认使用混合模式计算 hash
-    strategy: strategy ?? Strategy.mixed,
+    strategy: strategy ?? Strategy.MIXED,
     // 默认以 100 分片数量作为边界
     borderCount: borderCount ?? BORDER_COUNT,
     // 默认计算 hash 后立即关闭 worker
@@ -76,7 +76,7 @@ export function normalizeParam(param: HashChksParam) {
  */
 export async function getChunksHashSingle(strategy: Strategy, arrayBuffer: ArrayBuffer) {
   const unit8Array = new Uint8Array(arrayBuffer)
-  return strategy === Strategy.md5 || strategy === Strategy.mixed
+  return strategy === Strategy.MD5 || strategy === Strategy.MIXED
     ? [await md5(unit8Array)]
     : [await crc32(unit8Array)]
 }
@@ -97,9 +97,9 @@ export async function getChunksHashMultiple(
   workerSvc: WorkerService,
 ) {
   const processor = {
-    [Strategy.md5]: () => workerSvc.getMD5ForFiles(arrayBuffers),
-    [Strategy.crc32]: () => workerSvc.getCRC32ForFiles(arrayBuffers),
-    [Strategy.mixed]: () =>
+    [Strategy.MD5]: () => workerSvc.getMD5ForFiles(arrayBuffers),
+    [Strategy.CRC32]: () => workerSvc.getCRC32ForFiles(arrayBuffers),
+    [Strategy.MIXED]: () =>
       chunksCount <= borderCount
         ? workerSvc.getMD5ForFiles(arrayBuffers)
         : workerSvc.getCRC32ForFiles(arrayBuffers),

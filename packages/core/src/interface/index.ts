@@ -1,7 +1,7 @@
-export type * from './file-hash-chunks'
-export type * from './file-meta-info'
-export type * from './worker-res'
-export type * from './worker-req'
-export type * from './fn-types'
+export type * from './fileHashChunks'
+export type * from './fileMetaInfo'
+export type * from './workerRes'
+export type * from './workerReq'
+export type * from './fnTypes'
 
 export * from './strategy'

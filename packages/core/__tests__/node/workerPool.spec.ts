@@ -1,4 +1,4 @@
-import { MockWorkerPool } from '../fixture/mock-worker-pool'
+import { MockWorkerPool } from '../fixture/mockWorkerPool'
 
 describe('WorkerPool', () => {
   // 测试 WorkerPool 是否能够执行任务并返回结果

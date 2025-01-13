@@ -1,4 +1,4 @@
-import { WorkerPoolForHash } from './worker-pool-for-hash'
+import { WorkerPoolForHash } from './workerPoolForHash'
 import { getFn, restoreFn, Strategy, WorkerReq } from '../interface'
 
 export class WorkerService {
@@ -28,11 +28,11 @@ export class WorkerService {
   }
 
   getMD5ForFiles(chunks: ArrayBuffer[]) {
-    return this.getHashForFiles(chunks, Strategy.md5)
+    return this.getHashForFiles(chunks, Strategy.MD5)
   }
 
   getCRC32ForFiles(chunks: ArrayBuffer[]) {
-    return this.getHashForFiles(chunks, Strategy.crc32)
+    return this.getHashForFiles(chunks, Strategy.CRC32)
   }
 
   terminate() {

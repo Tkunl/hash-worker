@@ -1,4 +1,4 @@
-import { StatusEnum, WorkerWrapper } from './worker-wrapper'
+import { StatusEnum, WorkerWrapper } from './workerWrapper'
 import { MiniSubject } from '../utils'
 import { getFn, restoreFn } from '../interface'
 

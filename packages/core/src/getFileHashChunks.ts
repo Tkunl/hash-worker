@@ -1,5 +1,5 @@
 import { getFileMetadata, isBrowser, isNode } from './utils'
-import { WorkerService } from './worker/worker-service'
+import { WorkerService } from './worker/workerService'
 import { HashChksParam, HashChksRes } from './interface'
 import { normalizeParam, processFileInBrowser, processFileInNode } from './helper'
 

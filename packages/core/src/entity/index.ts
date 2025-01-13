@@ -1,3 +1,3 @@
-export * from './merkle-tree'
-export * from './worker-pool'
-export * from './worker-wrapper'
+export * from './merkleTree'
+export * from './workerPool'
+export * from './workerWrapper'

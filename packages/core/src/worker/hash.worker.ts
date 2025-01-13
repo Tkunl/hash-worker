@@ -7,10 +7,10 @@ import { Strategy, WorkerReq } from '../interface'
 async function calculateHash(req: WorkerReq) {
   const { chunk: buf, strategy } = req
   let hash = ''
-  if (strategy === Strategy.md5) {
+  if (strategy === Strategy.MD5) {
     hash = await md5(new Uint8Array(buf))
   }
-  if (strategy === Strategy.crc32) {
+  if (strategy === Strategy.CRC32) {
     hash = await crc32(new Uint8Array(buf))
   }
   return {
