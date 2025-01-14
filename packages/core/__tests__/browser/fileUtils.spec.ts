@@ -1,7 +1,7 @@
 import { getArrayBufFromBlobs, getFileMetadata, sliceFile } from '../../src/utils'
 import path from 'path'
 import fs from 'fs/promises'
-import { MockBlob } from '../fixture/mock-blob'
+import { MockBlob } from '../fixture/mockBlob'
 
 // 在测试文件的顶部，模拟 Blob.prototype.arrayBuffer
 function mockArrayBuffer(): void {
@@ -73,12 +73,12 @@ describe('getFileMetadata', () => {
   })
 
   it('should correctly return file metadata in node env', async () => {
-    const filePath = path.join(__dirname, './../fixture/mock-file.txt')
+    const filePath = path.join(__dirname, './../fixture/mockFile.txt')
 
     const fileInfo = await getFileMetadata(undefined, filePath)
     const stats = await fs.stat(filePath)
 
-    expect(fileInfo.name).toBe('mock-file.txt')
+    expect(fileInfo.name).toBe('mockFile.txt')
     expect(fileInfo.size).toBe(stats.size / 1024)
     expect(fileInfo.type).toBe('.txt')
   })

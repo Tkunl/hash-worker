@@ -1,5 +1,5 @@
-import { MockWebWorker } from '../fixture/mock-web-worker'
-import { WorkerPoolForHash } from '../../src/worker/worker-pool-for-hash'
+import { MockWebWorker } from '../fixture/mockWebWorker'
+import { WorkerPoolForHash } from '../../src/worker/workerPoolForHash'
 
 // 模拟浏览器下的 Web Worker
 ;(global as any).Worker = MockWebWorker

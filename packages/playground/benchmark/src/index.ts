@@ -4,7 +4,7 @@ import { Strategy } from 'hash-worker'
 const options: BenchmarkOptions = {
   sizeInMB: 100,
   workerCountTobeTest: [8, 8, 8],
-  strategy: Strategy.md5,
+  strategy: Strategy.xxHash64,
 }
 
 benchmark(options).then(() => {})

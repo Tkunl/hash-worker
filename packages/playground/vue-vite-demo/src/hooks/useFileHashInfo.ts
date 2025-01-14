@@ -19,8 +19,7 @@ export function useFileHashInfo() {
       file: file.value!,
       config: {
         workerCount: 8,
-        strategy: Strategy.crc32,
-        isShowLog: true,
+        strategy: Strategy.md5,
       },
     }
 

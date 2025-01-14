@@ -1,4 +1,4 @@
-import { StatusEnum, WorkerWrapper } from './worker-wrapper'
+import { StatusEnum, WorkerWrapper } from './workerWrapper'
 import { MiniSubject } from '../utils'
 import { getFn, restoreFn } from '../interface'
 
@@ -21,8 +21,8 @@ export abstract class WorkerPool {
         if (count < this.maxWorkerCount && workerParams.length !== 0) {
           // 当前能跑的任务数量
           let curTaskCount = this.maxWorkerCount - count
-          if (curTaskCount > params.length) {
-            curTaskCount = params.length
+          if (curTaskCount > workerParams.length) {
+            curTaskCount = workerParams.length
           }
 
           // 此时可以用来执行任务的 Worker

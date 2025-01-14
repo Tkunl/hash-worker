@@ -2,7 +2,7 @@
 
 This project is used to test the hash calculation speed of Hash worker in different threads.
 
-It supports both `browser` and `Node.js` environments.
+It supports both `Browser` and `Node.js` environments.
 
 ### Usage
 
@@ -29,6 +29,7 @@ benchmark(options)
 export enum Strategy {
   md5 = 'md5',
   crc32 = 'crc32',
+  xxHash64 = 'xxHash64',
   mixed = 'mixed',
 }
 ```

@@ -1,4 +1,4 @@
-# Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker) [![codecov](https://codecov.io/gh/Tkunl/hash-worker/graph/badge.svg?token=G7GYAPEPYS)](https://codecov.io/gh/Tkunl/hash-worker) ![GitHub License](https://img.shields.io/github/license/Tkunl/hash-worker)
+# Hash Worker [![npm package](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker) [![Bundle size](https://badgen.net/bundlephobia/minzip/hash-worker)](https://bundlephobia.com/result?p=hash-worker)  [![codecov](https://codecov.io/gh/Tkunl/hash-worker/graph/badge.svg?token=G7GYAPEPYS)](https://codecov.io/gh/Tkunl/hash-worker) ![GitHub License](https://img.shields.io/github/license/Tkunl/hash-worker)
 
 <p align="center">
 <img src="https://socialify.git.ci/Tkunl/hash-worker/image?font=Inter&language=1&name=1&owner=1&pattern=Plus&theme=Auto" width="640" height="320" />
@@ -70,10 +70,7 @@ function handleDestroyWorkerPool() {
 ```
 
 > [!WARNING]
-> 如果你在使用 `Vite` 作为构建工具, 并且遇到了 hash-worker 包的依赖优化问题, 可以在 `vite.config.js` 文件中将 hash-worker
-包排除在依赖优化之外 
-> 
-> 注意: 旧版本的 `Vite` 可能不会报错
+> 如果你在使用 `Vite` 作为构建工具, 需要在 `Vite` 的配置文件中, 添加如下配置, 用于排除 vite 的依赖优化
 
  ```js
 // vite.config.js
@@ -82,8 +79,9 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
+  // other configurations ...
   optimizeDeps: {
-    exclude: ['hash-worker'] // new added
+    exclude: ['hash-worker'] // new added..
   }
 })
  ```
@@ -94,8 +92,8 @@ export default defineConfig({
 ```js
 // webpack.config.js
 module.exports = {
-  // 其他配置
-  resolve: {
+  // new added..
+  resolve: { 
     fallback: {
       fs: false,
       path: false,
@@ -103,6 +101,7 @@ module.exports = {
       worker_threads: false,
     },
   },
+  // new added..
   externals: {
     fs: 'commonjs fs',
     path: 'commonjs path',
@@ -139,6 +138,7 @@ HashChksParam 是用于配置计算哈希值所需的参数。
 export enum Strategy {
   md5 = 'md5',
   crc32 = 'crc32',
+  xxHash64 = 'xxHash64',
   mixed = 'mixed',
 }
 ```
@@ -170,12 +170,12 @@ HashChksRes 是计算哈希值之后的返回结果。
 
 | Worker Count | Speed     |
 |--------------|-----------|
-| 1            | 234 MB/s  |
-| 4            | 610 MB/s  |
-| 8            | 851 MB/s  |
-| 12           | 1011 MB/s |
+| 1            | 229 MB/s  |
+| 4            | 632 MB/s  |
+| 8            | 886 MB/s  |
+| 12           | 1037 MB/s |
 
-* 这些测试是运行在 `Chrome v126` 和 `Zen3 Desktop` CPU 下得到的
+* 以上数据是运行在 `Chrome v131` 和 `AMD Ryzen9 5950X` CPU 下, 通过使用 md5 来计算 hash 得到的。
 
 ## LICENSE
 

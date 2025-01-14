@@ -2,7 +2,7 @@
 
 该项目用于测试 Hash worker 在不同线程下的哈希计算速度
 
-它同时支持浏览器环境和 Node.js 环境
+它同时支持 `浏览器` 环境和 `Node.js` 环境
 
 ### Usage
 
@@ -29,6 +29,7 @@ benchmark(options)
 export enum Strategy {
   md5 = 'md5',
   crc32 = 'crc32',
+  xxHash64 = 'xxHash64',
   mixed = 'mixed',
 }
 ```

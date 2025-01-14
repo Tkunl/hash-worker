@@ -1,4 +1,4 @@
-# Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker) [![codecov](https://codecov.io/gh/Tkunl/hash-worker/graph/badge.svg?token=G7GYAPEPYS)](https://codecov.io/gh/Tkunl/hash-worker) ![GitHub License](https://img.shields.io/github/license/Tkunl/hash-worker)
+# Hash Worker [![npm package](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker) [![Bundle size](https://badgen.net/bundlephobia/minzip/hash-worker)](https://bundlephobia.com/result?p=hash-worker)  [![codecov](https://codecov.io/gh/Tkunl/hash-worker/graph/badge.svg?token=G7GYAPEPYS)](https://codecov.io/gh/Tkunl/hash-worker) ![GitHub License](https://img.shields.io/github/license/Tkunl/hash-worker)
 
 <p align="center">
 <img src="https://socialify.git.ci/Tkunl/hash-worker/image?font=Inter&language=1&name=1&owner=1&pattern=Plus&theme=Auto" width="640" height="320" />
@@ -71,10 +71,7 @@ function handleDestroyWorkerPool() {
 ```
 
 > [!WARNING]
-> If you are using `Vite` as your build tool and are experiencing dependency optimization issues with the hash-worker
-package, you can exclude the hash-worker package from dependency optimization in the `vite.config.js` file.
-> 
-> Attention: Old version of `vite` may not emit errors.
+If you are using `Vite` as your build tool, you need to add some configurations in your `vite.config.js` to exclude hash-worker from optimizeDeps.
 
 ```js
 // vite.config.js
@@ -83,8 +80,9 @@ import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [vue()],
+  // other configurations ...
   optimizeDeps: {
-    exclude: ['hash-worker'] // new added
+    exclude: ['hash-worker'] // new added..
   }
 })
 ```
@@ -96,8 +94,8 @@ export default defineConfig({
 ```js
 // webpack.config.js
 module.exports = {
-  // other configs ...
-  resolve: {
+  // new added..
+  resolve: { 
     fallback: {
       fs: false,
       path: false,
@@ -105,6 +103,7 @@ module.exports = {
       worker_threads: false,
     },
   },
+  // new added..
   externals: {
     fs: 'commonjs fs',
     path: 'commonjs path',
@@ -141,6 +140,7 @@ HashChksParam is used to configure the parameters needed to calculate the hash.
 export enum Strategy {
   md5 = 'md5',
   crc32 = 'crc32',
+  xxHash64 = 'xxHash64',
   mixed = 'mixed',
 }
 ```
@@ -173,12 +173,12 @@ HashChksRes is the returned result after calculating the hash value.
 
 | Worker Count | Speed     |
 |--------------|-----------|
-| 1            | 234 MB/s  |
-| 4            | 610 MB/s  |
-| 8            | 851 MB/s  |
-| 12           | 1011 MB/s |
+| 1            | 229 MB/s  |
+| 4            | 632 MB/s  |
+| 8            | 886 MB/s  |
+| 12           | 1037 MB/s |
 
-* These measurements were made with `Chrome v126` on a `Zen3 Desktop` CPU
+The above data is run on the `Chrome v131` and `AMD Ryzen9 5950X` CPU, by using md5 to calculate hash.
 
 ## LICENSE
 

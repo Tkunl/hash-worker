@@ -1,5 +1,5 @@
 import { StatusEnum, WorkerWrapper } from '../../src/entity'
-import { MockWebWorker } from '../fixture/mock-web-worker'
+import { MockWebWorker } from '../fixture/mockWebWorker'
 
 // 在全局空间中声明这个类，以模拟在浏览器中的 Worker 行为
 ;(global as any).Worker = MockWebWorker

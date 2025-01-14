@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IIFE Demo</title>
+</head>
+
+<body>
+  <script src="./global.js"></script>
+  <script src="./worker/hash.worker.mjs"></script>
+  <script>
+    let file
+
+    function handleInputChange(e) {
+      file = e.target.files[0]
+    }
+
+    function handleGetHash() {
+      const param = {
+        file,
+        config: {
+          workerCount: 8,
+          strategy: 'md5',
+        },
+      }
+
+      HashWorker.getFileHashChunks(param).then((data) => {
+        console.log(data)
+        alert('Calculation complete, please check the console!')
+      })
+    }
+  </script>
+
+  <div>
+    <h2>Hello</h2>
+    <div>
+      <p>如果你在使用 Chrome 浏览器, 并且在控制台日志中发现了报错输出</p>
+      <p>这可能是因为你开启了 Vue.js devtools 或 React Developer Tools 插件</p>
+      <p>关闭它们, 错误就会消失.</p>
+    </div>
+    <input type="file" onchange="handleInputChange(event)" />
+    <button onclick="handleGetHash()">get Hash</button>
+  </div>
+
+</body>
+
+</html>

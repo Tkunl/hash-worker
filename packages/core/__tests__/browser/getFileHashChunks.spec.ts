@@ -1,17 +1,17 @@
-import { getFileHashChunks } from '../../src/get-file-hash-chunks'
+import { getFileHashChunks } from '../../src/getFileHashChunks'
 
 jest.mock('../../src/utils/is', () => ({
   isNode: jest.fn(() => false),
   isBrowser: jest.fn(() => false),
 }))
 
-jest.mock('../../src/worker/worker-service', () => ({
+jest.mock('../../src/worker/workerService', () => ({
   WorkerService: jest.fn(() => ({
     terminate: jest.fn(),
   })),
 }))
 
-jest.mock('../../src/utils/file-utils', () => ({
+jest.mock('../../src/utils/fileUtils', () => ({
   getFileMetadata: jest.fn(() => ({
     name: 'fakeFileName.txt',
   })),
