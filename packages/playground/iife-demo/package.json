@@ -3,7 +3,6 @@
   "private": true,
   "license": "MIT",
   "scripts": {
-    "prepare": "node prepare.js",
-    "play": "node server.js"
+    "play": "node prepare.js && node server.js"
   }
 }

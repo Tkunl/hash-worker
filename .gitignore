@@ -48,5 +48,5 @@ testem.log
 Thumbs.db
 
 # browser-demo
-/packages/playground/browser-demo/global.js
-/packages/playground/browser-demo/worker/*
+/packages/playground/iife-demo/global.js
+/packages/playground/iife-demo/worker/*
