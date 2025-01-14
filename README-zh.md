@@ -1,4 +1,4 @@
-# Hash Worker [![plugin-react version](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker) [![codecov](https://codecov.io/gh/Tkunl/hash-worker/graph/badge.svg?token=G7GYAPEPYS)](https://codecov.io/gh/Tkunl/hash-worker) ![GitHub License](https://img.shields.io/github/license/Tkunl/hash-worker)
+# Hash Worker [![npm package](https://img.shields.io/npm/v/hash-worker.svg)](https://www.npmjs.com/package/hash-worker) [![Bundle size](https://badgen.net/bundlephobia/minzip/hash-worker)](https://bundlephobia.com/result?p=hash-worker)  [![codecov](https://codecov.io/gh/Tkunl/hash-worker/graph/badge.svg?token=G7GYAPEPYS)](https://codecov.io/gh/Tkunl/hash-worker) ![GitHub License](https://img.shields.io/github/license/Tkunl/hash-worker)
 
 <p align="center">
 <img src="https://socialify.git.ci/Tkunl/hash-worker/image?font=Inter&language=1&name=1&owner=1&pattern=Plus&theme=Auto" width="640" height="320" />
