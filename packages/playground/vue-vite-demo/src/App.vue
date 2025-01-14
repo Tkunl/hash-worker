@@ -7,7 +7,7 @@ const { handleInputChange, handleGetHash, handleDestroyWorkerPool } = useFileHas
 
 function handleDoBenchmark() {
   const options: BenchmarkOptions = {
-    strategy: Strategy.xxHash64
+    strategy: Strategy.md5
   }
   benchmark(options).then(() => {
   })

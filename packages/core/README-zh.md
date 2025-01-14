@@ -170,12 +170,12 @@ HashChksRes 是计算哈希值之后的返回结果。
 
 | Worker Count | Speed     |
 |--------------|-----------|
-| 1            | 234 MB/s  |
-| 4            | 610 MB/s  |
-| 8            | 851 MB/s  |
-| 12           | 1011 MB/s |
+| 1            | 229 MB/s  |
+| 4            | 632 MB/s  |
+| 8            | 886 MB/s  |
+| 12           | 1037 MB/s |
 
-* 这些测试是运行在 `Chrome v126` 和 `AMD Ryzen9 5950X` CPU 下的
+* 以上数据是运行在 `Chrome v131` 和 `AMD Ryzen9 5950X` CPU 下, 通过使用 md5 来计算 hash 得到的。
 
 ## LICENSE
 
