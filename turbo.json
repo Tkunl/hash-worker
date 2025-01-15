@@ -1,0 +1,21 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build:core": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "packages/core/dist/**"
+      ]
+    },
+    "build:benchmark": {
+      "dependsOn": [
+        "^build"
+      ],
+      "outputs": [
+        "packages/benchmark/dist/**"
+      ]
+    }
+  }
+}

@@ -9,6 +9,7 @@ dist
 
 # 排除子项目的打包产物
 **/output
+**/.turbo
 
 # Node, 忽略任意层级下的 node_modules 目录
 **/node_modules/
