@@ -1,20 +1,22 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
-    "build:core": {
+    "build": {
       "dependsOn": [
         "^build"
       ],
       "outputs": [
-        "packages/core/dist/**"
+        "packages/core/dist/**",
+        "packages/benchmark/dist/**"
       ]
     },
-    "build:benchmark": {
+    "build:demo": {
       "dependsOn": [
-        "^build"
+        "^build:demo"
       ],
       "outputs": [
-        "packages/benchmark/dist/**"
+        "packages/playground/benchmark/dist/**",
+        "packages/playground/node-demo/dist/**"
       ]
     }
   }

@@ -4,11 +4,8 @@
   "scripts": {
     "dev:core": "pnpm --filter=./packages/core run dev",
     "dev:benchmark": "pnpm --filter=./packages/benchmark run dev",
-    "build:core": "pnpm --filter=./packages/core run build",
-    "build:benchmark": "pnpm --filter=./packages/benchmark run build",
-    "build:all": "pnpm run build:core && pnpm run build:benchmark",
-    "trubo-build:core": "turbo run build:core --filter=./packages/core",
-    "trubo-build:benchmark": "turbo run build:benchmark",
+    "build": "turbo run build",
+    "build:play-demo": "turbo run build:demo",
     "play-benchmark": "pnpm run build:all && pnpm --filter=./packages/playground/benchmark run play",
     "play-node": "pnpm run build:core && pnpm --filter=./packages/playground/node-demo run play",
     "play-iife": "pnpm run build:core && pnpm --filter=./packages/playground/iife-demo run play",
