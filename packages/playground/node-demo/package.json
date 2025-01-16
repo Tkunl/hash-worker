@@ -4,8 +4,8 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "play": "pnpm rm:dist && pnpm build:demo && node --trace-warnings dist/index.js",
-    "build:demo": "pnpm rm:dist && tsup --config tsup.config.ts",
+    "play": "node dist/index.js",
+    "build:node-demo": "pnpm rm:dist && tsup --config tsup.config.ts",
     "rm:dist": "rimraf ./dist"
   },
   "dependencies": {

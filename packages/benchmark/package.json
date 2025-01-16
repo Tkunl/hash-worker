@@ -15,7 +15,7 @@
   },
   "scripts": {
     "dev": "tsup --config tsup.config.ts --watch",
-    "build": "pnpm rm:dist && tsup --config tsup.config.ts && pnpm build:dts",
+    "build:benchmark": "pnpm rm:dist && tsup --config tsup.config.ts && pnpm build:dts",
     "build:dts": "dts-bundle-generator --config dts-bundle.config.json",
     "rm:dist": "rimraf ./dist"
   },

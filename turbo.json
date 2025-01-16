@@ -6,16 +6,33 @@
         "^build"
       ],
       "outputs": [
-        "packages/core/dist/**",
+        "packages/core/dist/**"
+      ]
+    },
+    "build:benchmark": {
+      "dependsOn": [
+        "^build",
+        "^build:benchmark"
+      ],
+      "outputs": [
         "packages/benchmark/dist/**"
       ]
     },
-    "build:demo": {
+    "build:benchmark-demo": {
       "dependsOn": [
-        "^build:demo"
+        "^build:benchmark",
+        "^build:benchmark-demo"
       ],
       "outputs": [
-        "packages/playground/benchmark/dist/**",
+        "packages/playground/benchmark-demo/dist/**"
+      ]
+    },
+    "build:node-demo": {
+      "dependsOn": [
+        "^build",
+        "^build:node-demo"
+      ],
+      "outputs": [
         "packages/playground/node-demo/dist/**"
       ]
     }
