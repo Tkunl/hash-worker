@@ -8,6 +8,7 @@
     "build:benchmark": "turbo run build:benchmark",
     "build:node-demo": "turbo run build:node-demo",
     "build:benchmark-demo": "turbo run build:benchmark-demo",
+    "build:all": "turbo run build:all",
     "play-benchmark": "pnpm run build:benchmark-demo && pnpm --filter=./packages/playground/benchmark-demo run play",
     "play-node": "pnpm run build:node-demo && pnpm --filter=./packages/playground/node-demo run play",
     "play-iife": "pnpm run build:core && pnpm --filter=./packages/playground/iife-demo run play",

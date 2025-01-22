@@ -3,19 +3,28 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["packages/core/dist/**"]
+      "outputs": ["dist/**"],
+      "outputLogs": "new-only"
     },
     "build:benchmark": {
       "dependsOn": ["^build", "^build:benchmark"],
-      "outputs": ["packages/benchmark/dist/**"]
+      "outputs": ["dist/**"],
+      "outputLogs": "new-only"
     },
     "build:benchmark-demo": {
       "dependsOn": ["^build:benchmark", "^build:benchmark-demo"],
-      "outputs": ["packages/playground/benchmark-demo/dist/**"]
+      "outputs": ["dist/**"],
+      "outputLogs": "new-only"
     },
     "build:node-demo": {
       "dependsOn": ["^build", "^build:node-demo"],
-      "outputs": ["packages/playground/node-demo/dist/**"]
+      "outputs": ["dist/**"],
+      "outputLogs": "new-only"
+    },
+    "build:all": {
+      "dependsOn": ["build", "build:benchmark", "build:benchmark-demo", "build:node-demo"],
+      "outputs": ["dist/**"],
+      "outputLogs": "new-only"
     }
   }
 }
