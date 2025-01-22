@@ -41,18 +41,48 @@ function removePaths(paths) {
   console.log('All deletion attempts have been processed.')
 }
 
+function processArgs() {
+  const args = process.argv.slice(2)
+  let pattern = ''
+
+  args.forEach((arg) => {
+    const [key, value] = arg.split('=')
+    if (key === '--pattern') {
+      pattern = value
+    }
+  })
+  return pattern
+}
+
 ;(() => {
   const startTime = Date.now() // 记录开始时间
+  const pattern = processArgs() // 获取执行参数
 
-  const pathsToDelete = [
-    ...nodeModulesDir,
-    ...distDir,
-    ...turboCacheDir,
-    ...iifeDemoDeps,
-    ...coverageDir,
-  ].map((_path) => path.resolve(process.cwd(), _path))
+  // 定义目录映射
+  const dirMap = {
+    node_modules: nodeModulesDir,
+    dist: distDir,
+    cache: turboCacheDir,
+    coverage: coverageDir,
+  }
 
-  // 调用主函数
+  let pathsToDelete = []
+
+  if (pattern === 'all') {
+    pathsToDelete = [
+      ...nodeModulesDir,
+      ...distDir,
+      ...turboCacheDir,
+      ...iifeDemoDeps,
+      ...coverageDir,
+    ]
+  } else if (dirMap[pattern]) {
+    pathsToDelete = dirMap[pattern]
+  }
+
+  // 解析路径并删除
+  pathsToDelete = pathsToDelete.map((p) => path.resolve(process.cwd(), p))
+
   removePaths(pathsToDelete)
 
   const endTime = Date.now() // 记录结束时间

@@ -2,39 +2,20 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "packages/core/dist/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["packages/core/dist/**"]
     },
     "build:benchmark": {
-      "dependsOn": [
-        "^build",
-        "^build:benchmark"
-      ],
-      "outputs": [
-        "packages/benchmark/dist/**"
-      ]
+      "dependsOn": ["^build", "^build:benchmark"],
+      "outputs": ["packages/benchmark/dist/**"]
     },
     "build:benchmark-demo": {
-      "dependsOn": [
-        "^build:benchmark",
-        "^build:benchmark-demo"
-      ],
-      "outputs": [
-        "packages/playground/benchmark-demo/dist/**"
-      ]
+      "dependsOn": ["^build:benchmark", "^build:benchmark-demo"],
+      "outputs": ["packages/playground/benchmark-demo/dist/**"]
     },
     "build:node-demo": {
-      "dependsOn": [
-        "^build",
-        "^build:node-demo"
-      ],
-      "outputs": [
-        "packages/playground/node-demo/dist/**"
-      ]
+      "dependsOn": ["^build", "^build:node-demo"],
+      "outputs": ["packages/playground/node-demo/dist/**"]
     }
   }
 }
