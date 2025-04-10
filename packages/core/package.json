@@ -1,6 +1,6 @@
 {
   "name": "hash-worker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "hash-worker is a tool for quickly calculating file's hash",
   "author": "https://github.com/Tkunl",
   "repository": "https://github.com/Tkunl/hash-worker",

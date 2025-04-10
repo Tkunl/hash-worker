@@ -7,7 +7,8 @@ import { isBrowser, isNode } from './is'
  * @param baseSize 默认分块大小为 1MB
  */
 export function sliceFile(file: File, baseSize = 1) {
-  const chunkSize = baseSize << 20 // MB
+  if (baseSize <= 0) throw Error('baseSize must be greater than 0')
+  const chunkSize = Math.max(1, baseSize * 1048576) // 1MB = 1024 * 1024
   const chunks: Blob[] = []
   let startPos = 0
   while (startPos < file.size) {
@@ -23,8 +24,9 @@ export function sliceFile(file: File, baseSize = 1) {
  * @param baseSize 默认分块大小为 1MB
  */
 export async function getFileSliceLocations(filePath: string, baseSize = 1) {
+  if (baseSize <= 0) throw Error('baseSize must be greater than 0')
   const fsp = await import('fs/promises')
-  const chunkSize = baseSize << 20 // MB
+  const chunkSize = Math.max(1, baseSize * 1048576) // 1MB = 1024 * 1024
   const stats = await fsp.stat(filePath)
   const end = stats.size // Bytes 字节
   const sliceLocation: [number, number][] = []

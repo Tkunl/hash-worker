@@ -1,5 +1,11 @@
 # hash-worker
 
+## 1.0.1
+
+### Minor Changes
+
+- fix: 当 0 <= chunkSize < 1 时, 导致分片函数死循环的问题
+
 ## 1.0.0
 
 ### Major Changes
