@@ -12,7 +12,7 @@
 
 它基于 hash-wasm 且利用了 WebWorker 进行并行计算，从而加快了计算文件分片的计算速度。
 
-Hash-worker 支持两种哈希计算算法：MD5 和 CRC32。
+Hash-worker 支持三种哈希计算算法：`md5`, `crc32` 和 `xxHash64`。
 
 同时支持 `浏览器` 和 `Node.js` 环境。
 

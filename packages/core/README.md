@@ -13,7 +13,7 @@
 It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, which speeds up computation when
 processing file blocks.
 
-Hash-worker supports two hash computation algorithms: `MD5` and `CRC32`.
+Hash-worker supports three hash computation algorithms: `md5`, `crc32` and `xxHash64`.
 
 Both `browser` and `Node.js` are supported.
 
