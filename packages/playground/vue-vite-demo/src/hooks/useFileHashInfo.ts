@@ -10,8 +10,11 @@ import {
 export function useFileHashInfo() {
   const file = ref<File>()
 
-  function handleInputChange(e: any) {
-    file.value = e.target.files[0]
+  function handleInputChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    if (target.files) {
+      file.value = target.files[0]
+    }
   }
 
   function handleGetHash() {
