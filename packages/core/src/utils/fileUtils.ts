@@ -54,16 +54,16 @@ export async function getArrayBufFromBlobs(chunks: Blob[]): Promise<ArrayBuffer[
 export async function readFileAsArrayBuffer(path: string, start: number, end: number) {
   const fs = await import('fs')
   const readStream = fs.createReadStream(path, { start, end })
-  const chunks: any[] = []
+  const chunks: Buffer[] = []
   return new Promise<ArrayBuffer>((rs, rj) => {
     readStream.on('data', (chunk) => {
-      chunks.push(chunk) // 收集数据块
+      chunks.push(chunk as Buffer) // 收集数据块
     })
 
     readStream.on('end', () => {
       const buf = Buffer.concat(chunks) // 合并所有数据块构成 Buffer
       const arrayBuf = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
-      rs(arrayBuf as ArrayBuffer)
+      rs(arrayBuf)
     })
 
     readStream.on('error', (e) => {

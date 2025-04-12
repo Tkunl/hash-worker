@@ -2,17 +2,17 @@ import { StatusEnum, WorkerWrapper } from './workerWrapper'
 import { MiniSubject } from '../utils'
 import { getFn, restoreFn } from '../interface'
 
-export abstract class WorkerPool {
+export abstract class WorkerPool<R = unknown> {
   pool: WorkerWrapper[] = []
   maxWorkerCount: number
   curRunningCount = new MiniSubject(0)
-  results: any[] = []
+  results: R[] = []
 
   protected constructor(maxWorkers: number) {
     this.maxWorkerCount = maxWorkers
   }
 
-  exec<T, U>(params: U[], getFn: getFn<U>, restoreFn: restoreFn) {
+  exec<T extends R, U>(params: U[], getFn: getFn<U>, restoreFn: restoreFn) {
     this.results.length = 0
     const workerParams = params.map((param, index) => ({ data: param, index }))
 

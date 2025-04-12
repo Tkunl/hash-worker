@@ -1,4 +1,4 @@
-import { getFileHashChunks, HashChksParam, Strategy } from 'hash-worker'
+import { getFileHashChunks, HashChksParam, HashChksRes, Strategy } from 'hash-worker'
 
 const param: HashChksParam = {
   filePath: 'filePath here ...',
@@ -10,7 +10,7 @@ const param: HashChksParam = {
 }
 
 function main() {
-  getFileHashChunks(param).then((res: any) => {
+  getFileHashChunks(param).then((res: HashChksRes) => {
     console.log(res)
   })
 }

@@ -3,7 +3,7 @@
  * @param chunks 原始数组
  * @param size 分 part 大小
  */
-export function getArrParts<T>(chunks: any, size: number) {
+export function getArrParts<T>(chunks: T[], size: number) {
   const result: T[][] = []
   let tempPart: T[] = []
   chunks.forEach((chunk: T) => {

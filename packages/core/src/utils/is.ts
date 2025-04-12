@@ -1,4 +1,14 @@
-export function isEmpty(value: any) {
+/**
+ * 检查一个值是否为空。空值的定义包括：
+ * - `undefined` 或 `null`
+ * - 空字符串 (`''`)
+ * - 空数组（长度为0）
+ * - 空的 `Map` 或 `Set`（size为0）
+ * - 空对象（没有可枚举的自身属性，且非 `Date` 实例）
+ * @param value - 需要检查的值，可以是任意类型
+ * @returns 如果值为空则返回 `true`，否则返回 `false`
+ */
+export function isEmpty(value: unknown) {
   if (value === void 0 || value === null || value === '') {
     return true
   }
