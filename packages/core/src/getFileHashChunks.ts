@@ -11,7 +11,7 @@ let curWorkerCount: number = 0
  * @param param
  */
 async function getFileHashChunks(param: HashChksParam): Promise<HashChksRes> {
-  const { config, file, filePath } = normalizeParam(param)
+  const { config, file, filePath } = await normalizeParam(param)
   const { isCloseWorkerImmediately, isShowLog, workerCount } = config
 
   if (workerService === null || curWorkerCount !== workerCount) {

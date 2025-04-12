@@ -19,7 +19,7 @@ const BORDER_COUNT = 100
  * 标准化参数
  * @param param
  */
-export function normalizeParam(param: HashChksParam) {
+export async function normalizeParam(param: HashChksParam) {
   const env: 'node' | 'browser' = (() => {
     if (isNode()) return 'node'
     if (isBrowser()) return 'browser'
@@ -48,6 +48,20 @@ export function normalizeParam(param: HashChksParam) {
     if (!param.filePath) {
       throw new Error('The filePath attribute is required in node environment')
     }
+
+    const fs = await import('fs')
+    try {
+      const stats = fs.statSync(param.filePath)
+      stats.isFile()
+    } catch (err) {
+      const error = err as NodeJS.ErrnoException
+      if (error.code === 'ENOENT') {
+        throw new Error('Invalid filePath')
+      } else {
+        throw error
+      }
+    }
+
     return {
       ...param,
       config,
