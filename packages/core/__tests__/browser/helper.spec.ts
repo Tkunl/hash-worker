@@ -65,15 +65,15 @@ describe('normalizeParam', () => {
     }).toThrow('The file attribute is required in browser environment')
   })
 
-  it('get filePath in param correctly in node environment', () => {
+  it('get filePath in param correctly in node environment', async () => {
     setNodeEnv()
-    const param = normalizeParam({ filePath: 'mockPath' })
+    const param = await normalizeParam({ filePath: 'mockPath' })
     expect(param.filePath).toBe('mockPath')
   })
 
-  it('get file in param correctly in browser environment', () => {
+  it('get file in param correctly in browser environment', async () => {
     setBrowserEnv()
-    const param = normalizeParam({ file: mockFile })
+    const param = await normalizeParam({ file: mockFile })
     expect(param.file).toBeTruthy()
   })
 })
