@@ -1,30 +1,33 @@
-import { WorkerPoolForHash } from './workerPoolForHash'
-import { getFn, restoreFn, Strategy, WorkerReq } from '../types'
+import { BaseWorkerPool } from '.'
+import { Strategy, WorkerReq, GetFn, RestoreFn } from '../types'
 
-export class WorkerService {
-  MAX_WORKERS
-  pool: WorkerPoolForHash | undefined
+export abstract class BaseWorkerService {
+  protected maxWorkers: number
+  protected pool: BaseWorkerPool | undefined
 
   constructor(maxWorkers: number) {
-    this.MAX_WORKERS = maxWorkers
+    this.maxWorkers = maxWorkers
   }
+
+  protected abstract createWorkerPool(maxWorkers: number): Promise<BaseWorkerPool>
 
   private async getHashForFiles(chunks: ArrayBuffer[], strategy: Strategy) {
     if (this.pool === undefined) {
-      this.pool = await WorkerPoolForHash.create(this.MAX_WORKERS)
+      this.pool = await this.createWorkerPool(this.maxWorkers)
     }
     const params: WorkerReq[] = chunks.map((chunk) => ({
       chunk,
       strategy,
     }))
 
-    const getFn: getFn<WorkerReq> = (param: WorkerReq) => param.chunk
-    const restoreFn: restoreFn = (options) => {
+    const getFn: GetFn<WorkerReq> = (param: WorkerReq) => param.chunk
+    const restoreFn: RestoreFn = (options) => {
       const { index, buf } = options
       chunks[index] = buf
     }
 
-    return this.pool.exec<string, WorkerReq>(params, getFn, restoreFn)
+    // TODO 此处可以抛出错误
+    return this.pool?.exec<string, WorkerReq>(params, getFn, restoreFn)
   }
 
   getMD5ForFiles(chunks: ArrayBuffer[]) {

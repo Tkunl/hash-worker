@@ -1,13 +1,13 @@
-import { WorkerPool } from '../shared'
-import { BrowserWorkerWrapper } from './browserWorkerWrapper'
+import { BaseWorkerPool } from '../shared'
+import { BrowserWorkerWrapper } from '.'
 
-export class HashWorkerPool extends WorkerPool {
+export class BrowserWorkerPool extends BaseWorkerPool {
   constructor(maxWorkers: number) {
     super(maxWorkers)
   }
 
   static async create(maxWorkers: number) {
-    const instance = new HashWorkerPool(maxWorkers)
+    const instance = new BrowserWorkerPool(maxWorkers)
     const countArr = Array.from({ length: maxWorkers })
 
     instance.pool = countArr.map(() => {

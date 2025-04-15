@@ -1,4 +1,4 @@
-import { getFn, Reject, Resolve, restoreFn, WorkerRes, WorkerStatusEnum } from '../types'
+import { GetFn, Reject, Resolve, RestoreFn, WorkerRes, WorkerStatusEnum } from '../types'
 
 export abstract class BaseWorkerWrapper<
   T extends { terminate: () => void } = { terminate: () => void },
@@ -11,7 +11,7 @@ export abstract class BaseWorkerWrapper<
     this.status = WorkerStatusEnum.WAITING
   }
 
-  abstract run<T, U>(param: U, index: number, getFn: getFn<U>, restoreFn: restoreFn): Promise<T>
+  abstract run<T, U>(param: U, index: number, getFn: GetFn<U>, restoreFn: RestoreFn): Promise<T>
 
   terminate() {
     this.worker.terminate()
@@ -20,11 +20,11 @@ export abstract class BaseWorkerWrapper<
   protected abstract setupListeners(
     resolve: Resolve,
     reject: Reject,
-    restoreFn: restoreFn,
+    restoreFn: RestoreFn,
     index: number,
   ): void
 
-  protected handleMessage(data: unknown, resolve: Resolve, restoreFn: restoreFn, index: number) {
+  protected handleMessage(data: unknown, resolve: Resolve, restoreFn: RestoreFn, index: number) {
     const workerRes = this.parseWorkerData(data)
     if (workerRes?.result && workerRes?.chunk) {
       restoreFn({ buf: workerRes.chunk, index })

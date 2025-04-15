@@ -1,6 +1,7 @@
 import fs from 'fs'
 import fsp from 'fs/promises'
 import path from 'path'
+import { FileMetaInfo } from '../types'
 
 /**
  * 读取一个文件并将它转成 ArrayBuffer
@@ -10,9 +11,9 @@ import path from 'path'
  */
 export async function readFileAsArrayBuffer(path: string, start: number, end: number) {
   const readStream = fs.createReadStream(path, { start, end })
-  // TODO any 待修复
+  // TODO 此处类型待修复
   const chunks: any[] = []
-  return new Promise((rs, rj) => {
+  return new Promise<ArrayBuffer>((rs, rj) => {
     readStream.on('data', (chunk) => {
       chunks.push(chunk) // 收集数据块
     })
@@ -20,7 +21,8 @@ export async function readFileAsArrayBuffer(path: string, start: number, end: nu
     readStream.on('end', () => {
       const buf = Buffer.concat(chunks) // 合并所有数据块构成 Buffer
       const arrayBuf = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
-      rs(arrayBuf)
+      // TODO 此处类型待修复
+      rs(arrayBuf as ArrayBuffer)
     })
 
     readStream.on('error', (e) => {
@@ -50,7 +52,7 @@ export async function getFileSliceLocations(filePath: string, baseSize = 1) {
  * 获取文件元数据
  * @param filePath 文件路径
  */
-export async function getFileMetadata(filePath: string) {
+export async function getFileMetadata(filePath: string): Promise<FileMetaInfo> {
   const stats = await fsp.stat(filePath)
   return {
     name: path.basename(filePath),

@@ -1,12 +1,12 @@
 import { BaseWorkerWrapper } from '../shared'
-import { getFn, Reject, Resolve, restoreFn, WorkerStatusEnum } from '../types'
+import { GetFn, Reject, Resolve, RestoreFn, WorkerStatusEnum } from '../types'
 
 export class BrowserWorkerWrapper extends BaseWorkerWrapper<Worker> {
   constructor(worker: Worker) {
     super(worker)
   }
 
-  run<T, U>(param: U, index: number, getFn: getFn<U>, restoreFn: restoreFn): Promise<T> {
+  run<T, U>(param: U, index: number, getFn: GetFn<U>, restoreFn: RestoreFn): Promise<T> {
     this.status = WorkerStatusEnum.RUNNING
 
     return new Promise<T>((resolve, reject) => {
@@ -15,7 +15,7 @@ export class BrowserWorkerWrapper extends BaseWorkerWrapper<Worker> {
     })
   }
 
-  protected setupListeners(resolve: Resolve, reject: Reject, restoreFn: restoreFn, index: number) {
+  protected setupListeners(resolve: Resolve, reject: Reject, restoreFn: RestoreFn, index: number) {
     this.worker.onmessage = (event: MessageEvent) =>
       this.handleMessage(event.data, resolve, restoreFn, index)
     this.worker.onerror = (event: ErrorEvent) =>

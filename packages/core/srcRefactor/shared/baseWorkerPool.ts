@@ -1,7 +1,7 @@
-import { getFn, restoreFn, WorkerStatusEnum } from '../types'
-import { MiniSubject, BaseWorkerWrapper } from './'
+import { GetFn, RestoreFn, WorkerStatusEnum } from '../types'
+import { MiniSubject, BaseWorkerWrapper } from '.'
 
-export abstract class WorkerPool<R = unknown> {
+export abstract class BaseWorkerPool<R = unknown> {
   pool: BaseWorkerWrapper[] = []
   maxWorkerCount: number
   curRunningCount = new MiniSubject(0)
@@ -11,7 +11,7 @@ export abstract class WorkerPool<R = unknown> {
     this.maxWorkerCount = maxWorkers
   }
 
-  exec<T extends R, U>(params: U[], getFn: getFn<U>, restoreFn: restoreFn) {
+  exec<T extends R, U>(params: U[], getFn: GetFn<U>, restoreFn: RestoreFn) {
     this.results.length = 0
     const workerParams = params.map((param, index) => ({ data: param, index }))
 

@@ -1,8 +1,5 @@
 export type * from './fileHashChunks'
-export type * from './fileMetaInfo'
-export type * from './workerRes'
-export type * from './workerReq'
-export type * from './fnTypes'
+export type * from './functionTypes'
 
 export * from './strategy'
-export * from './workerStatus'
+export * from './workerTypes'

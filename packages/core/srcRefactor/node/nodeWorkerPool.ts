@@ -1,14 +1,14 @@
 import { Worker as NodeWorker } from 'worker_threads'
-import { WorkerPool } from '../shared'
-import { NodeWorkerWrapper } from './nodeWorkerWrapper'
+import { BaseWorkerPool } from '../shared'
+import { NodeWorkerWrapper } from '.'
 
-export class HashWorkerPool extends WorkerPool {
+export class NodeWorkerPool extends BaseWorkerPool {
   constructor(maxWorkers: number) {
     super(maxWorkers)
   }
 
   static async create(maxWorkers: number) {
-    const instance = new HashWorkerPool(maxWorkers)
+    const instance = new NodeWorkerPool(maxWorkers)
     const countArr = Array.from({ length: maxWorkers })
 
     instance.pool = countArr.map(() => {

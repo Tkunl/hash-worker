@@ -30,7 +30,7 @@ export function sliceFile(file: File, baseSize = 1) {
  * 获取文件元数据
  * @param file 文件
  */
-export function getFileMetadata(file: File) {
+export async function getFileMetadata(file: File): Promise<FileMetaInfo> {
   let fileType: string | undefined = ''
 
   if (file.name.includes('.')) {
@@ -43,5 +43,5 @@ export function getFileMetadata(file: File) {
     size: file.size / 1024,
     lastModified: file.lastModified,
     type: fileType,
-  } satisfies FileMetaInfo
+  }
 }
