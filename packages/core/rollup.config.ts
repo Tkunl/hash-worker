@@ -14,7 +14,7 @@ export default defineConfig([
   // 浏览器 esm 产物
   {
     input: 'src/browser.esm.ts',
-    output: [{ file: 'dist/browser.esm.mjs', format: 'esm', exports: 'named' }],
+    output: [{ file: 'dist/browser.esm.js', format: 'esm', exports: 'named' }],
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
@@ -24,7 +24,7 @@ export default defineConfig([
   // 浏览器 esm 类型产物
   {
     input: 'src/browser.esm.ts',
-    output: { file: 'dist/browser.esm.d.ts' },
+    output: { file: 'dist/browser.d.ts' },
     plugins: [dts()],
   },
   // 浏览器 iife 产物
@@ -58,8 +58,8 @@ export default defineConfig([
   {
     input: 'src/node.esm.ts',
     output: [
-      { file: 'dist/node.mjs', format: 'esm', exports: 'named' },
-      { file: 'dist/node.js', format: 'cjs', exports: 'named' },
+      { file: 'dist/index.mjs', format: 'esm', exports: 'named' },
+      { file: 'dist/index.cjs', format: 'cjs', exports: 'named' },
     ],
     plugins: [
       nodeResolve(),
@@ -70,7 +70,7 @@ export default defineConfig([
   // node esm 类型产物
   {
     input: 'src/node.esm.ts',
-    output: { file: 'dist/node.d.ts' },
+    output: { file: 'dist/index.d.ts' },
     plugins: [dts()],
   },
   // Worker

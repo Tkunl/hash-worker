@@ -1,7 +1,7 @@
-import { getFileHashChunks, HashChksParam, HashChksRes, Strategy } from 'hash-worker'
+import { getFileHashChunks, HashChksParam, HashChksRes, Strategy } from 'hash-worker/node'
 
 const param: HashChksParam = {
-  filePath: 'filePath here ...',
+  filePath: 'D:/ChromeSetup.exe',
   config: {
     strategy: Strategy.md5,
     workerCount: 8,

@@ -5,7 +5,7 @@ import {
   HashChksParam,
   HashChksRes,
   Strategy,
-} from 'hash-worker'
+} from 'hash-worker/browser'
 
 export function useFileHashInfo() {
   const file = ref<File>()

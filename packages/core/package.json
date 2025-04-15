@@ -5,33 +5,30 @@
   "author": "https://github.com/Tkunl",
   "repository": "https://github.com/Tkunl/hash-worker",
   "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "browser": {
-        "import": {
-          "default": "./dist/browser.esm.js",
-          "types": "./dist/browser.esm.d.ts"
-        },
-        "require": {
-          "default": "./dist/global.js",
-          "types": "./dist/global.d.ts"
-        }
-      },
-      "node": {
-        "import": {
-          "default": "./dist/node.mjs",
-          "types": "./dist/node.d.ts"
-        },
-        "require": {
-          "default": "./dist/node.js",
-          "types": "./dist/node.d.ts"
-        }
-      }
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.esm.js",
+      "require": "./dist/global.js"
+    },
+    "./browser": {
+      "types": "./dist/browser.d.ts",
+      "import": "./dist/browser.esm.js",
+      "require": "./dist/global.js"
+    },
+    "./node": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
     },
     "./global": {
       "types": "./dist/global.d.ts",
-      "require": "./dist/global.js",
-      "import": "./dist/global.js"
+      "browser": "./dist/global.js",
+      "node": "./dist/global.js",
+      "default": "./dist/global.js"
     }
   },
   "files": [

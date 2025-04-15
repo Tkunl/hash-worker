@@ -1,31 +1,3 @@
-import { HashWorker } from './hashWorker'
-import { getFileMetadata, NodeWorkerService, normalizeNodeParam, processFileInNode } from './node'
-import { BaseWorkerService } from './shared'
-import { Config, HashChksParam } from './types'
-
-class NodeWorkerBrowser extends HashWorker {
-  protected normalizeParams(param: HashChksParam) {
-    return <Required<HashChksParam>>normalizeNodeParam(param)
-  }
-  protected processFile({
-    filePath,
-    config,
-    workerSvc,
-  }: {
-    filePath?: string
-    config: Required<Config>
-    workerSvc: BaseWorkerService
-  }) {
-    return processFileInNode(filePath!, config, <NodeWorkerService>workerSvc)
-  }
-  protected createWorkerSvc(workerCount: number): BaseWorkerService {
-    return new NodeWorkerService(workerCount)
-  }
-  protected getFileMetadata({ filePath }: { filePath?: string }) {
-    return getFileMetadata(filePath!)
-  }
-}
-
-const instance = new NodeWorkerBrowser()
-export const getFileHashChunks = instance.getFileHashChunks.bind(instance)
-export const destroyWorkerPool = instance.destroyWorkerPool.bind(instance)
+export * from './node'
+export * from './shared'
+export * from './types'
