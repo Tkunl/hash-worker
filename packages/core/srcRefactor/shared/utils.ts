@@ -1,3 +1,5 @@
+import { MerkleTree } from '.'
+
 /**
  * [1, 2, 3, 4] => [[1, 2], [3, 4]]
  * @param chunks 原始数组
@@ -23,4 +25,10 @@ export function generateUUID(): string {
     const v = c === 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
+}
+
+export async function getMerkleRootHashByChunks(hashList: string[]) {
+  const merkleTree = new MerkleTree()
+  await merkleTree.init(hashList)
+  return merkleTree.getRootHash()
 }

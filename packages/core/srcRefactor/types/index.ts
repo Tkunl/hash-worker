@@ -5,3 +5,4 @@ export type * from './workerReq'
 export type * from './fnTypes'
 
 export * from './strategy'
+export * from './workerStatus'

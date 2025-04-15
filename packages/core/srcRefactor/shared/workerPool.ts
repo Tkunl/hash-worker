@@ -1,9 +1,8 @@
-import { MiniSubject } from '.'
-import { getFn, restoreFn } from '../types'
-import { StatusEnum, WorkerWrapper } from './workerWrapper'
+import { getFn, restoreFn, WorkerStatusEnum } from '../types'
+import { MiniSubject, BaseWorkerWrapper } from './'
 
 export abstract class WorkerPool<R = unknown> {
-  pool: WorkerWrapper[] = []
+  pool: BaseWorkerWrapper[] = []
   maxWorkerCount: number
   curRunningCount = new MiniSubject(0)
   results: R[] = []
@@ -26,9 +25,9 @@ export abstract class WorkerPool<R = unknown> {
           }
 
           // 此时可以用来执行任务的 Worker
-          const canUseWorker: WorkerWrapper[] = []
+          const canUseWorker: BaseWorkerWrapper[] = []
           for (const worker of this.pool) {
-            if (worker.status === StatusEnum.WAITING) {
+            if (worker.status === WorkerStatusEnum.WAITING) {
               canUseWorker.push(worker)
               if (canUseWorker.length === curTaskCount) {
                 break

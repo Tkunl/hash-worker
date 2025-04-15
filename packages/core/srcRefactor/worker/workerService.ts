@@ -1,5 +1,5 @@
 import { WorkerPoolForHash } from './workerPoolForHash'
-import { getFn, restoreFn, Strategy, WorkerReq } from '../interface'
+import { getFn, restoreFn, Strategy, WorkerReq } from '../types'
 
 export class WorkerService {
   MAX_WORKERS

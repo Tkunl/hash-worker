@@ -1,8 +1,8 @@
 /// <reference lib="webworker" />
 
 import { crc32, md5, xxhash64 } from 'hash-wasm'
-import { Strategy, WorkerReq } from '../interface'
-import { isBrowser2, isNode } from '../utils'
+import { Strategy, WorkerReq } from '../types'
+import { isBrowser2, isNode } from '../shared'
 
 async function calculateHash(req: WorkerReq) {
   const { chunk: buf, strategy } = req
