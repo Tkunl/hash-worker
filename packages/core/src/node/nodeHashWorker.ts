@@ -2,7 +2,7 @@ import { getFileMetadata, NodeWorkerService, normalizeNodeParam, processFileInNo
 import { BaseHashWorker, BaseWorkerService } from '../shared'
 import { Config, HashChksParam } from '../types'
 
-class NodeWorkerBrowser extends BaseHashWorker {
+class NodeHashWorker extends BaseHashWorker {
   protected normalizeParams(param: HashChksParam) {
     return <Required<HashChksParam>>normalizeNodeParam(param)
   }
@@ -25,6 +25,6 @@ class NodeWorkerBrowser extends BaseHashWorker {
   }
 }
 
-const instance = new NodeWorkerBrowser()
+const instance = new NodeHashWorker()
 export const getFileHashChunks = instance.getFileHashChunks.bind(instance)
 export const destroyWorkerPool = instance.destroyWorkerPool.bind(instance)

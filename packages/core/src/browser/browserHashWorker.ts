@@ -7,7 +7,7 @@ import {
 import { BaseHashWorker, BaseWorkerService } from '../shared'
 import { Config, HashChksParam } from '../types'
 
-class HashWorkerBrowser extends BaseHashWorker {
+class BrowserHashWorker extends BaseHashWorker {
   protected normalizeParams(param: HashChksParam) {
     return <Required<HashChksParam>>normalizeBrowserParam(param)
   }
@@ -33,6 +33,6 @@ class HashWorkerBrowser extends BaseHashWorker {
   }
 }
 
-const instance = new HashWorkerBrowser()
+const instance = new BrowserHashWorker()
 export const getFileHashChunks = instance.getFileHashChunks.bind(instance)
 export const destroyWorkerPool = instance.destroyWorkerPool.bind(instance)
