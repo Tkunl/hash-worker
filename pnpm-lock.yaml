@@ -143,9 +143,6 @@ importers:
       hash-worker:
         specifier: workspace:*
         version: link:../../core
-      hash-worker-benchmark:
-        specifier: workspace:*
-        version: link:../../benchmark
 
   packages/playground/react-webpack-demo:
     dependencies:

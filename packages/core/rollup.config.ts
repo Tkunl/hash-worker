@@ -11,44 +11,67 @@ const bundleName = 'HashWorker'
 // 因此你不需要过多复杂的配置。
 
 export default defineConfig([
-  // esm 产物
+  // 浏览器 esm 产物
   {
-    input: 'src/main.ts',
-    output: [
-      { file: 'dist/index.mjs', format: 'esm', exports: 'named' },
-      { file: 'dist/index.js', format: 'cjs', exports: 'named' },
-    ],
+    input: 'src/browser.esm.ts',
+    output: [{ file: 'dist/browser.esm.mjs', format: 'esm', exports: 'named' }],
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
       minify({ mangle: true, module: true, compress: true, sourceMap: true }),
     ],
-    external: ['worker_threads'],
   },
-  // esm 类型产物
+  // 浏览器 esm 类型产物
   {
-    input: 'src/main.ts',
-    output: { file: 'dist/index.d.ts' },
+    input: 'src/browser.esm.ts',
+    output: { file: 'dist/browser.esm.d.ts' },
     plugins: [dts()],
-    external: ['worker_threads'],
   },
-  // iife 产物
+  // 浏览器 iife 产物
   {
-    input: 'src/main.ts',
+    input: 'src/browser.iife.ts',
     output: { file: 'dist/global.js', format: 'iife', name: bundleName },
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
       minify({ mangle: true, module: false, compress: true, sourceMap: true }),
     ],
-    external: ['worker_threads'],
   },
-  // iife 类型产物
+  // 浏览器 iife 类型产物
   {
-    input: 'src/iife.ts',
+    input: 'src/browser.iife.ts',
     output: { file: 'dist/global.d.ts', format: 'es' },
     plugins: [dts()],
     external: ['worker_threads'],
+  },
+  // Worker
+  {
+    input: 'src/worker/hash.worker.ts',
+    output: { file: 'dist/worker/hash.worker.mjs', format: 'esm' },
+    plugins: [
+      nodeResolve(),
+      swc({ sourceMaps: true }),
+      minify({ mangle: true, module: true, compress: true }),
+    ],
+  },
+  // node esm, cjs 产物
+  {
+    input: 'src/node.esm.ts',
+    output: [
+      { file: 'dist/node.mjs', format: 'esm', exports: 'named' },
+      { file: 'dist/node.js', format: 'cjs', exports: 'named' },
+    ],
+    plugins: [
+      nodeResolve(),
+      swc({ sourceMaps: true }),
+      minify({ mangle: true, module: true, compress: true, sourceMap: true }),
+    ],
+  },
+  // node esm 类型产物
+  {
+    input: 'src/node.esm.ts',
+    output: { file: 'dist/node.d.ts' },
+    plugins: [dts()],
   },
   // Worker
   {

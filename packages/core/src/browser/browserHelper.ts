@@ -6,7 +6,7 @@ import {
   mergeConfig,
 } from '../shared'
 import { Config, HashChksParam } from '../types'
-import { getArrayBufFromBlobs, sliceFile, BrowserWorkerService } from './'
+import { getArrayBufFromBlobs, sliceFile, BrowserWorkerService } from '.'
 
 export function normalizeBrowserParam(param: HashChksParam) {
   if (!param.file) {

@@ -7,9 +7,9 @@ import {
   getRootHashByChunks,
   mergeConfig,
 } from '../shared'
-import { getFileSliceLocations, readFileAsArrayBuffer, NodeWorkerService } from './'
+import { getFileSliceLocations, readFileAsArrayBuffer, NodeWorkerService } from '.'
 
-export async function normalizeNodeParam(param: HashChksParam) {
+export function normalizeNodeParam(param: HashChksParam) {
   if (!param.filePath) {
     throw new Error('The filePath attribute is required in node environment')
   }

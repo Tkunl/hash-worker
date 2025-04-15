@@ -1,4 +1,4 @@
-import { Strategy } from './'
+import { Strategy } from '.'
 
 export interface Config {
   chunkSize?: number // 分片大小 MB

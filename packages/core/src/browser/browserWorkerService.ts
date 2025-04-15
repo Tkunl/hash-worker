@@ -1,5 +1,5 @@
 import { BaseWorkerService } from '../shared'
-import { BrowserWorkerPool } from './'
+import { BrowserWorkerPool } from '.'
 
 export class BrowserWorkerService extends BaseWorkerService {
   constructor(maxWorkers: number) {

@@ -6,7 +6,7 @@ import {
 } from './browser'
 import { HashWorker } from './hashWorker'
 import { BaseWorkerService } from './shared'
-import { HashChksParam, Config, FileMetaInfo } from './types'
+import { HashChksParam, Config } from './types'
 
 class HashWorkerBrowser extends HashWorker {
   protected normalizeParams(param: HashChksParam) {
@@ -21,15 +21,15 @@ class HashWorkerBrowser extends HashWorker {
     file?: File
     config: Required<Config>
     workerSvc: BaseWorkerService
-  }): Promise<{ chunksBlob?: Blob[]; chunksHash: string[]; fileHash: string }> {
+  }) {
     return processFileInBrowser(file!, config, <BrowserWorkerService>workerSvc)
   }
 
-  protected createWorkerSvc(workerCount: number): BaseWorkerService {
+  protected createWorkerSvc(workerCount: number) {
     return new BrowserWorkerService(workerCount)
   }
 
-  protected getFileMetadata({ file }: { file?: File }): Promise<FileMetaInfo> {
+  protected getFileMetadata({ file }: { file?: File }) {
     return getFileMetadata(file!)
   }
 }
