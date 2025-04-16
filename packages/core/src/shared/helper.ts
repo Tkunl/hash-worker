@@ -61,7 +61,7 @@ export function getChunksHashMultiple(
   return handler()
 }
 
-export async function getRootHashByChunks(hashList: string[]) {
+export async function getMerkleRootHashByChunks(hashList: string[]) {
   const merkleTree = new MerkleTree()
   await merkleTree.init(hashList)
   return merkleTree.getRootHash()

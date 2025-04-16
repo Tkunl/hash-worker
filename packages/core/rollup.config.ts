@@ -66,10 +66,20 @@ export default defineConfig([
     output: { file: 'dist/index.d.ts' },
     plugins: [dts()],
   },
-  // Worker
+  // browser worker
   {
-    input: 'src/worker/hash.worker.ts',
-    output: { file: 'dist/worker/hash.worker.mjs', format: 'esm' },
+    input: 'src/worker/browser.worker.ts',
+    output: { file: 'dist/worker/browser.worker.mjs', format: 'esm' },
+    plugins: [
+      nodeResolve(),
+      swc({ sourceMaps: true }),
+      minify({ mangle: true, module: true, compress: true }),
+    ],
+  },
+  // node worker
+  {
+    input: 'src/worker/node.worker.ts',
+    output: { file: 'dist/worker/node.worker.mjs', format: 'esm' },
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),

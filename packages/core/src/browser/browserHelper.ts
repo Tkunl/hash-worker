@@ -2,7 +2,7 @@ import {
   getArrParts,
   getChunksHashMultiple,
   getChunksHashSingle,
-  getRootHashByChunks,
+  getMerkleRootHashByChunks,
   mergeConfig,
 } from '../shared'
 import { Config, HashChksParam } from '../types'
@@ -57,7 +57,7 @@ export async function processFileInBrowser(
   }
 
   chunksBlob.length === 1 ? await singleChunkProcessor() : await multipleChunksProcessor()
-  const fileHash = await getRootHashByChunks(chunksHash)
+  const fileHash = await getMerkleRootHashByChunks(chunksHash)
 
   return {
     chunksBlob,

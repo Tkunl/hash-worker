@@ -14,7 +14,7 @@ export class NodeWorkerPool extends BaseWorkerPool {
     instance.pool = countArr.map(() => {
       // 指向打包后的 worker 路径
       return new NodeWorkerWrapper(
-        new NodeWorker(new URL('./worker/hash.worker.mjs', import.meta.url)),
+        new NodeWorker(new URL('./worker/node.worker.mjs', import.meta.url)),
       )
     })
 

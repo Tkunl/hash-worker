@@ -4,7 +4,7 @@ import {
   getArrParts,
   getChunksHashMultiple,
   getChunksHashSingle,
-  getRootHashByChunks,
+  getMerkleRootHashByChunks,
   mergeConfig,
 } from '../shared'
 import { getFileSliceLocations, readFileAsArrayBuffer, NodeWorkerService } from '.'
@@ -79,7 +79,7 @@ export async function processFileInNode(
   }
 
   sliceLocation.length === 1 ? await singleChunkProcessor() : await multipleChunksProcessor()
-  const fileHash = await getRootHashByChunks(chunksHash)
+  const fileHash = await getMerkleRootHashByChunks(chunksHash)
 
   return {
     chunksHash,
