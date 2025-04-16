@@ -21,7 +21,7 @@ export function useFileHashInfo() {
     const param: HashChksParam = {
       file: file.value!,
       config: {
-        workerCount: 8,
+        workerCount: 6,
         strategy: Strategy.md5,
       },
     }

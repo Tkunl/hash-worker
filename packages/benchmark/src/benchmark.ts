@@ -1,9 +1,11 @@
-import { getFileHashChunks, isBrowser, isNode, Strategy } from 'hash-worker'
+import { getFileHashChunks, Strategy } from 'hash-worker/node'
 import { BenchmarkOptions, NormalizeOptions } from './types'
 import {
   createMockFile,
   createMockFileInLocal,
   deleteLocalFile,
+  isBrowser,
+  isNode,
   normalizeBenchmarkOptions,
   sleep,
 } from './helper'

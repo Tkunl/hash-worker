@@ -28,7 +28,6 @@ export async function processFileInBrowser(
 ) {
   const { chunkSize, strategy, workerCount, borderCount } = config
 
-  // 文件分片
   const chunksBlob = sliceFile(file, chunkSize)
   let chunksHash: string[] = []
 

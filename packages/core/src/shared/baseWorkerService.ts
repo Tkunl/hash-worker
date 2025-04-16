@@ -19,15 +19,12 @@ export abstract class BaseWorkerService {
       chunk,
       strategy,
     }))
-
     const getFn: GetFn<WorkerReq> = (param: WorkerReq) => param.chunk
     const restoreFn: RestoreFn = (options) => {
       const { index, buf } = options
       chunks[index] = buf
     }
-
-    // TODO 此处可以抛出错误
-    return this.pool?.exec<string, WorkerReq>(params, getFn, restoreFn)
+    return this.pool!.exec<string, WorkerReq>(params, getFn, restoreFn)
   }
 
   getMD5ForFiles(chunks: ArrayBuffer[]) {

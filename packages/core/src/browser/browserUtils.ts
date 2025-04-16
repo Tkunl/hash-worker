@@ -5,7 +5,7 @@ import { FileMetaInfo } from '../types'
  * 注意: Blob 无法直接移交到 Worker 中, 所以需要放到主线程中执行
  * @param chunks
  */
-export async function getArrayBufFromBlobs(chunks: Blob[]): Promise<ArrayBuffer[]> {
+export async function getArrayBufFromBlobs(chunks: Blob[]) {
   return Promise.all(chunks.map((chunk) => chunk.arrayBuffer()))
 }
 

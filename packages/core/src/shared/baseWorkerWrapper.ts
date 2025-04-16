@@ -3,8 +3,8 @@ import { GetFn, Reject, Resolve, RestoreFn, WorkerRes, WorkerStatusEnum } from '
 export abstract class BaseWorkerWrapper<
   T extends { terminate: () => void } = { terminate: () => void },
 > {
-  protected worker: T
   status: WorkerStatusEnum
+  protected worker: T
 
   constructor(worker: T) {
     this.worker = worker
@@ -24,8 +24,12 @@ export abstract class BaseWorkerWrapper<
     index: number,
   ): void
 
-  protected handleMessage(data: unknown, resolve: Resolve, restoreFn: RestoreFn, index: number) {
-    const workerRes = this.parseWorkerData(data)
+  protected handleMessage(
+    workerRes: WorkerRes,
+    resolve: Resolve,
+    restoreFn: RestoreFn,
+    index: number,
+  ) {
     if (workerRes?.result && workerRes?.chunk) {
       restoreFn({ buf: workerRes.chunk, index })
       this.status = WorkerStatusEnum.WAITING
@@ -37,13 +41,4 @@ export abstract class BaseWorkerWrapper<
     this.status = WorkerStatusEnum.WAITING
     reject(error)
   }
-
-  private parseWorkerData(data: unknown): WorkerRes {
-    if (this.isBrowserEnvironment()) {
-      return (data as { data: WorkerRes }).data
-    }
-    return data as WorkerRes
-  }
-
-  protected abstract isBrowserEnvironment(): boolean
 }

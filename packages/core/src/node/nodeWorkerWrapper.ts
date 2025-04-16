@@ -22,8 +22,4 @@ export class NodeWorkerWrapper extends BaseWorkerWrapper<NodeWorker> {
       .on('message', (data) => this.handleMessage(data, resolve, restoreFn, index))
       .on('error', (error) => this.handleError(reject, error))
   }
-
-  protected isBrowserEnvironment() {
-    return false
-  }
 }

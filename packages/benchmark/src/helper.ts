@@ -88,3 +88,16 @@ export function createMockFile(fileName: string, sizeInMB: number): File {
   // 将 Blob 转换为File
   return new File([blob], fileName, { type: 'application/octet-stream' })
 }
+
+export function isBrowser(): boolean {
+  return typeof window !== 'undefined' && typeof window.document !== 'undefined'
+}
+
+export function isNode(): boolean {
+  return (
+    typeof global !== 'undefined' &&
+    typeof process !== 'undefined' &&
+    typeof process.versions !== 'undefined' &&
+    typeof process.versions.node !== 'undefined'
+  )
+}
