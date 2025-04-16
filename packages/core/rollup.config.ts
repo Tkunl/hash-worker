@@ -14,11 +14,14 @@ export default defineConfig([
   // 浏览器 esm 产物
   {
     input: 'src/browser.esm.ts',
-    output: [{ file: 'dist/browser.esm.js', format: 'esm', exports: 'named' }],
+    output: [
+      { file: 'dist/browser.esm.js', format: 'esm', exports: 'named' },
+      { file: 'dist/browser.cjs.js', format: 'cjs', exports: 'named' },
+    ],
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true, sourceMap: true }),
+      // minify({ mangle: true, module: true, compress: true, sourceMap: true }),
     ],
   },
   // 浏览器 esm 类型产物
@@ -44,16 +47,6 @@ export default defineConfig([
     plugins: [dts()],
     external: ['worker_threads'],
   },
-  // Worker
-  {
-    input: 'src/worker/hash.worker.ts',
-    output: { file: 'dist/worker/hash.worker.mjs', format: 'esm' },
-    plugins: [
-      nodeResolve(),
-      swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true }),
-    ],
-  },
   // node esm, cjs 产物
   {
     input: 'src/node.esm.ts',
@@ -67,7 +60,7 @@ export default defineConfig([
       minify({ mangle: true, module: true, compress: true, sourceMap: true }),
     ],
   },
-  // node esm 类型产物
+  // node 类型产物
   {
     input: 'src/node.esm.ts',
     output: { file: 'dist/index.d.ts' },

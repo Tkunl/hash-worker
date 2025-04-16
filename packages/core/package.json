@@ -5,19 +5,19 @@
   "author": "https://github.com/Tkunl",
   "repository": "https://github.com/Tkunl/hash-worker",
   "type": "module",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
+  "types": "./dist/browser.d.ts",
+  "module": "./dist/browser.esm.js",
+  "main": "./dist/browser.cjs.js",
   "exports": {
     ".": {
       "types": "./dist/browser.d.ts",
       "import": "./dist/browser.esm.js",
-      "require": "./dist/global.js"
+      "require": "./dist/browser.cjs.js"
     },
     "./browser": {
       "types": "./dist/browser.d.ts",
       "import": "./dist/browser.esm.js",
-      "require": "./dist/global.js"
+      "require": "./dist/browser.cjs.js"
     },
     "./node": {
       "types": "./dist/index.d.ts",
@@ -26,8 +26,6 @@
     },
     "./global": {
       "types": "./dist/global.d.ts",
-      "browser": "./dist/global.js",
-      "node": "./dist/global.js",
       "default": "./dist/global.js"
     }
   },

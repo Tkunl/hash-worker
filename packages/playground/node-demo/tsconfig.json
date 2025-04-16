@@ -1,8 +1,8 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "moduleResolution": "node",
-    "module": "ESNext",
+    "moduleResolution": "bundler", // 宽松规则, 配合打包工具
+    "module": "ESNext", // 支持最新的模块系统
     "outDir": "./dist", // 生成的 JavaScript 文件输出目录
     "rootDir": "./src", // TypeScript 源文件目录
     "sourceMap": false, // 不生成 .map 文件
