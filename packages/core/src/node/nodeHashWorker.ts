@@ -6,6 +6,7 @@ class NodeHashWorker extends BaseHashWorker {
   protected normalizeParams(param: HashChksParam) {
     return <Required<HashChksParam>>normalizeNodeParam(param)
   }
+
   protected processFile({
     filePath,
     config,
@@ -17,9 +18,11 @@ class NodeHashWorker extends BaseHashWorker {
   }) {
     return processFileInNode(filePath!, config, <NodeWorkerService>workerSvc)
   }
+
   protected createWorkerSvc(workerCount: number): BaseWorkerService {
     return new NodeWorkerService(workerCount)
   }
+
   protected getFileMetadata({ filePath }: { filePath?: string }) {
     return getFileMetadata(filePath!)
   }

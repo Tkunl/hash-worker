@@ -6,8 +6,7 @@ export class BrowserWorkerService extends BaseWorkerService {
     super(maxWorkers)
   }
 
-  async createWorkerPool(maxWorkers: number): Promise<BrowserWorkerPool> {
-    const pool = await BrowserWorkerPool.create(maxWorkers)
-    return pool
+  createWorkerPool(maxWorkers: number): Promise<BrowserWorkerPool> {
+    return BrowserWorkerPool.create(maxWorkers)
   }
 }

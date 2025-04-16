@@ -11,7 +11,6 @@ import { FileMetaInfo } from '../types'
  */
 export async function readFileAsArrayBuffer(path: string, start: number, end: number) {
   const readStream = fs.createReadStream(path, { start, end })
-  // TODO 此处类型待修复
   const chunks: any[] = []
   return new Promise<ArrayBuffer>((rs, rj) => {
     readStream.on('data', (chunk) => {
@@ -21,8 +20,7 @@ export async function readFileAsArrayBuffer(path: string, start: number, end: nu
     readStream.on('end', () => {
       const buf = Buffer.concat(chunks) // 合并所有数据块构成 Buffer
       const arrayBuf = buf.buffer.slice(buf.byteOffset, buf.byteOffset + buf.byteLength)
-      // TODO 此处类型待修复
-      rs(arrayBuf as ArrayBuffer)
+      rs(arrayBuf)
     })
 
     readStream.on('error', (e) => {

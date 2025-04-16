@@ -6,8 +6,7 @@ export class NodeWorkerService extends BaseWorkerService {
     super(maxWorkers)
   }
 
-  async createWorkerPool(maxWorkers: number): Promise<NodeWorkerPool> {
-    const pool = await NodeWorkerPool.create(maxWorkers)
-    return pool
+  createWorkerPool(maxWorkers: number): Promise<NodeWorkerPool> {
+    return NodeWorkerPool.create(maxWorkers)
   }
 }

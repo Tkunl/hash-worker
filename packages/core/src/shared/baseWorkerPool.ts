@@ -1,18 +1,17 @@
 import { GetFn, RestoreFn, WorkerStatusEnum } from '../types'
 import { MiniSubject, BaseWorkerWrapper } from '.'
 
-export abstract class BaseWorkerPool<R = unknown> {
+export abstract class BaseWorkerPool {
   pool: BaseWorkerWrapper[] = []
   maxWorkerCount: number
   curRunningCount = new MiniSubject(0)
-  results: R[] = []
 
   protected constructor(maxWorkers: number) {
     this.maxWorkerCount = maxWorkers
   }
 
-  exec<T extends R, U>(params: U[], getFn: GetFn<U>, restoreFn: RestoreFn) {
-    this.results.length = 0
+  exec<T, U>(params: U[], getFn: GetFn<U>, restoreFn: RestoreFn) {
+    const results: (T | Error)[] = new Array(params.length)
     const workerParams = params.map((param, index) => ({ data: param, index }))
 
     return new Promise<T[]>((rs) => {
@@ -25,15 +24,9 @@ export abstract class BaseWorkerPool<R = unknown> {
           }
 
           // 此时可以用来执行任务的 Worker
-          const canUseWorker: BaseWorkerWrapper[] = []
-          for (const worker of this.pool) {
-            if (worker.status === WorkerStatusEnum.WAITING) {
-              canUseWorker.push(worker)
-              if (canUseWorker.length === curTaskCount) {
-                break
-              }
-            }
-          }
+          const canUseWorker = this.pool
+            .filter((w) => w.status === WorkerStatusEnum.WAITING)
+            .slice(0, curTaskCount)
 
           const paramsToRun = workerParams.splice(0, curTaskCount)
 
@@ -44,10 +37,10 @@ export abstract class BaseWorkerPool<R = unknown> {
             workerApp
               .run<T, U>(param.data, param.index, getFn, restoreFn)
               .then((res) => {
-                this.results[param.index] = res
+                results[param.index] = res
               })
               .catch((e) => {
-                this.results[param.index] = e
+                results[param.index] = e
               })
               .finally(() => {
                 this.curRunningCount.next(this.curRunningCount.value - 1)
@@ -56,7 +49,7 @@ export abstract class BaseWorkerPool<R = unknown> {
         }
 
         if (this.curRunningCount.value === 0 && workerParams.length === 0) {
-          rs(this.results as T[])
+          rs(results as T[])
         }
       })
     })

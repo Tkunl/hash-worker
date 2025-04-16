@@ -1,8 +1,8 @@
 import { GetFn, Reject, Resolve, RestoreFn, WorkerRes, WorkerStatusEnum } from '../types'
 
-export abstract class BaseWorkerWrapper<
-  T extends { terminate: () => void } = { terminate: () => void },
-> {
+type WorkerLike = { terminate: () => void }
+
+export abstract class BaseWorkerWrapper<T extends WorkerLike = WorkerLike> {
   status: WorkerStatusEnum
   protected worker: T
 

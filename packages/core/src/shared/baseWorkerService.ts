@@ -3,7 +3,7 @@ import { Strategy, WorkerReq, GetFn, RestoreFn } from '../types'
 
 export abstract class BaseWorkerService {
   protected maxWorkers: number
-  protected pool: BaseWorkerPool | undefined
+  protected pool: BaseWorkerPool | null = null
 
   constructor(maxWorkers: number) {
     this.maxWorkers = maxWorkers
@@ -12,7 +12,7 @@ export abstract class BaseWorkerService {
   protected abstract createWorkerPool(maxWorkers: number): Promise<BaseWorkerPool>
 
   private async getHashForFiles(chunks: ArrayBuffer[], strategy: Strategy) {
-    if (this.pool === undefined) {
+    if (this.pool === null) {
       this.pool = await this.createWorkerPool(this.maxWorkers)
     }
     const params: WorkerReq[] = chunks.map((chunk) => ({
@@ -41,6 +41,6 @@ export abstract class BaseWorkerService {
 
   terminate() {
     this.pool && this.pool.terminate()
-    this.pool = undefined
+    this.pool = null
   }
 }

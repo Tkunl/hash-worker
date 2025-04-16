@@ -1,8 +1,22 @@
 import { BaseWorkerService } from '.'
 import { Config, FileMetaInfo, HashChksParam, HashChksRes } from '../types'
 
+type ProcessFileProps = {
+  file?: File
+  filePath?: string
+  config: Required<Config>
+  workerSvc: BaseWorkerService
+}
+
+type ProcessFileResult = Promise<{ chunksBlob?: Blob[]; chunksHash: string[]; fileHash: string }>
+
+type GetFileMetadataProps = {
+  file?: File
+  filePath?: string
+}
+
 export abstract class BaseHashWorker {
-  protected workerService: any = null
+  protected workerService: BaseWorkerService | null = null
   protected curWorkerCount: number = 0
 
   protected abstract normalizeParams(param: HashChksParam): Required<HashChksParam>
@@ -11,20 +25,12 @@ export abstract class BaseHashWorker {
     filePath,
     config,
     workerSvc,
-  }: {
-    file?: File
-    filePath?: string
-    config: Required<Config>
-    workerSvc: BaseWorkerService
-  }): Promise<{ chunksBlob?: Blob[]; chunksHash: string[]; fileHash: string }>
+  }: ProcessFileProps): ProcessFileResult
   protected abstract createWorkerSvc(workerCount: number): BaseWorkerService
   protected abstract getFileMetadata({
     file,
     filePath,
-  }: {
-    file?: File
-    filePath?: string
-  }): Promise<FileMetaInfo>
+  }: GetFileMetadataProps): Promise<FileMetaInfo>
 
   async getFileHashChunks(param: HashChksParam): Promise<HashChksRes> {
     const { config, file, filePath } = this.normalizeParams(param)

@@ -10,7 +10,7 @@ export interface WorkerReq {
   strategy: Strategy
 }
 
-export interface WorkerRes<T = any> {
+export interface WorkerRes<T = unknown> {
   result: T
   chunk: ArrayBuffer
 }
