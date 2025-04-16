@@ -10,8 +10,8 @@ const filesToCopy = [
     dest: path.resolve(rootDir, 'global.js'),
   },
   {
-    src: path.resolve(rootDir, '../../core/dist/worker/hash.worker.mjs'),
-    dest: path.resolve(rootDir, './worker/hash.worker.mjs'),
+    src: path.resolve(rootDir, '../../core/dist/worker/browser.worker.mjs'),
+    dest: path.resolve(rootDir, './worker/browser.worker.mjs'),
   },
 ]
 

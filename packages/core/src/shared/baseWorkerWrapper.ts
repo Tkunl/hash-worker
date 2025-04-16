@@ -25,7 +25,7 @@ export abstract class BaseWorkerWrapper<T extends WorkerLike = WorkerLike> {
   ): void
 
   protected handleMessage(
-    workerRes: WorkerRes,
+    workerRes: WorkerRes<string>,
     resolve: Resolve,
     restoreFn: RestoreFn,
     index: number,
