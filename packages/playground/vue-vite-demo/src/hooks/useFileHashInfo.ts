@@ -23,6 +23,8 @@ export function useFileHashInfo() {
       config: {
         workerCount: 6,
         strategy: Strategy.md5,
+        isShowLog: true,
+        isCloseWorkerImmediately: false,
       },
     }
 

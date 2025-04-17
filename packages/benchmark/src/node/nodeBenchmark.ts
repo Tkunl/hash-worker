@@ -18,6 +18,7 @@ class NodeBenchmark extends Benchmark {
         config: {
           workerCount,
           strategy,
+          isCloseWorkerImmediately: false,
         },
       })),
     }
@@ -51,6 +52,7 @@ class NodeBenchmark extends Benchmark {
   }
 
   override createMockFileInLocal(sizeInMB: number) {
+    console.log(`Creating mock file ...`)
     return createMockFileInLocal(FILE_PATH, sizeInMB)
   }
 

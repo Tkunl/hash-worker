@@ -1,4 +1,4 @@
-import { getFileHashChunks, HashChksParam, HashChksRes } from 'hash-worker'
+import { getFileHashChunks, HashChksParam, HashChksRes, Strategy } from 'hash-worker'
 import React, { useCallback, useRef } from 'react'
 import ReactDOM from 'react-dom/client'
 
@@ -16,7 +16,9 @@ function App() {
     const param: HashChksParam = {
       file: fileRef.current!,
       config: {
-        workerCount: 8,
+        workerCount: 6,
+        strategy: Strategy.md5,
+        isShowLog: true,
       },
     }
 

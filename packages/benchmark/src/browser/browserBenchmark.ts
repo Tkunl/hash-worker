@@ -9,6 +9,7 @@ class BrowserBenchmark extends Benchmark {
 
   protected buildParams(options: BenchmarkOptions): NormalizeOptions {
     const { sizeInMB, strategy, workerCountTobeTest } = normalizeBenchmarkOptions(options)
+    console.log(`Creating mock file ...`)
     const mockFile = createMockFile(FILE_NAME, sizeInMB)
 
     return {
@@ -18,6 +19,7 @@ class BrowserBenchmark extends Benchmark {
         config: {
           workerCount,
           strategy,
+          isCloseWorkerImmediately: false,
         },
       })),
     }

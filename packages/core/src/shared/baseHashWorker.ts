@@ -54,7 +54,7 @@ export abstract class BaseHashWorker {
     isShowLog && (overTime = Date.now() - beforeTime)
     isShowLog &&
       console.log(
-        `get file hash in: ${overTime} ms by using ${config.workerCount} worker, speed: ${metadata.size / 1024 / (overTime / 1000)} Mb/s`,
+        `get file hash in: ${overTime} ms by using ${config.workerCount} worker, speed: ${(metadata.size / 1024 / (overTime / 1000)).toFixed(2)} Mb/s`,
       )
     isCloseWorkerImmediately && this.destroyWorkerPool()
 
