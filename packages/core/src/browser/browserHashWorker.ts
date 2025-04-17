@@ -4,7 +4,7 @@ import {
   normalizeBrowserParam,
   processFileInBrowser,
 } from '.'
-import { BaseHashWorker, BaseWorkerService } from '../shared'
+import { BaseHashWorker } from '../shared'
 import { Config, HashChksParam } from '../types'
 
 class BrowserHashWorker extends BaseHashWorker {
@@ -19,9 +19,9 @@ class BrowserHashWorker extends BaseHashWorker {
   }: {
     file?: File
     config: Required<Config>
-    workerSvc: BaseWorkerService
+    workerSvc: BrowserWorkerService
   }) {
-    return processFileInBrowser(file!, config, <BrowserWorkerService>workerSvc)
+    return processFileInBrowser(file!, config, workerSvc)
   }
 
   protected createWorkerSvc(workerCount: number) {

@@ -14,9 +14,9 @@ class NodeHashWorker extends BaseHashWorker {
   }: {
     filePath?: string
     config: Required<Config>
-    workerSvc: BaseWorkerService
+    workerSvc: NodeWorkerService
   }) {
-    return processFileInNode(filePath!, config, <NodeWorkerService>workerSvc)
+    return processFileInNode(filePath!, config, workerSvc)
   }
 
   protected createWorkerSvc(workerCount: number): BaseWorkerService {
