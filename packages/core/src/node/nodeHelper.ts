@@ -1,5 +1,6 @@
 import fs from 'fs'
-import { Config, HashChksParam } from '../types'
+import path from 'path'
+import { getFileSliceLocations, NodeWorkerService, readFileAsArrayBuffer } from '.'
 import {
   getArrParts,
   getChunksHashMultiple,
@@ -7,15 +8,18 @@ import {
   getMerkleRootHashByChunks,
   mergeConfig,
 } from '../shared'
-import { getFileSliceLocations, readFileAsArrayBuffer, NodeWorkerService } from '.'
+import { Config, HashChksParam } from '../types'
 
 export function normalizeNodeParam(param: HashChksParam) {
   if (!param.filePath) {
     throw new Error('The filePath attribute is required in node environment')
   }
-
+  let _filePath = param.filePath
   try {
-    const stats = fs.statSync(param.filePath)
+    if (!path.isAbsolute(_filePath)) {
+      _filePath = path.resolve(_filePath)
+    }
+    const stats = fs.statSync(_filePath)
     if (!stats.isFile()) {
       throw new Error('Invalid filePath: Path does not point to a file')
     }
