@@ -39,6 +39,7 @@ export abstract class BaseHashWorker {
     if (this.workerService === null || this.curWorkerCount !== workerCount) {
       this.destroyWorkerPool()
       this.workerService = this.createWorkerSvc(workerCount)
+      this.curWorkerCount = workerCount
     }
     const metadata = await this.getFileMetadata({ file, filePath })
 
