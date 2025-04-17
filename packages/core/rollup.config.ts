@@ -13,26 +13,26 @@ const bundleName = 'HashWorker'
 export default defineConfig([
   // 浏览器 esm 产物
   {
-    input: 'src/browser.esm.ts',
+    input: 'src/index.ts',
     output: [
-      { file: 'dist/browser.esm.js', format: 'esm', exports: 'named' },
-      { file: 'dist/browser.cjs.js', format: 'cjs', exports: 'named' },
+      { file: 'dist/index.esm.js', format: 'esm', exports: 'named' },
+      { file: 'dist/index.cjs.js', format: 'cjs', exports: 'named' },
     ],
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
-      // minify({ mangle: true, module: true, compress: true, sourceMap: true }),
+      minify({ mangle: true, module: true, compress: true, sourceMap: true }),
     ],
   },
   // 浏览器 esm 类型产物
   {
-    input: 'src/browser.esm.ts',
-    output: { file: 'dist/browser.d.ts' },
+    input: 'src/index.ts',
+    output: { file: 'dist/index.d.ts' },
     plugins: [dts()],
   },
   // 浏览器 iife 产物
   {
-    input: 'src/browser.iife.ts',
+    input: 'src/iife.ts',
     output: { file: 'dist/global.js', format: 'iife', name: bundleName },
     plugins: [
       nodeResolve(),
@@ -42,17 +42,17 @@ export default defineConfig([
   },
   // 浏览器 iife 类型产物
   {
-    input: 'src/browser.iife.ts',
+    input: 'src/iife.ts',
     output: { file: 'dist/global.d.ts', format: 'es' },
     plugins: [dts()],
     external: ['worker_threads'],
   },
   // node esm, cjs 产物
   {
-    input: 'src/node.esm.ts',
+    input: 'src/node.ts',
     output: [
-      { file: 'dist/index.mjs', format: 'esm', exports: 'named' },
-      { file: 'dist/index.cjs', format: 'cjs', exports: 'named' },
+      { file: 'dist/node.mjs', format: 'esm', exports: 'named' },
+      { file: 'dist/node.cjs', format: 'cjs', exports: 'named' },
     ],
     plugins: [
       nodeResolve(),
@@ -62,8 +62,8 @@ export default defineConfig([
   },
   // node 类型产物
   {
-    input: 'src/node.esm.ts',
-    output: { file: 'dist/index.d.ts' },
+    input: 'src/node.ts',
+    output: { file: 'dist/node.d.ts' },
     plugins: [dts()],
   },
   // browser worker

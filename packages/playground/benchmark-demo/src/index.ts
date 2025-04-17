@@ -1,5 +1,5 @@
-import { benchmark, BenchmarkOptions } from 'hash-worker-benchmark'
-import { Strategy } from 'hash-worker'
+import { benchmark, BenchmarkOptions } from 'hash-worker-benchmark/node'
+import { Strategy } from 'hash-worker/node'
 
 const options: BenchmarkOptions = {
   sizeInMB: 100,
