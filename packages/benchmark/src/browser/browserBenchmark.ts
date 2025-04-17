@@ -1,8 +1,8 @@
 import { Strategy, HashChksParam, getFileHashChunks } from 'hash-worker'
-import { Benchmark } from './benchmark'
-import { BenchmarkOptions, NormalizeOptions } from './types'
-import { createMockFile, normalizeBenchmarkOptions } from './helper'
-import { FILE_NAME } from './constant'
+import { Benchmark } from '../shared/benchmark'
+import { BenchmarkOptions, NormalizeOptions } from '../shared/types'
+import { createMockFile, normalizeBenchmarkOptions } from '../shared/helper'
+import { FILE_NAME } from '../shared/constant'
 
 class BrowserBenchmark extends Benchmark {
   private readonly yellow = 'color: #FFB049;'

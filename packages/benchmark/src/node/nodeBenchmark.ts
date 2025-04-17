@@ -1,9 +1,10 @@
 import * as chalk from 'chalk'
 import { HashChksParam, Strategy, getFileHashChunks } from 'hash-worker/node'
-import { Benchmark } from './benchmark'
-import { FILE_PATH } from './constant'
-import { createMockFileInLocal, deleteLocalFile, normalizeBenchmarkOptions } from './helper'
-import { BenchmarkOptions, NormalizeOptions } from './types'
+import { Benchmark } from '../shared/benchmark'
+import { FILE_PATH } from '../shared/constant'
+import { BenchmarkOptions, NormalizeOptions } from '../shared/types'
+import { normalizeBenchmarkOptions } from '../shared/helper'
+import { createMockFileInLocal, deleteLocalFile } from './nodeHelper'
 
 class NodeBenchmark extends Benchmark {
   chalkYellow = chalk.default.hex('#FFB049')

@@ -3,20 +3,29 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "types": "./dist/index.d.ts",
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.js"
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./browser": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.js",
+      "require": "./dist/node.cjs"
     }
   },
   "scripts": {
     "dev": "tsup --config tsup.config.ts --watch",
-    "build:benchmark": "pnpm rm:dist && tsup --config tsup.config.ts && pnpm build:dts",
-    "build:dts": "dts-bundle-generator --config dts-bundle.config.json",
+    "build:benchmark": "pnpm rm:dist && tsup --config tsup.config.ts",
     "rm:dist": "rimraf ./dist"
   },
   "license": "MIT",

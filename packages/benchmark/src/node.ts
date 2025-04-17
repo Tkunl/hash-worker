@@ -1,2 +1,2 @@
-export type * from './types'
-export * from './nodeBenchmark'
+export type * from './shared/types'
+export * from './node/nodeBenchmark'

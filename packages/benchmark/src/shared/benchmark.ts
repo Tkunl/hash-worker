@@ -13,6 +13,7 @@ export abstract class Benchmark {
   protected abstract logCurSpeed(overTime: number, workerCount: number, speed: number): void
   protected abstract logCompletion(): void
   protected abstract getFileHashChunks(param: HashChksParam): Promise<void>
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected async createMockFileInLocal(sizeInMB: number) {}
   protected async deleteLocalFile() {}

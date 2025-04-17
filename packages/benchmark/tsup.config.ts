@@ -7,4 +7,5 @@ export default defineConfig({
   },
   format: ['esm', 'cjs'],
   external: ['hash-worker'],
+  dts: true,
 })

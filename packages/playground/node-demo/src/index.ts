@@ -1,7 +1,7 @@
 import { getFileHashChunks, HashChksParam, HashChksRes, Strategy } from 'hash-worker/node'
 
 const param: HashChksParam = {
-  filePath: 'D:/ChromeSetup.exe',
+  filePath: '/Users/tkunl/Downloads/Docker.dmg',
   config: {
     strategy: Strategy.md5,
     workerCount: 6,

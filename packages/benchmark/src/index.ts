@@ -1,2 +1,2 @@
-export type * from './types'
-export * from './browserBenchmark'
+export type * from './shared/types'
+export * from './browser/browserBenchmark'

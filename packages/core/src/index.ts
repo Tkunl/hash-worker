@@ -1,3 +1,3 @@
-export * from './browser'
-export * from './shared'
-export * from './types'
+export * from './browser/index'
+export * from './shared/index'
+export * from './types/index'
