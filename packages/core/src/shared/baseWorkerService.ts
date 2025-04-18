@@ -11,7 +11,7 @@ export abstract class BaseWorkerService {
 
   protected abstract createWorkerPool(maxWorkers: number): Promise<BaseWorkerPool>
 
-  private async getHashForFiles(chunks: ArrayBuffer[], strategy: Strategy) {
+  async getHashForFiles(chunks: ArrayBuffer[], strategy: Strategy) {
     if (this.pool === null) {
       this.pool = await this.createWorkerPool(this.maxWorkers)
     }
@@ -19,6 +19,7 @@ export abstract class BaseWorkerService {
       chunk,
       strategy,
     }))
+    // TODO 此处存在过度设计 getFn 和 restoreFn, 此处是起点
     const getFn: GetFn<WorkerReq> = (param: WorkerReq) => param.chunk
     const restoreFn: RestoreFn = (options) => {
       const { index, buf } = options

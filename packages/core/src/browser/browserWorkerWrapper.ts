@@ -10,6 +10,7 @@ export class BrowserWorkerWrapper extends BaseWorkerWrapper<Worker> {
     this.status = WorkerStatusEnum.RUNNING
     return new Promise<T>((resolve, reject) => {
       this.setupListeners(resolve, reject, restoreFn, index)
+      // TODO 消费 getFn 的位置
       this.worker.postMessage(param, [getFn(param)])
     })
   }

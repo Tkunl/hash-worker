@@ -13,6 +13,7 @@ export class NodeWorkerWrapper extends BaseWorkerWrapper<NodeWorker> {
 
     return new Promise<T>((resolve, reject) => {
       this.setupListeners(resolve, reject, restoreFn, index)
+      // TODO 消费 getFn 的位置
       ;(this.worker as NodeWorker).postMessage(param, [getFn(param)])
     })
   }

@@ -31,6 +31,7 @@ export abstract class BaseWorkerWrapper<T extends WorkerLike = WorkerLike> {
     index: number,
   ) {
     if (workerRes?.result && workerRes?.chunk) {
+      // TODO 消费 restoreFn 的位置
       restoreFn({ buf: workerRes.chunk, index })
       this.status = WorkerStatusEnum.WAITING
       resolve(workerRes.result)
