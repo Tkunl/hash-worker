@@ -1,24 +1,19 @@
-import { BaseWorkerWrapper } from '../shared'
-import { GetFn, Reject, Resolve, RestoreFn, WorkerStatusEnum } from '../types'
+import { BaseWorkerWrapper, obtainBuf } from '../shared'
+import { WorkerReq, WorkerStatusEnum } from '../types'
 
 export class BrowserWorkerWrapper extends BaseWorkerWrapper<Worker> {
   constructor(worker: Worker) {
     super(worker)
   }
 
-  run<T, U>(param: U, index: number, getFn: GetFn<U>, restoreFn: RestoreFn): Promise<T> {
+  run<T>(param: WorkerReq, index: number): Promise<T> {
     this.status = WorkerStatusEnum.RUNNING
     return new Promise<T>((resolve, reject) => {
-      this.setupListeners(resolve, reject, restoreFn, index)
-      // TODO 消费 getFn 的位置
-      this.worker.postMessage(param, [getFn(param)])
+      this.worker.onmessage = (event: MessageEvent) =>
+        this.handleMessage(event.data, resolve, index)
+      this.worker.onerror = (event: ErrorEvent) =>
+        this.handleError(reject, event.error || new Error('Unknown worker error'))
+      this.worker.postMessage(param, [obtainBuf(param)])
     })
-  }
-
-  protected setupListeners(resolve: Resolve, reject: Reject, restoreFn: RestoreFn, index: number) {
-    this.worker.onmessage = (event: MessageEvent) =>
-      this.handleMessage(event.data, resolve, restoreFn, index)
-    this.worker.onerror = (event: ErrorEvent) =>
-      this.handleError(reject, event.error || new Error('Unknown worker error'))
   }
 }

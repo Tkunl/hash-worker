@@ -1,26 +1,21 @@
 import { Worker as NodeWorker } from 'worker_threads'
-import { BaseWorkerWrapper } from '../shared'
-import { GetFn, Reject, Resolve, RestoreFn, WorkerStatusEnum } from '../types'
+import { BaseWorkerWrapper, obtainBuf } from '../shared'
+import { WorkerReq, WorkerStatusEnum } from '../types'
 
 export class NodeWorkerWrapper extends BaseWorkerWrapper<NodeWorker> {
   constructor(worker: NodeWorker) {
     super(worker)
-    ;(worker as NodeWorker).setMaxListeners(1024)
+    worker.setMaxListeners(1024)
   }
 
-  run<T, U>(param: U, index: number, getFn: GetFn<U>, restoreFn: RestoreFn): Promise<T> {
+  run<T, U extends WorkerReq>(param: U, index: number): Promise<T> {
     this.status = WorkerStatusEnum.RUNNING
 
     return new Promise<T>((resolve, reject) => {
-      this.setupListeners(resolve, reject, restoreFn, index)
-      // TODO 消费 getFn 的位置
-      ;(this.worker as NodeWorker).postMessage(param, [getFn(param)])
+      this.worker
+        .on('message', (data) => this.handleMessage(data, resolve, index))
+        .on('error', (error) => this.handleError(reject, error))
+      this.worker.postMessage(param, [obtainBuf(param)])
     })
-  }
-
-  protected setupListeners(resolve: Resolve, reject: Reject, restoreFn: RestoreFn, index: number) {
-    ;(this.worker as NodeWorker)
-      .on('message', (data) => this.handleMessage(data, resolve, restoreFn, index))
-      .on('error', (error) => this.handleError(reject, error))
   }
 }

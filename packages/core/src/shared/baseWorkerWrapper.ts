@@ -1,4 +1,5 @@
-import { GetFn, Reject, Resolve, RestoreFn, WorkerRes, WorkerStatusEnum } from '../types'
+import { restoreBuf } from '.'
+import { Reject, Resolve, WorkerReq, WorkerRes, WorkerStatusEnum } from '../types'
 
 type WorkerLike = { terminate: () => void }
 
@@ -11,31 +12,16 @@ export abstract class BaseWorkerWrapper<T extends WorkerLike = WorkerLike> {
     this.status = WorkerStatusEnum.WAITING
   }
 
-  abstract run<T, U>(param: U, index: number, getFn: GetFn<U>, restoreFn: RestoreFn): Promise<T>
+  abstract run<T>(param: WorkerReq, index: number): Promise<T>
 
   terminate() {
     this.worker.terminate()
   }
 
-  protected abstract setupListeners(
-    resolve: Resolve,
-    reject: Reject,
-    restoreFn: RestoreFn,
-    index: number,
-  ): void
-
-  protected handleMessage(
-    workerRes: WorkerRes<string>,
-    resolve: Resolve,
-    restoreFn: RestoreFn,
-    index: number,
-  ) {
-    if (workerRes?.result && workerRes?.chunk) {
-      // TODO 消费 restoreFn 的位置
-      restoreFn({ buf: workerRes.chunk, index })
-      this.status = WorkerStatusEnum.WAITING
-      resolve(workerRes.result)
-    }
+  protected handleMessage(workerRes: WorkerRes<string>, resolve: Resolve, index: number) {
+    restoreBuf({ buf: workerRes.chunk, index })
+    this.status = WorkerStatusEnum.WAITING
+    resolve(workerRes.result)
   }
 
   protected handleError(reject: Reject, error: Error) {

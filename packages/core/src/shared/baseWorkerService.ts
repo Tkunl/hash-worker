@@ -1,5 +1,5 @@
-import { BaseWorkerPool } from '.'
-import { Strategy, WorkerReq, GetFn, RestoreFn } from '../types'
+import { BaseWorkerPool, initBufService } from '.'
+import { Strategy, WorkerReq } from '../types'
 
 export abstract class BaseWorkerService {
   protected maxWorkers: number
@@ -19,13 +19,8 @@ export abstract class BaseWorkerService {
       chunk,
       strategy,
     }))
-    // TODO 此处存在过度设计 getFn 和 restoreFn, 此处是起点
-    const getFn: GetFn<WorkerReq> = (param: WorkerReq) => param.chunk
-    const restoreFn: RestoreFn = (options) => {
-      const { index, buf } = options
-      chunks[index] = buf
-    }
-    return this.pool!.exec<string, WorkerReq>(params, getFn, restoreFn)
+    initBufService(chunks)
+    return this.pool!.exec<string>(params)
   }
 
   getMD5ForFiles(chunks: ArrayBuffer[]) {
