@@ -23,18 +23,6 @@ export abstract class BaseWorkerService {
     return this.pool!.exec<string>(params)
   }
 
-  getMD5ForFiles(chunks: ArrayBuffer[]) {
-    return this.getHashForFiles(chunks, Strategy.md5)
-  }
-
-  getCRC32ForFiles(chunks: ArrayBuffer[]) {
-    return this.getHashForFiles(chunks, Strategy.crc32)
-  }
-
-  getXxHash64ForFiles(chunks: ArrayBuffer[]) {
-    return this.getHashForFiles(chunks, Strategy.xxHash64)
-  }
-
   terminate() {
     this.pool && this.pool.terminate()
     this.pool = null
