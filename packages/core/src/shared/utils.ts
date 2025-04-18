@@ -7,16 +7,11 @@ import { Strategy, WorkerReq, WorkerRes } from '../types'
  * @param size 分 part 大小
  */
 export function getArrParts<T>(chunks: T[], size: number): T[][] {
+  if (!Number.isInteger(size) || size <= 0) return []
   const result: T[][] = []
-  let tempPart: T[] = []
-  chunks.forEach((chunk: T) => {
-    tempPart.push(chunk)
-    if (tempPart.length === size) {
-      result.push(tempPart)
-      tempPart = []
-    }
-  })
-  if (tempPart.length !== 0) result.push(tempPart)
+  for (let i = 0; i < chunks.length; i += size) {
+    result.push(chunks.slice(i, i + size))
+  }
   return result
 }
 

@@ -45,20 +45,17 @@ export function getChunksHashMultiple(
   borderCount: number,
   workerSvc: BaseWorkerService,
 ) {
-  const strategyHandlers = {
-    [Strategy.xxHash64]: () => workerSvc.getXxHash64ForFiles(arrayBuffers),
-    [Strategy.md5]: () => workerSvc.getMD5ForFiles(arrayBuffers),
-    [Strategy.crc32]: () => workerSvc.getCRC32ForFiles(arrayBuffers),
-    [Strategy.mixed]: () =>
-      chunksCount <= borderCount
-        ? workerSvc.getMD5ForFiles(arrayBuffers)
-        : workerSvc.getCRC32ForFiles(arrayBuffers),
+  const strategyMap = {
+    [Strategy.xxHash64]: Strategy.xxHash64,
+    [Strategy.md5]: Strategy.md5,
+    [Strategy.crc32]: Strategy.crc32,
+    [Strategy.mixed]: chunksCount <= borderCount ? Strategy.md5 : Strategy.crc32,
   }
-  const handler = strategyHandlers[strategy]
-  if (!handler) {
+  const _strategy = strategyMap[strategy]
+  if (!_strategy) {
     throw new Error(`Unsupported strategy: ${strategy}`)
   }
-  return handler()
+  return workerSvc.getHashForFiles(arrayBuffers, _strategy)
 }
 
 export async function getMerkleRootHashByChunks(hashList: string[]) {
