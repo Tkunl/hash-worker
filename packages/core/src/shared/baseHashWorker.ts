@@ -1,11 +1,11 @@
-import { BaseWorkerService } from '.'
+import { WorkerService } from '.'
 import { Config, FileMetaInfo, HashChksParam, HashChksRes } from '../types'
 
 type ProcessFileProps = {
   file?: File
   filePath?: string
   config: Required<Config>
-  workerSvc: BaseWorkerService
+  workerSvc: WorkerService
 }
 
 type ProcessFileResult = Promise<{ chunksBlob?: Blob[]; chunksHash: string[]; fileHash: string }>
@@ -16,7 +16,7 @@ type GetFileMetadataProps = {
 }
 
 export abstract class BaseHashWorker {
-  protected workerService: BaseWorkerService | null = null
+  protected workerService: WorkerService | null = null
   protected curWorkerCount: number = 0
 
   protected abstract normalizeParams(param: HashChksParam): Required<HashChksParam>
@@ -26,7 +26,6 @@ export abstract class BaseHashWorker {
     config,
     workerSvc,
   }: ProcessFileProps): ProcessFileResult
-  protected abstract createWorkerSvc(workerCount: number): BaseWorkerService
   protected abstract getFileMetadata({
     file,
     filePath,
@@ -38,10 +37,10 @@ export abstract class BaseHashWorker {
     const { isCloseWorkerImmediately, isShowLog, workerCount } = requiredConfig
     if (this.workerService === null) {
       this.destroyWorkerPool()
-      this.workerService = this.createWorkerSvc(workerCount)
+      this.workerService = new WorkerService(workerCount)
     }
     if (this.curWorkerCount !== workerCount) {
-      this.workerService.adjustWorkerPool(workerCount)
+      this.workerService.adjustSvcWorkerPool(workerCount)
     }
     this.curWorkerCount = workerCount
     const metadata = await this.getFileMetadata({ file, filePath })

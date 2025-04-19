@@ -1,10 +1,10 @@
-import { getFileMetadata, NodeWorkerService, normalizeNodeParam, processFileInNode } from '.'
-import { BaseHashWorker, BaseWorkerService } from '../shared'
+import { getFileMetadata, normalizeParamInNode, processFileInNode } from '.'
+import { BaseHashWorker, WorkerService } from '../shared'
 import { Config, HashChksParam } from '../types'
 
 class NodeHashWorker extends BaseHashWorker {
   protected normalizeParams(param: HashChksParam) {
-    return <Required<HashChksParam>>normalizeNodeParam(param)
+    return <Required<HashChksParam>>normalizeParamInNode(param)
   }
 
   protected processFile({
@@ -14,13 +14,9 @@ class NodeHashWorker extends BaseHashWorker {
   }: {
     filePath?: string
     config: Required<Config>
-    workerSvc: NodeWorkerService
+    workerSvc: WorkerService
   }) {
     return processFileInNode(filePath!, config, workerSvc)
-  }
-
-  protected createWorkerSvc(workerCount: number): BaseWorkerService {
-    return new NodeWorkerService(workerCount)
   }
 
   protected getFileMetadata({ filePath }: { filePath?: string }) {

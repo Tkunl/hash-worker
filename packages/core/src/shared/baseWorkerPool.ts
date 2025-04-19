@@ -1,7 +1,6 @@
 import { BaseWorkerWrapper, MiniSubject } from '.'
 import { WorkerReq, WorkerStatusEnum } from '../types'
 
-// TODO 待重构掉静态方法
 export abstract class BaseWorkerPool {
   pool: BaseWorkerWrapper[] = []
   maxWorkerCount: number
@@ -9,14 +8,14 @@ export abstract class BaseWorkerPool {
 
   protected constructor(maxWorkers: number) {
     this.maxWorkerCount = maxWorkers
+    this.pool = Array.from({ length: maxWorkers }).map(() => this.createWorker())
   }
 
-  abstract adjustPool(workerCount: number): void
+  abstract createWorker(): BaseWorkerWrapper
 
-  exec<T>(params: WorkerReq[]) {
+  exec<T>(params: WorkerReq[]): Promise<T[]> {
     const results: (T | Error)[] = new Array(params.length)
     const workerParams = params.map((param, index) => ({ data: param, index }))
-
     return new Promise<T[]>((rs) => {
       this.curRunningCount.subscribe((count) => {
         if (count < this.maxWorkerCount && workerParams.length !== 0) {
@@ -58,7 +57,30 @@ export abstract class BaseWorkerPool {
     })
   }
 
-  terminate() {
+  adjustPool(workerCount: number): void {
+    const curCount = this.pool.length
+    const diff = workerCount - curCount
+    if (diff > 0) {
+      Array.from({ length: diff }).forEach(() => {
+        this.pool.push(this.createWorker())
+      })
+    }
+    if (diff < 0) {
+      let count = diff
+      for (let i = 0; i < this.pool.length && count > 0; ) {
+        const workerWraper = this.pool[i]
+        if (workerWraper.status === WorkerStatusEnum.WAITING) {
+          workerWraper.terminate()
+          this.pool.splice(i, 1)
+          count--
+        } else {
+          i++
+        }
+      }
+    }
+  }
+
+  terminate(): void {
     this.pool.forEach((workerWrapper) => workerWrapper.terminate())
   }
 }

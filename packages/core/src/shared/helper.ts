@@ -1,4 +1,4 @@
-import { BaseWorkerService, BORDER_COUNT, DEFAULT_MAX_WORKERS, MerkleTree } from '.'
+import { WorkerService, BORDER_COUNT, DEFAULT_MAX_WORKERS, MerkleTree } from '.'
 import { Strategy } from '../types'
 import { crc32, md5, xxhash64 } from 'hash-wasm'
 
@@ -43,7 +43,7 @@ export function getChunksHashMultiple(
   arrayBuffers: ArrayBuffer[],
   chunksCount: number,
   borderCount: number,
-  workerSvc: BaseWorkerService,
+  workerSvc: WorkerService,
 ) {
   const strategyMap = {
     [Strategy.xxHash64]: Strategy.xxHash64,

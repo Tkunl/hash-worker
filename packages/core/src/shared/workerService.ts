@@ -1,7 +1,7 @@
 import { BaseWorkerPool, initBufService } from '.'
 import { Strategy, WorkerReq } from '../types'
 
-export abstract class BaseWorkerService {
+export class WorkerService {
   protected maxWorkers: number
   protected pool: BaseWorkerPool | null = null
 
@@ -9,12 +9,7 @@ export abstract class BaseWorkerService {
     this.maxWorkers = maxWorkers
   }
 
-  protected abstract createWorkerPool(maxWorkers: number): Promise<BaseWorkerPool>
-
-  async getHashForFiles(chunks: ArrayBuffer[], strategy: Strategy) {
-    if (this.pool === null) {
-      this.pool = await this.createWorkerPool(this.maxWorkers)
-    }
+  getHashForFiles(chunks: ArrayBuffer[], strategy: Strategy): Promise<string[]> {
     const params: WorkerReq[] = chunks.map((chunk) => ({
       chunk,
       strategy,
@@ -23,11 +18,11 @@ export abstract class BaseWorkerService {
     return this.pool!.exec<string>(params)
   }
 
-  adjustWorkerPool(workerCount: number) {
-    this.pool?.adjustPool(workerCount)
+  adjustSvcWorkerPool(workerCount: number): void {
+    this.pool!.adjustPool(workerCount)
   }
 
-  terminate() {
+  terminate(): void {
     this.pool && this.pool.terminate()
     this.pool = null
   }

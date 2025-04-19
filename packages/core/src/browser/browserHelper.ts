@@ -1,14 +1,15 @@
+import { getArrayBufFromBlobs, sliceFile } from '.'
 import {
   getArrParts,
   getChunksHashMultiple,
   getChunksHashSingle,
   getMerkleRootHashByChunks,
   mergeConfig,
+  WorkerService,
 } from '../shared'
 import { Config, HashChksParam } from '../types'
-import { getArrayBufFromBlobs, sliceFile, BrowserWorkerService } from '.'
 
-export function normalizeBrowserParam(param: HashChksParam) {
+export function normalizeParamInBrowser(param: HashChksParam) {
   if (!param.file) {
     throw new Error('The file attribute is required in browser environment')
   }
@@ -22,7 +23,7 @@ export function normalizeBrowserParam(param: HashChksParam) {
 export async function processFileInBrowser(
   file: File,
   config: Required<Config>,
-  workerSvc: BrowserWorkerService,
+  workerSvc: WorkerService,
   _getChunksHashSingle = getChunksHashSingle,
   _getChunksHashMultiple = getChunksHashMultiple,
 ) {

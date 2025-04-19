@@ -1,15 +1,10 @@
-import {
-  BrowserWorkerService,
-  getFileMetadata,
-  normalizeBrowserParam,
-  processFileInBrowser,
-} from '.'
-import { BaseHashWorker } from '../shared'
+import { getFileMetadataInBrowser, normalizeParamInBrowser, processFileInBrowser } from '.'
+import { BaseHashWorker, WorkerService } from '../shared'
 import { Config, HashChksParam } from '../types'
 
 class BrowserHashWorker extends BaseHashWorker {
   protected normalizeParams(param: HashChksParam) {
-    return <Required<HashChksParam>>normalizeBrowserParam(param)
+    return <Required<HashChksParam>>normalizeParamInBrowser(param)
   }
 
   protected processFile({
@@ -19,17 +14,13 @@ class BrowserHashWorker extends BaseHashWorker {
   }: {
     file?: File
     config: Required<Config>
-    workerSvc: BrowserWorkerService
+    workerSvc: WorkerService
   }) {
     return processFileInBrowser(file!, config, workerSvc)
   }
 
-  protected createWorkerSvc(workerCount: number) {
-    return new BrowserWorkerService(workerCount)
-  }
-
   protected getFileMetadata({ file }: { file?: File }) {
-    return getFileMetadata(file!)
+    return getFileMetadataInBrowser(file!)
   }
 }
 

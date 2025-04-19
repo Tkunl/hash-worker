@@ -1,16 +1,17 @@
 import fs from 'fs'
 import path from 'path'
-import { getFileSliceLocations, NodeWorkerService, readFileAsArrayBuffer } from '.'
+import { getFileSliceLocations, readFileAsArrayBuffer } from '.'
 import {
   getArrParts,
   getChunksHashMultiple,
   getChunksHashSingle,
   getMerkleRootHashByChunks,
   mergeConfig,
+  WorkerService,
 } from '../shared'
 import { Config, HashChksParam } from '../types'
 
-export function normalizeNodeParam(param: HashChksParam) {
+export function normalizeParamInNode(param: HashChksParam) {
   if (!param.filePath) {
     throw new Error('The filePath attribute is required in node environment')
   }
@@ -40,7 +41,7 @@ export function normalizeNodeParam(param: HashChksParam) {
 export async function processFileInNode(
   filePath: string,
   config: Required<Config>,
-  workerSvc: NodeWorkerService,
+  workerSvc: WorkerService,
   _getChunksHashSingle = getChunksHashSingle,
   _getChunksHashMultiple = getChunksHashMultiple,
 ) {
