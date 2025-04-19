@@ -5,7 +5,6 @@ type ProcessFileProps = {
   file?: File
   filePath?: string
   config: Required<Config>
-  workerSvc: WorkerService
 }
 
 type ProcessFileResult = Promise<{ chunksBlob?: Blob[]; chunksHash: string[]; fileHash: string }>
@@ -20,16 +19,12 @@ export abstract class BaseHashWorker {
   protected curWorkerCount: number = 0
 
   protected abstract normalizeParams(param: HashChksParam): Required<HashChksParam>
-  protected abstract processFile({
-    file,
-    filePath,
-    config,
-    workerSvc,
-  }: ProcessFileProps): ProcessFileResult
+  protected abstract processFile({ file, filePath, config }: ProcessFileProps): ProcessFileResult
   protected abstract getFileMetadata({
     file,
     filePath,
   }: GetFileMetadataProps): Promise<FileMetaInfo>
+  protected abstract createWorkerService(workerCount: number): WorkerService
 
   async getFileHashChunks(param: HashChksParam): Promise<HashChksRes> {
     const { config, file, filePath } = this.normalizeParams(param)
@@ -37,12 +32,13 @@ export abstract class BaseHashWorker {
     const { isCloseWorkerImmediately, isShowLog, workerCount } = requiredConfig
     if (this.workerService === null) {
       this.destroyWorkerPool()
-      this.workerService = new WorkerService(workerCount)
+      this.workerService = this.createWorkerService(workerCount)
+      this.curWorkerCount = workerCount
     }
     if (this.curWorkerCount !== workerCount) {
       this.workerService.adjustSvcWorkerPool(workerCount)
+      this.curWorkerCount = workerCount
     }
-    this.curWorkerCount = workerCount
     const metadata = await this.getFileMetadata({ file, filePath })
 
     let beforeTime: number = 0
@@ -52,7 +48,6 @@ export abstract class BaseHashWorker {
       file,
       filePath,
       config: requiredConfig,
-      workerSvc: this.workerService,
     })
     isShowLog && (overTime = Date.now() - beforeTime)
     isShowLog &&

@@ -6,7 +6,7 @@ export abstract class BaseWorkerPool {
   maxWorkerCount: number
   curRunningCount = new MiniSubject(0)
 
-  protected constructor(maxWorkers: number) {
+  constructor(maxWorkers: number) {
     this.maxWorkerCount = maxWorkers
     this.pool = Array.from({ length: maxWorkers }).map(() => this.createWorker())
   }

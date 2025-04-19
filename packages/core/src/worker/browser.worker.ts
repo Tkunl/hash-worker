@@ -1,7 +1,7 @@
 /// <reference lib="webworker" />
-import { calculateHash } from '../shared'
+import { calculateHashInWorker } from '../shared'
 
 addEventListener('message', async ({ data }) => {
-  const res = await calculateHash(data)
+  const res = await calculateHashInWorker(data)
   postMessage(res, [data.chunk])
 })

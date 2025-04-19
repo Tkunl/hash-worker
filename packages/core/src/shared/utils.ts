@@ -2,9 +2,10 @@ import { crc32, md5, xxhash64 } from 'hash-wasm'
 import { Strategy, WorkerReq, WorkerRes } from '../types'
 
 /**
- * [1, 2, 3, 4] => [[1, 2], [3, 4]]
  * @param chunks 原始数组
  * @param size 分 part 大小
+ * @example
+ * [1, 2, 3, 4] => [[1, 2], [3, 4]]
  */
 export function getArrParts<T>(chunks: T[], size: number): T[][] {
   if (!Number.isInteger(size) || size <= 0) return []
@@ -15,6 +16,24 @@ export function getArrParts<T>(chunks: T[], size: number): T[][] {
   return result
 }
 
+/**
+ * 按顺序串行执行多个返回数组的异步函数，并合并所有结果到一个扁平数组中
+ * @param tasks - 由异步函数组成的数组，每个函数需返回一个 Promise，其解析值为 T 类型的数组
+ * @returns Promise 对象，解析后为所有任务结果的合并数组（T 类型）
+ * @example
+ * runAsyncFuncSerialized([
+ *   () => Promise.resolve([1, 2]),
+ *   () => Promise.resolve([3, 4])
+ * ]).then(console.log); // 输出 [1, 2, 3, 4]
+ */
+export async function runAsyncFuncSerialized<T>(tasks: (() => Promise<T[]>)[]) {
+  const results = []
+  for (const task of tasks) {
+    results.push(...(await task()))
+  }
+  return results
+}
+
 export function generateUUID(): string {
   return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0
@@ -23,7 +42,9 @@ export function generateUUID(): string {
   })
 }
 
-export async function calculateHash(req: WorkerReq): Promise<WorkerRes<string>> {
+// TODO 此处 hashFnMap 待优化
+// 连同 getChunksHashSingle 和 getChunksHashMultipleStrategy
+export async function calculateHashInWorker(req: WorkerReq): Promise<WorkerRes<string>> {
   const { chunk: buf, strategy } = req
   const data = new Uint8Array(buf)
 

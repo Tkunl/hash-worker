@@ -5,8 +5,9 @@ export class WorkerService {
   protected maxWorkers: number
   protected pool: BaseWorkerPool | null = null
 
-  constructor(maxWorkers: number) {
+  constructor(maxWorkers: number, pool: BaseWorkerPool) {
     this.maxWorkers = maxWorkers
+    this.pool = pool
   }
 
   getHashForFiles(chunks: ArrayBuffer[], strategy: Strategy): Promise<string[]> {
