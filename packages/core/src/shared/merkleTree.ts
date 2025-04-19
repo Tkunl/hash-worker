@@ -1,20 +1,16 @@
 import { md5 } from 'hash-wasm'
 
-// 定义 Merkle 树节点的接口
 interface IMerkleNode {
   h: string
   l: IMerkleNode | null
   r: IMerkleNode | null
 }
 
-// 定义 Merkle 树的接口
 interface IMerkleTree {
   root: IMerkleNode
   leafs: IMerkleNode[]
-  // 你可以根据需要添加其他属性或方法，例如校验、添加和生成树等功能
 }
 
-// Merkle 树节点的类实现
 export class MerkleNode implements IMerkleNode {
   h: string
   l: IMerkleNode | null
@@ -27,7 +23,7 @@ export class MerkleNode implements IMerkleNode {
   }
 }
 
-// Merkle 树的类实现
+// TODO 待添加自定义节点 hash 合并逻辑
 export class MerkleTree implements IMerkleTree {
   root: IMerkleNode = new MerkleNode('')
   leafs: IMerkleNode[] = []
