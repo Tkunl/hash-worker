@@ -1,6 +1,7 @@
 import { BaseWorkerWrapper, MiniSubject } from '.'
 import { WorkerReq, WorkerStatusEnum } from '../types'
 
+// TODO 待重构掉静态方法
 export abstract class BaseWorkerPool {
   pool: BaseWorkerWrapper[] = []
   maxWorkerCount: number
@@ -9,6 +10,8 @@ export abstract class BaseWorkerPool {
   protected constructor(maxWorkers: number) {
     this.maxWorkerCount = maxWorkers
   }
+
+  abstract adjustPool(workerCount: number): void
 
   exec<T>(params: WorkerReq[]) {
     const results: (T | Error)[] = new Array(params.length)

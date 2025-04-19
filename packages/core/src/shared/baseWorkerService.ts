@@ -23,6 +23,10 @@ export abstract class BaseWorkerService {
     return this.pool!.exec<string>(params)
   }
 
+  adjustWorkerPool(workerCount: number) {
+    this.pool?.adjustPool(workerCount)
+  }
+
   terminate() {
     this.pool && this.pool.terminate()
     this.pool = null

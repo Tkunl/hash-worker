@@ -36,11 +36,14 @@ export abstract class BaseHashWorker {
     const { config, file, filePath } = this.normalizeParams(param)
     const requiredConfig = config as Required<Config>
     const { isCloseWorkerImmediately, isShowLog, workerCount } = requiredConfig
-    if (this.workerService === null || this.curWorkerCount !== workerCount) {
+    if (this.workerService === null) {
       this.destroyWorkerPool()
       this.workerService = this.createWorkerSvc(workerCount)
-      this.curWorkerCount = workerCount
     }
+    if (this.curWorkerCount !== workerCount) {
+      this.workerService.adjustWorkerPool(workerCount)
+    }
+    this.curWorkerCount = workerCount
     const metadata = await this.getFileMetadata({ file, filePath })
 
     let beforeTime: number = 0

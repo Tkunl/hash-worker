@@ -7,6 +7,6 @@ export class NodeWorkerService extends BaseWorkerService {
   }
 
   createWorkerPool(maxWorkers: number): Promise<NodeWorkerPool> {
-    return NodeWorkerPool.create(maxWorkers)
+    return NodeWorkerPool.createPool(maxWorkers)
   }
 }

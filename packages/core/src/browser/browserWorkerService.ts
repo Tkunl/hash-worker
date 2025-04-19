@@ -7,6 +7,6 @@ export class BrowserWorkerService extends BaseWorkerService {
   }
 
   createWorkerPool(maxWorkers: number): Promise<BrowserWorkerPool> {
-    return BrowserWorkerPool.create(maxWorkers)
+    return BrowserWorkerPool.createPool(maxWorkers)
   }
 }
