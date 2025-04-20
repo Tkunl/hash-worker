@@ -1,6 +1,11 @@
-import { crc32, md5, xxhash64 } from 'hash-wasm'
-import { BORDER_COUNT, DEFAULT_MAX_WORKERS, MerkleTree } from '.'
-import { Strategy } from '../types'
+import { BORDER_COUNT, DEFAULT_MAX_WORKERS, HASH_FUNCTIONS, MerkleTree } from '.'
+import { Strategy, WorkerReq, WorkerRes } from '../types'
+
+export async function getMerkleRootHashByChunks(hashList: string[]) {
+  const merkleTree = new MerkleTree()
+  await merkleTree.init(hashList)
+  return merkleTree.getRootHash()
+}
 
 export function mergeConfig(paramConfig?: {
   chunkSize?: number
@@ -23,18 +28,46 @@ export function mergeConfig(paramConfig?: {
   }
 }
 
+function resolveStrategy(strategy: Strategy, chunksCount?: number, borderCount?: number) {
+  if (strategy !== Strategy.mixed) {
+    return strategy
+  }
+
+  if (chunksCount !== undefined && borderCount !== undefined) {
+    return chunksCount <= borderCount ? Strategy.md5 : Strategy.crc32
+  }
+
+  // 默认处理没有边界参数的情况（单块场景）
+  return Strategy.md5
+}
+
+export async function calculateHashInWorker(req: WorkerReq): Promise<WorkerRes<string>> {
+  const { chunk: buf, strategy } = req
+  const data = new Uint8Array(buf)
+
+  // 明确处理 mixed 策略的非法情况
+  if (strategy === Strategy.mixed) {
+    throw new Error('Mixed strategy not supported in worker calculation')
+  }
+
+  const hashFn = HASH_FUNCTIONS[strategy]
+  if (!hashFn) {
+    throw new Error(`Unsupported strategy: ${strategy}`)
+  }
+
+  const hash = await hashFn(data)
+  return { result: hash, chunk: buf }
+}
+
 export async function getChunksHashSingle(strategy: Strategy, arrayBuffer: ArrayBuffer) {
   const unit8Array = new Uint8Array(arrayBuffer)
-  const hashFunctions = {
-    [Strategy.md5]: md5,
-    [Strategy.crc32]: crc32,
-    [Strategy.xxHash64]: xxhash64,
-  }
-  const selectedStrategy = strategy === Strategy.mixed ? Strategy.md5 : strategy
-  const hashFn = hashFunctions[selectedStrategy]
+  const selectedStrategy = resolveStrategy(strategy)
+  const hashFn = HASH_FUNCTIONS[selectedStrategy]
+
   if (!hashFn) {
-    throw new Error('Unknown strategy')
+    throw new Error(`Unsupported strategy: ${selectedStrategy}`)
   }
+
   return [await hashFn(unit8Array)]
 }
 
@@ -43,21 +76,5 @@ export function getChunksHashMultipleStrategy(
   chunksCount: number,
   borderCount: number,
 ) {
-  const strategyMap = {
-    [Strategy.xxHash64]: Strategy.xxHash64,
-    [Strategy.md5]: Strategy.md5,
-    [Strategy.crc32]: Strategy.crc32,
-    [Strategy.mixed]: chunksCount <= borderCount ? Strategy.md5 : Strategy.crc32,
-  }
-  const result = strategyMap[strategy]
-  if (!result) {
-    throw new Error(`Unsupported strategy: ${strategy}`)
-  }
-  return result
-}
-
-export async function getMerkleRootHashByChunks(hashList: string[]) {
-  const merkleTree = new MerkleTree()
-  await merkleTree.init(hashList)
-  return merkleTree.getRootHash()
+  return resolveStrategy(strategy, chunksCount, borderCount)
 }

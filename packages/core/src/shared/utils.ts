@@ -1,6 +1,3 @@
-import { crc32, md5, xxhash64 } from 'hash-wasm'
-import { Strategy, WorkerReq, WorkerRes } from '../types'
-
 /**
  * @param chunks 原始数组
  * @param size 分 part 大小
@@ -40,20 +37,4 @@ export function generateUUID(): string {
     const v = c === 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
-}
-
-// TODO 此处 hashFnMap 待优化
-// 连同 getChunksHashSingle 和 getChunksHashMultipleStrategy
-export async function calculateHashInWorker(req: WorkerReq): Promise<WorkerRes<string>> {
-  const { chunk: buf, strategy } = req
-  const data = new Uint8Array(buf)
-
-  const hash = await {
-    [Strategy.md5]: md5,
-    [Strategy.crc32]: crc32,
-    [Strategy.xxHash64]: xxhash64,
-    [Strategy.mixed]: () => '', // 永远也不会执行到这里
-  }[strategy](data)
-
-  return { result: hash, chunk: buf }
 }

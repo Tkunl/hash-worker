@@ -24,7 +24,6 @@ export function useFileHashInfo() {
         workerCount: 6,
         strategy: Strategy.md5,
         isShowLog: true,
-        isCloseWorkerImmediately: false,
       },
     }
 

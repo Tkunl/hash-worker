@@ -45,6 +45,7 @@ class NodeBenchmark extends Benchmark {
 
   protected logCompletion(): void {
     console.log(this.chalkYellow!('Done ') + '🎈')
+    process.exit(0)
   }
 
   protected async getFileHashChunks(param: HashChksParam): Promise<void> {
