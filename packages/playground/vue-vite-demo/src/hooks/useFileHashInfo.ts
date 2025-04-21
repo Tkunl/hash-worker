@@ -6,6 +6,7 @@ import {
   HashChksRes,
   Strategy,
 } from 'hash-worker'
+// import { md5 } from 'hash-wasm'
 
 export function useFileHashInfo() {
   const file = ref<File>()
@@ -24,6 +25,7 @@ export function useFileHashInfo() {
         workerCount: 6,
         strategy: Strategy.md5,
         isShowLog: true,
+        // hashFn: async (hLeft, hRight?) => (hRight ? md5(hLeft + hRight) : hLeft)
       },
     }
 

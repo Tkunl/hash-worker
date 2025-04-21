@@ -51,7 +51,7 @@ class NodeHashWorker extends BaseHashWorker {
     filePath?: string
     config: Required<Config>
   }) {
-    const { chunkSize, strategy, workerCount, borderCount } = config
+    const { chunkSize, strategy, workerCount, borderCount, hashFn } = config
     const _filePath = filePath!
 
     // 文件分片
@@ -83,7 +83,7 @@ class NodeHashWorker extends BaseHashWorker {
     }
 
     sliceLocation.length === 1 ? await singleChunkProcessor() : await multipleChunksProcessor()
-    const fileHash = await getMerkleRootHashByChunks(chunksHash)
+    const fileHash = await getMerkleRootHashByChunks(chunksHash, hashFn)
 
     return {
       chunksHash,

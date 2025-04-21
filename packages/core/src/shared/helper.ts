@@ -1,8 +1,8 @@
-import { BORDER_COUNT, DEFAULT_MAX_WORKERS, HASH_FUNCTIONS, MerkleTree } from '.'
+import { BORDER_COUNT, DEFAULT_MAX_WORKERS, HASH_FUNCTIONS, HashFn, MerkleTree } from '.'
 import { Strategy, WorkerReq, WorkerRes } from '../types'
 
-export async function getMerkleRootHashByChunks(hashList: string[]) {
-  const merkleTree = new MerkleTree()
+export async function getMerkleRootHashByChunks(hashList: string[], hashFn: HashFn) {
+  const merkleTree = new MerkleTree(hashFn)
   await merkleTree.init(hashList)
   return merkleTree.getRootHash()
 }

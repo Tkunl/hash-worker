@@ -23,10 +23,16 @@ export class MerkleNode implements IMerkleNode {
   }
 }
 
-// TODO 待添加自定义节点 hash 合并逻辑
+export type HashFn = (hLeft: string, hRight?: string) => Promise<string>
+
 export class MerkleTree implements IMerkleTree {
   root: IMerkleNode = new MerkleNode('')
   leafs: IMerkleNode[] = []
+  hashFn: HashFn = async (hLeft, hRight?) => (hRight ? md5(hLeft + hRight) : hLeft)
+
+  constructor(hashFn?: HashFn) {
+    hashFn && (this.hashFn = hashFn)
+  }
 
   async init(hashList: string[]): Promise<void>
   async init(leafNodes: IMerkleNode[]): Promise<void>
@@ -55,7 +61,10 @@ export class MerkleTree implements IMerkleTree {
         const left = currentLevelNodes[i]
         const right = i + 1 < currentLevelNodes.length ? currentLevelNodes[i + 1] : null
         // 具体的哈希计算方法
-        const parentHash = await this.calculateHash(left, right)
+        const parentHash = await this.calculateHash({
+          left: left.h,
+          right: right?.h,
+        })
         parentNodes.push(new MerkleNode(parentHash, left, right))
       }
       currentLevelNodes = parentNodes
@@ -64,7 +73,7 @@ export class MerkleTree implements IMerkleTree {
     return currentLevelNodes[0] // 返回根节点
   }
 
-  private async calculateHash(left: IMerkleNode, right: IMerkleNode | null): Promise<string> {
-    return right ? md5(left.h + right.h) : left.h
+  private calculateHash({ left, right }: { left: string; right?: string }): Promise<string> {
+    return this.hashFn(left, right)
   }
 }

@@ -29,7 +29,7 @@ class BrowserHashWorker extends BaseHashWorker {
 
   protected async processFile({ file, config }: { file?: File; config: Required<Config> }) {
     const _file = file!
-    const { chunkSize, strategy, workerCount, borderCount } = config
+    const { chunkSize, strategy, workerCount, borderCount, hashFn } = config
 
     const chunksBlob = sliceFile(_file, chunkSize)
     let chunksHash: string[] = []
@@ -57,7 +57,7 @@ class BrowserHashWorker extends BaseHashWorker {
     }
 
     chunksBlob.length === 1 ? await singleChunkProcessor() : await multipleChunksProcessor()
-    const fileHash = await getMerkleRootHashByChunks(chunksHash)
+    const fileHash = await getMerkleRootHashByChunks(chunksHash, hashFn)
 
     return {
       chunksBlob,

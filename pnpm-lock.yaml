@@ -50,9 +50,6 @@ importers:
       chalk:
         specifier: ^5.4.1
         version: 5.4.1
-      dts-bundle-generator:
-        specifier: ^9.5.1
-        version: 9.5.1
       eslint:
         specifier: ^9.18.0
         version: 9.24.0(jiti@2.4.2)
@@ -2400,11 +2397,6 @@ packages:
   dot-prop@5.3.0:
     resolution: {integrity: sha512-QM8q3zDe58hqUqjraQOmzZ1LIH9SWQJTlEKCH4kJ2oQvLZk7RbQXvtDM2XEq3fwkV9CCvvH4LA0AV+ogFsBM2Q==}
     engines: {node: '>=8'}
-
-  dts-bundle-generator@9.5.1:
-    resolution: {integrity: sha512-DxpJOb2FNnEyOzMkG11sxO2dmxPjthoVWxfKqWYJ/bI/rT1rvTMktF5EKjAYrRZu6Z6t3NhOUZ0sZ5ZXevOfbA==}
-    engines: {node: '>=14.0.0'}
-    hasBin: true
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -7345,11 +7337,6 @@ snapshots:
   dot-prop@5.3.0:
     dependencies:
       is-obj: 2.0.0
-
-  dts-bundle-generator@9.5.1:
-    dependencies:
-      typescript: 5.8.3
-      yargs: 17.7.2
 
   dunder-proto@1.0.1:
     dependencies:
