@@ -1,20 +1,13 @@
-import { BORDER_COUNT, DEFAULT_MAX_WORKERS, HASH_FUNCTIONS, HashFn, MerkleTree } from '.'
-import { Strategy, WorkerReq, WorkerRes } from '../types'
+import { BORDER_COUNT, DEFAULT_MAX_WORKERS, getHashFn, HashFn, MerkleTree } from '.'
+import { Config, Strategy, WorkerReq, WorkerRes } from '../types'
 
-export async function getMerkleRootHashByChunks(hashList: string[], hashFn: HashFn) {
+export async function getMerkleRootHashByChunks(hashList: string[], hashFn?: HashFn) {
   const merkleTree = new MerkleTree(hashFn)
   await merkleTree.init(hashList)
   return merkleTree.getRootHash()
 }
 
-export function mergeConfig(paramConfig?: {
-  chunkSize?: number
-  workerCount?: number
-  strategy?: Strategy
-  borderCount?: number
-  isCloseWorkerImmediately?: boolean
-  isShowLog?: boolean
-}) {
+export function mergeConfig(paramConfig?: Config) {
   const { chunkSize, workerCount, strategy, borderCount, isCloseWorkerImmediately, isShowLog } =
     paramConfig ?? {}
 
@@ -25,6 +18,7 @@ export function mergeConfig(paramConfig?: {
     borderCount: borderCount ?? BORDER_COUNT,
     isCloseWorkerImmediately: isCloseWorkerImmediately ?? true,
     isShowLog: isShowLog ?? false,
+    hashFn2: paramConfig!.hashFn2,
   }
 }
 
@@ -50,8 +44,10 @@ export async function calculateHashInWorker(req: WorkerReq): Promise<WorkerRes<s
     throw new Error('Mixed strategy not supported in worker calculation')
   }
 
-  const hashFn = HASH_FUNCTIONS[strategy]
+  // const hashFn = HASH_FUNCTIONS[strategy]
+  const hashFn = getHashFn()
   if (!hashFn) {
+    console.log('calculateHashInWorker....')
     throw new Error(`Unsupported strategy: ${strategy}`)
   }
 
@@ -62,9 +58,11 @@ export async function calculateHashInWorker(req: WorkerReq): Promise<WorkerRes<s
 export async function getChunksHashSingle(strategy: Strategy, arrayBuffer: ArrayBuffer) {
   const unit8Array = new Uint8Array(arrayBuffer)
   const selectedStrategy = resolveStrategy(strategy)
-  const hashFn = HASH_FUNCTIONS[selectedStrategy]
+  // const hashFn = HASH_FUNCTIONS[selectedStrategy]
+  const hashFn = getHashFn()
 
   if (!hashFn) {
+    console.log('getChunksHashSingle....')
     throw new Error(`Unsupported strategy: ${selectedStrategy}`)
   }
 

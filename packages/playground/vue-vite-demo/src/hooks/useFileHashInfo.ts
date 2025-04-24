@@ -6,7 +6,7 @@ import {
   HashChksRes,
   Strategy,
 } from 'hash-worker'
-// import { md5 } from 'hash-wasm'
+import { md5 } from 'hash-wasm'
 
 export function useFileHashInfo() {
   const file = ref<File>()
@@ -19,6 +19,7 @@ export function useFileHashInfo() {
   }
 
   function handleGetHash() {
+    console.log('handleGetHash', md5)
     const param: HashChksParam = {
       file: file.value!,
       config: {
@@ -26,8 +27,11 @@ export function useFileHashInfo() {
         strategy: Strategy.md5,
         isShowLog: true,
         // hashFn: async (hLeft, hRight?) => (hRight ? md5(hLeft + hRight) : hLeft)
+        hashFn2: md5,
       },
     }
+
+    md5('123').then((res: string) => console.log('hash 123', res))
 
     getFileHashChunks(param).then((res: HashChksRes) => {
       console.log(res)

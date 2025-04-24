@@ -7,9 +7,10 @@ import {
   getMerkleRootHashByChunks,
   mergeConfig,
   runAsyncFuncSerialized,
+  setHashFn,
   WorkerService,
 } from '../shared'
-import { Config, HashChksParam } from '../types'
+import { Config, HashChksParam, RequiredWithExclued } from '../types'
 
 class BrowserHashWorker extends BaseHashWorker {
   protected createWorkerService(workerCount: number): WorkerService {
@@ -17,6 +18,7 @@ class BrowserHashWorker extends BaseHashWorker {
   }
 
   protected normalizeParams(param: HashChksParam) {
+    console.log('normalizeParams....', param.config?.hashFn2)
     if (!param.file) {
       throw new Error('The file attribute is required in browser environment')
     }
@@ -27,9 +29,17 @@ class BrowserHashWorker extends BaseHashWorker {
     }
   }
 
-  protected async processFile({ file, config }: { file?: File; config: Required<Config> }) {
+  protected async processFile({
+    file,
+    config,
+  }: {
+    file?: File
+    config: RequiredWithExclued<Config, 'hashFn'>
+  }) {
     const _file = file!
-    const { chunkSize, strategy, workerCount, borderCount, hashFn } = config
+    const { chunkSize, strategy, workerCount, borderCount, hashFn, hashFn2 } = config
+    // TODO 待修改方法名
+    setHashFn(hashFn2)
 
     const chunksBlob = sliceFile(_file, chunkSize)
     let chunksHash: string[] = []
