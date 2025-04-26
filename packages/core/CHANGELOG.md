@@ -1,5 +1,13 @@
 # hash-worker
 
+## 2.0.0
+
+### Major Changes
+
+- refator: 重构了 core 包, 拆分不同环境的打包产物, 不需要在配置 Vite/Webpack 中排除 node 相关依赖
+
+- feat: 现在可以自定义构建 MerkleTree 的 hash 方法
+
 ## 1.0.1
 
 ### Minor Changes

@@ -31,19 +31,23 @@ $ pnpm install hash-worker
 ### Global
 
 ```html
-
 <script src="./global.js"></script>
-<script src="./worker/hash.worker.mjs"></script>
+<script src="./worker/browser.worker.mjs"></script>
 <script>
   HashWorker.getFileHashChunks()
 </script>
 ```
 
-The `global.js` and `hash.worker.mjs` are the build artifacts resulting from executing `build:core` in `package.json`.
+The `global.js` and `browser.worker.mjs` are the build artifacts resulting from executing `build:core` in `package.json`.
 
 The build artifacts are located in the `packages/core/dist` directory.
 
 ### ESM
+
+> [!WARNING]
+> Import from 'hash-worker' in the browser environment
+>
+> Import from 'hash-worker/node' in the browser environment
 
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
@@ -70,49 +74,6 @@ function handleDestroyWorkerPool() {
 }
 ```
 
-> [!WARNING]
-If you are using `Vite` as your build tool, you need to add some configurations in your `vite.config.js` to exclude hash-worker from optimizeDeps.
-
-```js
-// vite.config.js
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-
-export default defineConfig({
-  plugins: [vue()],
-  // other configurations ...
-  optimizeDeps: {
-    exclude: ['hash-worker'] // new added..
-  }
-})
-```
-
-> [!WARNING]
->
-> If you are using `Webpack` as your build tool, you need add some configs in your `webpack.config.js` for exclude the parsing of node related modules.
-
-```js
-// webpack.config.js
-module.exports = {
-  // new added..
-  resolve: { 
-    fallback: {
-      fs: false,
-      path: false,
-      'fs/promises': false,
-      worker_threads: false,
-    },
-  },
-  // new added..
-  externals: {
-    fs: 'commonjs fs',
-    path: 'commonjs path',
-    'fs/promises': 'commonjs fs/promises',
-    worker_threads: 'commonjs worker_threads',
-  },
-}
-```
-
 ## Options
 
 **HashChksParam**
@@ -134,6 +95,8 @@ HashChksParam is used to configure the parameters needed to calculate the hash.
 | strategy                 | Strategy | Strategy.mixed | Hash computation strategy                                                         |
 | borderCount              | number   | 100            | The cutoff for the hash calculation rule in 'mixed' mode                          |
 | isCloseWorkerImmediately | boolean  | true           | Whether to destroy the worker thread immediately when the calculation is complete |
+| isShowLog                | boolean  | false           | Whether to show log in console when he calculation is complete  |
+| hashFn                   | HashFn   | async (hLeft, hRight?) => (hRight ? md5(hLeft + hRight) : hLeft)| The hash method for build MerkleTree |
 
 ```ts
 // strategy.ts
@@ -143,6 +106,8 @@ export enum Strategy {
   xxHash64 = 'xxHash64',
   mixed = 'mixed',
 }
+
+type HashFn = (hLeft: string, hRight?: string) => Promise<string>
 ```
 
 When Strategy.mixed strategy is used, if the number of file fragments is less than borderCount, the md5 algorithm will
