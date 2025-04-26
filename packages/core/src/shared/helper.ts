@@ -1,20 +1,13 @@
 import { BORDER_COUNT, DEFAULT_MAX_WORKERS, HASH_FUNCTIONS, HashFn, MerkleTree } from '.'
-import { Strategy, WorkerReq, WorkerRes } from '../types'
+import { Config, Strategy, WorkerReq, WorkerRes } from '../types'
 
-export async function getMerkleRootHashByChunks(hashList: string[], hashFn: HashFn) {
+export async function getMerkleRootHashByChunks(hashList: string[], hashFn?: HashFn) {
   const merkleTree = new MerkleTree(hashFn)
   await merkleTree.init(hashList)
   return merkleTree.getRootHash()
 }
 
-export function mergeConfig(paramConfig?: {
-  chunkSize?: number
-  workerCount?: number
-  strategy?: Strategy
-  borderCount?: number
-  isCloseWorkerImmediately?: boolean
-  isShowLog?: boolean
-}) {
+export function mergeConfig(paramConfig?: Config) {
   const { chunkSize, workerCount, strategy, borderCount, isCloseWorkerImmediately, isShowLog } =
     paramConfig ?? {}
 

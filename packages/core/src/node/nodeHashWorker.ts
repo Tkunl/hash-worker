@@ -11,7 +11,7 @@ import {
   runAsyncFuncSerialized,
   WorkerService,
 } from '../shared'
-import { Config, HashChksParam } from '../types'
+import { Config, HashChksParam, RequiredWithExclued } from '../types'
 
 class NodeHashWorker extends BaseHashWorker {
   protected createWorkerService(workerCount: number): WorkerService {
@@ -49,7 +49,7 @@ class NodeHashWorker extends BaseHashWorker {
     config,
   }: {
     filePath?: string
-    config: Required<Config>
+    config: RequiredWithExclued<Config, 'hashFn'>
   }) {
     const { chunkSize, strategy, workerCount, borderCount, hashFn } = config
     const _filePath = filePath!
