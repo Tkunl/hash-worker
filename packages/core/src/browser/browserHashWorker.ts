@@ -9,7 +9,7 @@ import {
   runAsyncFuncSerialized,
   WorkerService,
 } from '../shared'
-import { Config, HashChksParam, RequiredWithExclued } from '../types'
+import { Config, HashChksParam, RequiredWithExclude } from '../types'
 
 class BrowserHashWorker extends BaseHashWorker {
   protected createWorkerService(workerCount: number): WorkerService {
@@ -32,7 +32,7 @@ class BrowserHashWorker extends BaseHashWorker {
     config,
   }: {
     file?: File
-    config: RequiredWithExclued<Config, 'hashFn'>
+    config: RequiredWithExclude<Config, 'hashFn'>
   }) {
     const _file = file!
     const { chunkSize, strategy, workerCount, borderCount, hashFn } = config
