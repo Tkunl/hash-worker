@@ -30,11 +30,18 @@ export abstract class BaseWorkerPool {
             .filter((w) => w.status === WorkerStatusEnum.WAITING)
             .slice(0, curTaskCount)
 
-          const paramsToRun = workerParams.splice(0, curTaskCount)
+          // 确保有足够的可用worker
+          if (canUseWorker.length === 0) {
+            return
+          }
+
+          // 使用实际可用的worker数量
+          const actualTaskCount = Math.min(curTaskCount, canUseWorker.length)
+          const paramsToRun = workerParams.splice(0, actualTaskCount)
 
           // 更新当前正在跑起来的 worker 数量
-          this.curRunningCount.next(this.curRunningCount.value + curTaskCount)
-          canUseWorker.forEach((workerApp, index) => {
+          this.curRunningCount.next(this.curRunningCount.value + actualTaskCount)
+          canUseWorker.slice(0, actualTaskCount).forEach((workerApp, index) => {
             const param = paramsToRun[index]
             workerApp
               .run<T>(param.data, param.index)
@@ -66,11 +73,11 @@ export abstract class BaseWorkerPool {
       })
     }
     if (diff < 0) {
-      let count = diff
+      let count = Math.abs(diff)
       for (let i = 0; i < this.pool.length && count > 0; ) {
-        const workerWraper = this.pool[i]
-        if (workerWraper.status === WorkerStatusEnum.WAITING) {
-          workerWraper.terminate()
+        const workerWrapper = this.pool[i]
+        if (workerWrapper.status === WorkerStatusEnum.WAITING) {
+          workerWrapper.terminate()
           this.pool.splice(i, 1)
           count--
         } else {
@@ -78,6 +85,7 @@ export abstract class BaseWorkerPool {
         }
       }
     }
+    this.maxWorkerCount = workerCount
   }
 
   terminate(): void {

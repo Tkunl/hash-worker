@@ -173,17 +173,15 @@ describe('BaseWorkerPool', () => {
     })
 
     it('应该能够减少工作线程数量', () => {
-      const initialCount = workerPool.pool.length
       // 确保所有工作线程都处于等待状态，这样才能被移除
       workerPool.pool.forEach((worker) => {
         worker.status = WorkerStatusEnum.WAITING
       })
 
-      // 注意：当前的 adjustPool 实现有 bug，count 被初始化为负数但循环条件是 count > 0
-      // 所以减少操作实际上不会执行，这里测试实际行为
       workerPool.adjustPool(2)
 
-      expect(workerPool.pool.length).toBe(initialCount) // 实际行为：不会减少
+      expect(workerPool.pool.length).toBe(2)
+      expect(workerPool.maxWorkerCount).toBe(2)
     })
 
     it('当减少工作线程数量时，应该只终止等待状态的工作线程', () => {
@@ -199,11 +197,11 @@ describe('BaseWorkerPool', () => {
       workerPool.pool[3].status = WorkerStatusEnum.WAITING
       workerPool.pool[4].status = WorkerStatusEnum.WAITING
 
-      // 注意：当前的 adjustPool 实现有 bug，减少操作不会执行
       workerPool.adjustPool(3)
 
-      // 实际行为：不会减少，保持原有数量
-      expect(workerPool.pool.length).toBe(5)
+      // 应该减少到3个worker，只移除等待状态的worker
+      expect(workerPool.pool.length).toBe(3)
+      expect(workerPool.maxWorkerCount).toBe(3)
     })
 
     it('当工作线程数量相同时，不应该做任何改变', () => {

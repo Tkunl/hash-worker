@@ -204,7 +204,7 @@ describe('NodeWorkerPool', () => {
       nodeWorkerPool.adjustPool(4)
 
       expect(nodeWorkerPool.pool.length).toBe(4)
-      expect(nodeWorkerPool.maxWorkerCount).toBe(2) // maxWorkerCount 不应该改变
+      expect(nodeWorkerPool.maxWorkerCount).toBe(4) // maxWorkerCount 应该更新为新的数量
       expect(mockNodeWorker).toHaveBeenCalledTimes(4) // 总共创建了 4 个 worker
     })
 

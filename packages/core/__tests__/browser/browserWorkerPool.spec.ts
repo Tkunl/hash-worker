@@ -173,17 +173,15 @@ describe('BrowserWorkerPool', () => {
       })
 
       it('应该减少 worker 数量', () => {
-        const initialCount = workerPool.pool.length
         // 确保所有 worker 都是等待状态，这样才能被移除
         workerPool.pool.forEach((worker) => {
           worker.status = WorkerStatusEnum.WAITING
         })
 
-        // 注意：当前的 adjustPool 实现有 bug，count 被初始化为负数但循环条件是 count > 0
-        // 所以减少操作实际上不会执行，这里测试实际行为
         workerPool.adjustPool(1)
 
-        expect(workerPool.pool.length).toBe(initialCount) // 实际行为：不会减少
+        expect(workerPool.pool.length).toBe(1)
+        expect(workerPool.maxWorkerCount).toBe(1)
       })
 
       it('应该保持 worker 数量不变', () => {
@@ -200,12 +198,12 @@ describe('BrowserWorkerPool', () => {
 
         const terminateSpy = jest.spyOn(workerPool.pool[1], 'terminate')
 
-        // 注意：当前的 adjustPool 实现有 bug，减少操作不会执行
         workerPool.adjustPool(1)
 
-        // 实际行为：不会减少，保持原有数量
-        expect(workerPool.pool.length).toBe(2)
-        expect(terminateSpy).not.toHaveBeenCalled()
+        // 应该减少到1个worker，只移除等待状态的worker
+        expect(workerPool.pool.length).toBe(1)
+        expect(workerPool.maxWorkerCount).toBe(1)
+        expect(terminateSpy).toHaveBeenCalled()
       })
     })
 
@@ -252,7 +250,7 @@ describe('BrowserWorkerPool', () => {
         worker.status = WorkerStatusEnum.WAITING
       })
       workerPool.adjustPool(1)
-      expect(workerPool.pool).toHaveLength(3) // 实际行为：不会减少
+      expect(workerPool.pool).toHaveLength(1) // 现在应该能正确减少
 
       // 终止 - 只是调用 terminate 方法，不改变数组长度
       const initialLength = workerPool.pool.length
