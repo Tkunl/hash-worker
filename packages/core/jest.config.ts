@@ -4,6 +4,9 @@ const projectsConfigWrapper = (configs: Record<string, any>[]): any[] =>
     ...config,
     coveragePathIgnorePatterns: ['/__tests__/fixture/'],
     preset: 'ts-jest',
+    moduleNameMapper: {
+      '^(\\.{1,2}/)*src/(.*)$': '<rootDir>/src/$2',
+    },
     transform: {
       '^.+\\.tsx?$': [
         // 为了解决报错: The 'import.meta' meta-property is only allowed when the '--module' option is 'es2020', 'esnext', or 'system'.
