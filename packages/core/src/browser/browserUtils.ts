@@ -19,6 +19,10 @@ export function sliceFile(file: File, baseSize = 1) {
   const chunkSize = Math.max(1, baseSize * 1048576) // 1MB = 1024 * 1024
   const chunks: Blob[] = []
   let startPos = 0
+  if (file.size === 0) {
+    // 空文件返回一个空 Blob
+    return [file.slice(0, 0)]
+  }
   while (startPos < file.size) {
     chunks.push(file.slice(startPos, startPos + chunkSize))
     startPos += chunkSize
@@ -31,13 +35,15 @@ export function sliceFile(file: File, baseSize = 1) {
  * @param file 文件
  */
 export async function getFileMetadataInBrowser(file: File): Promise<FileMetaInfo> {
-  let fileType: string | undefined = ''
-
-  if (file.name.includes('.')) {
-    fileType = file.name.split('.').pop()
-    fileType = fileType !== void 0 ? '.' + fileType : ''
+  let fileType = ''
+  const name = file.name
+  // 只处理有扩展名且不是以点开头/结尾的
+  if (name && name.includes('.') && !name.startsWith('.') && !name.endsWith('.')) {
+    const lastDot = name.lastIndexOf('.')
+    if (lastDot > 0 && lastDot < name.length - 1) {
+      fileType = '.' + name.slice(lastDot + 1)
+    }
   }
-
   return {
     name: file.name,
     size: file.size / 1024,
