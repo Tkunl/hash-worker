@@ -3,11 +3,14 @@ import { Reject, Resolve, WorkerReq, WorkerRes, WorkerStatusEnum, TaskConfig } f
 
 type WorkerLike = { terminate: () => void }
 
-export abstract class BaseWorkerWrapper<TWorker extends WorkerLike = WorkerLike> {
+export abstract class BaseWorkerWrapper<
+  TWorker extends WorkerLike = WorkerLike,
+  TTimeout = NodeJS.Timeout,
+> {
   status: WorkerStatusEnum
   protected worker: TWorker
-  private currentTaskId: string | null = null
-  private timeoutHandle: NodeJS.Timeout | null = null
+  protected currentTaskId: string | null = null
+  protected timeoutId: TTimeout | null = null
 
   constructor(worker: TWorker) {
     this.worker = worker
@@ -18,17 +21,20 @@ export abstract class BaseWorkerWrapper<TWorker extends WorkerLike = WorkerLike>
 
   terminate() {
     this.cleanup()
+    this.cleanupEventListeners()
     this.worker.terminate()
   }
 
   private cleanup() {
-    if (this.timeoutHandle) {
-      clearTimeout(this.timeoutHandle)
-      this.timeoutHandle = null
+    if (this.timeoutId) {
+      this.clearTimeout(this.timeoutId)
+      this.timeoutId = null
     }
     this.currentTaskId = null
     this.status = WorkerStatusEnum.WAITING
   }
+
+  protected abstract cleanupEventListeners(): void
 
   protected setRunning(taskId: string) {
     this.currentTaskId = taskId
@@ -47,6 +53,7 @@ export abstract class BaseWorkerWrapper<TWorker extends WorkerLike = WorkerLike>
   protected handleMessage<TResult>(
     workerRes: WorkerRes<TResult>,
     resolve: Resolve<TResult>,
+    reject: Reject,
     index: number,
   ) {
     try {
@@ -55,7 +62,7 @@ export abstract class BaseWorkerWrapper<TWorker extends WorkerLike = WorkerLike>
       resolve(workerRes.result)
     } catch (error) {
       this.handleError(
-        (err) => resolve(Promise.reject(err)),
+        reject,
         error instanceof Error ? error : new Error('Unknown error in handleMessage'),
       )
     }
@@ -66,11 +73,10 @@ export abstract class BaseWorkerWrapper<TWorker extends WorkerLike = WorkerLike>
     reject(error)
   }
 
-  protected createTimeout(timeoutMs: number, reject: Reject, taskId: string): NodeJS.Timeout {
-    return setTimeout(() => {
-      if (this.currentTaskId === taskId) {
-        this.handleError(reject, new Error(`Worker task timeout after ${timeoutMs}ms`))
-      }
-    }, timeoutMs)
+  protected setTimeout(timeoutMs: number, reject: Reject, taskId: string) {
+    this.timeoutId = this.createTimeout(timeoutMs, reject, taskId)
   }
+
+  protected abstract createTimeout(timeoutMs: number, reject: Reject, taskId: string): TTimeout
+  protected abstract clearTimeout(timeoutId: TTimeout): void
 }

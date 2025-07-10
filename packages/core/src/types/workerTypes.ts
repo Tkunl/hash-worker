@@ -16,13 +16,12 @@ export interface WorkerRes<T> {
   chunk: ArrayBuffer
 }
 
-// 新增：任务结果类型，确保类型安全
 export type TaskResult<T> =
   | { success: true; data: T; index: number }
   | { success: false; error: Error; index: number }
 
-// 新增：任务配置接口
 export interface TaskConfig {
   timeout?: number
+  // 重试次数预留, 目前未实现
   retries?: number
 }
