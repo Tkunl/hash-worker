@@ -35,7 +35,7 @@ class BrowserHashWorker extends BaseHashWorker {
     config: RequiredWithExclude<Config, 'hashFn'>
   }) {
     const _file = file!
-    const { chunkSize, strategy, workerCount, borderCount, hashFn } = config
+    const { chunkSize, strategy, workerCount, borderCount, hashFn, timeout } = config
 
     const chunksBlob = sliceFile(_file, chunkSize)
     let chunksHash: string[] = []
@@ -55,7 +55,10 @@ class BrowserHashWorker extends BaseHashWorker {
         chunksBuf = await getArrayBufFromBlobs(part)
         // 执行不同的 hash 计算策略
         const _strategy = getChunksHashMultipleStrategy(strategy, chunksBlob.length, borderCount)
-        return this.workerService!.getHashForFiles(chunksBuf, _strategy)
+
+        // 传递超时配置给 getHashForFiles
+        const taskConfig = timeout ? { timeout } : undefined
+        return this.workerService!.getHashForFiles(chunksBuf, _strategy, taskConfig)
       })
 
       chunksHash = await runAsyncFuncSerialized<string>(tasks)

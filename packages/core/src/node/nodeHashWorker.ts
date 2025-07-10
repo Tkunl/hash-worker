@@ -51,7 +51,7 @@ class NodeHashWorker extends BaseHashWorker {
     filePath?: string
     config: RequiredWithExclude<Config, 'hashFn'>
   }) {
-    const { chunkSize, strategy, workerCount, borderCount, hashFn } = config
+    const { chunkSize, strategy, workerCount, borderCount, hashFn, timeout } = config
     const _filePath = filePath!
 
     // 文件分片
@@ -75,7 +75,10 @@ class NodeHashWorker extends BaseHashWorker {
         )
         // 执行不同的 hash 计算策略
         const _strategy = getChunksHashMultipleStrategy(strategy, sliceLocation.length, borderCount)
-        return this.workerService!.getHashForFiles(chunksBuf, _strategy)
+
+        // 传递超时配置给 getHashForFiles
+        const taskConfig = timeout ? { timeout } : undefined
+        return this.workerService!.getHashForFiles(chunksBuf, _strategy, taskConfig)
       })
 
       chunksHash = await runAsyncFuncSerialized<string>(tasks)

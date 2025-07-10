@@ -9,6 +9,7 @@ export interface Config {
   isCloseWorkerImmediately?: boolean // 是否在计算 hash 后立即关闭 worker
   isShowLog?: boolean // 是否显示 log
   hashFn?: HashFn // 自定义 MerkleTree hash 合并方法
+  timeout?: number // 单个 worker 任务的超时时间（毫秒），默认无超时
 }
 
 export interface FileMetaInfo {

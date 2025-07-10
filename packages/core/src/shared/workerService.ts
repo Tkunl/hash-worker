@@ -1,5 +1,5 @@
 import { BaseWorkerPool, initBufService } from '.'
-import { Strategy, WorkerReq } from '../types'
+import { Strategy, WorkerReq, TaskConfig } from '../types'
 
 export class WorkerService {
   protected maxWorkers: number
@@ -10,13 +10,33 @@ export class WorkerService {
     this.pool = pool
   }
 
-  getHashForFiles(chunks: ArrayBuffer[], strategy: Strategy): Promise<string[]> {
+  async getHashForFiles(
+    chunks: ArrayBuffer[],
+    strategy: Strategy,
+    config?: TaskConfig,
+  ): Promise<string[]> {
     const params: WorkerReq[] = chunks.map((chunk) => ({
       chunk,
       strategy,
     }))
     initBufService(chunks)
-    return this.pool!.exec<string>(params)
+
+    const results = await this.pool!.exec<string>(params, config)
+
+    // 处理结果，提取成功的数据或抛出第一个错误
+    const hashResults: string[] = []
+    for (const result of results) {
+      if (result.success) {
+        hashResults[result.index] = result.data
+      } else {
+        // 如果有任务失败，抛出错误
+        throw new Error(
+          `Hash calculation failed for chunk ${result.index}: ${result.error.message}`,
+        )
+      }
+    }
+
+    return hashResults
   }
 
   adjustSvcWorkerPool(workerCount: number): void {
