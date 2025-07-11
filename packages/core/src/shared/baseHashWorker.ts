@@ -31,12 +31,11 @@ export abstract class BaseHashWorker {
     const requiredConfig = config as Required<Config>
     const { isCloseWorkerImmediately, isShowLog, workerCount } = requiredConfig
     if (this.workerService === null) {
-      this.destroyWorkerPool()
       this.workerService = this.createWorkerService(workerCount)
       this.curWorkerCount = workerCount
     }
     if (this.curWorkerCount !== workerCount) {
-      this.workerService.adjustSvcWorkerPool(workerCount)
+      this.workerService.adjustWorkerPoolSize(workerCount)
       this.curWorkerCount = workerCount
     }
     const metadata = await this.getFileMetadata({ file, filePath })
@@ -52,7 +51,7 @@ export abstract class BaseHashWorker {
     isShowLog && (overTime = Date.now() - beforeTime)
     isShowLog &&
       console.log(
-        `get file hash in: ${overTime} ms by using ${config.workerCount} worker, speed: ${(metadata.size / 1024 / (overTime / 1000)).toFixed(2)} Mb/s`,
+        `get file hash in: ${overTime} ms by using ${config.workerCount} worker, speed: ${(metadata.size / 1024 / (overTime / 1000)).toFixed(2)} MB/s`,
       )
     isCloseWorkerImmediately && this.destroyWorkerPool()
 

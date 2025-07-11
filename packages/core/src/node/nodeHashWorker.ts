@@ -15,7 +15,7 @@ import { Config, HashChksParam, RequiredWithExclude } from '../types'
 
 class NodeHashWorker extends BaseHashWorker {
   protected createWorkerService(workerCount: number): WorkerService {
-    return new WorkerService(workerCount, new NodeWorkerPool(workerCount))
+    return new WorkerService(new NodeWorkerPool(workerCount))
   }
 
   protected normalizeParams(param: HashChksParam) {

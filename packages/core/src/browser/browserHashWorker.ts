@@ -13,7 +13,7 @@ import { Config, HashChksParam, RequiredWithExclude } from '../types'
 
 class BrowserHashWorker extends BaseHashWorker {
   protected createWorkerService(workerCount: number): WorkerService {
-    return new WorkerService(workerCount, new BrowserWorkerPool(workerCount))
+    return new WorkerService(new BrowserWorkerPool(workerCount))
   }
 
   protected normalizeParams(param: HashChksParam) {

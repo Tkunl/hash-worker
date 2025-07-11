@@ -9,8 +9,21 @@ interface QueuedTask<T> {
   config?: TaskConfig
 }
 
-export abstract class BaseWorkerPool {
-  pool: BaseWorkerWrapper[] = []
+/**
+ * 基础工作池抽象类
+ * @template TWorkerWrapper - 工作包装器类型，必须继承自BaseWorkerWrapper
+ *
+ * 注意：这里使用 <any, any> 是必要的，因为：
+ * - 浏览器环境：BaseWorkerWrapper<Worker, number>
+ * - Node.js环境：BaseWorkerWrapper<NodeWorker, NodeJS.Timeout>
+ * 两种环境的泛型参数完全不同，使用any可以同时支持两种环境
+ *
+ * 类型安全性在具体的 BrowserWorkerWrapper 和 NodeWorkerWrapper 中得到保障
+ */
+export abstract class BaseWorkerPool<
+  TWorkerWrapper extends BaseWorkerWrapper<any, any> = BaseWorkerWrapper<any, any>,
+> {
+  pool: TWorkerWrapper[] = []
   maxWorkerCount: number
   private taskQueue: QueuedTask<any>[] = []
   private isProcessing = false
@@ -20,7 +33,7 @@ export abstract class BaseWorkerPool {
     this.pool = Array.from({ length: maxWorkers }).map(() => this.createWorker())
   }
 
-  abstract createWorker(): BaseWorkerWrapper
+  abstract createWorker(): TWorkerWrapper
 
   async exec<T>(params: WorkerReq[], config?: TaskConfig): Promise<TaskResult<T>[]> {
     if (params.length === 0) {
@@ -89,7 +102,7 @@ export abstract class BaseWorkerPool {
     }
   }
 
-  private async executeTask<T>(worker: BaseWorkerWrapper, task: QueuedTask<T>): Promise<void> {
+  private async executeTask<T>(worker: TWorkerWrapper, task: QueuedTask<T>): Promise<void> {
     const { param, index, resolve, config } = task
 
     try {
@@ -108,11 +121,11 @@ export abstract class BaseWorkerPool {
     }
   }
 
-  private getAvailableWorkers(): BaseWorkerWrapper[] {
+  private getAvailableWorkers(): TWorkerWrapper[] {
     return this.pool.filter((worker) => worker.status === WorkerStatusEnum.WAITING)
   }
 
-  private getRunningWorkers(): BaseWorkerWrapper[] {
+  private getRunningWorkers(): TWorkerWrapper[] {
     return this.pool.filter((worker) => worker.status === WorkerStatusEnum.RUNNING)
   }
 

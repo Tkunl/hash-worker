@@ -1,6 +1,8 @@
 import { BORDER_COUNT, DEFAULT_MAX_WORKERS, HASH_FUNCTIONS, HashFn, MerkleTree } from '.'
 import { Config, Strategy, WorkerReq, WorkerRes } from '../types'
 
+type HashStrategy = Exclude<Strategy, Strategy.mixed>
+
 export async function getMerkleRootHashByChunks(hashList: string[], hashFn?: HashFn) {
   const merkleTree = new MerkleTree(hashFn)
   await merkleTree.init(hashList)
@@ -40,12 +42,12 @@ export async function calculateHashInWorker(req: WorkerReq): Promise<WorkerRes<s
 
   // 明确处理 mixed 策略的非法情况
   if (strategy === Strategy.mixed) {
-    throw new Error('Mixed strategy not supported in worker calculation')
+    throw new Error('calculateHashInWorker: Mixed strategy not supported in worker calculation')
   }
 
-  const hashFn = HASH_FUNCTIONS[strategy]
+  const hashFn = HASH_FUNCTIONS[strategy as HashStrategy]
   if (!hashFn) {
-    throw new Error(`Unsupported strategy: ${strategy}`)
+    throw new Error(`calculateHashInWorker: Unsupported strategy: ${strategy}`)
   }
 
   const hash = await hashFn(data)
@@ -53,15 +55,15 @@ export async function calculateHashInWorker(req: WorkerReq): Promise<WorkerRes<s
 }
 
 export async function getChunksHashSingle(strategy: Strategy, arrayBuffer: ArrayBuffer) {
-  const unit8Array = new Uint8Array(arrayBuffer)
-  const selectedStrategy = resolveStrategy(strategy)
+  const uint8Array = new Uint8Array(arrayBuffer)
+  const selectedStrategy = resolveStrategy(strategy) as HashStrategy
   const hashFn = HASH_FUNCTIONS[selectedStrategy]
 
   if (!hashFn) {
-    throw new Error(`Unsupported strategy: ${selectedStrategy}`)
+    throw new Error(`getChunksHashSingle: Unsupported strategy: ${selectedStrategy}`)
   }
 
-  return [await hashFn(unit8Array)]
+  return [await hashFn(uint8Array)]
 }
 
 export function getChunksHashMultipleStrategy(
