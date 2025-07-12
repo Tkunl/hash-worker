@@ -49,7 +49,7 @@ export type HashFn = (leftHash: string, rightHash?: string) => Promise<string>
  * Merkle 树的实现
  */
 export class MerkleTree implements IMerkleTree {
-  root: IMerkleNode = new MerkleNode('')
+  root!: IMerkleNode // 使用延迟初始化，避免在构造函数中创建无效节点
   leafs: IMerkleNode[] = []
   private hashFn: HashFn = async (leftHash, rightHash?) =>
     rightHash ? await md5(leftHash + rightHash) : leftHash
@@ -95,6 +95,9 @@ export class MerkleTree implements IMerkleTree {
    * 获取树的根哈希值
    */
   getRootHash(): string {
+    if (!this.root) {
+      throw new Error('Merkle 树尚未初始化，请先调用 init() 方法')
+    }
     return this.root.hash
   }
 
