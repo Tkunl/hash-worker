@@ -1,4 +1,5 @@
-import { BORDER_COUNT, DEFAULT_MAX_WORKERS, HASH_FUNCTIONS, HashFn, MerkleTree } from '.'
+import { BORDER_COUNT, DEFAULT_MAX_WORKERS, HASH_FUNCTIONS } from './constant'
+import { HashFn, MerkleTree } from './merkleTree'
 import { Config, Strategy, WorkerReq, WorkerRes } from '../types'
 
 type HashStrategy = Exclude<Strategy, Strategy.mixed>

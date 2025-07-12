@@ -1,4 +1,5 @@
-import { BaseWorkerPool, clearBufService, initBufService } from '.'
+import { BaseWorkerPool } from './baseWorkerPool'
+import { clearBufService, initBufService } from './arrayBufferService'
 import { Strategy, WorkerReq, TaskConfig } from '../types'
 
 /**

@@ -1,6 +1,5 @@
 import fs from 'fs'
 import path from 'path'
-import { getFileMetadata, getFileSliceLocations, NodeWorkerPool, readFileAsArrayBuffer } from '.'
 import {
   BaseHashWorker,
   getArrParts,
@@ -12,6 +11,8 @@ import {
   WorkerService,
 } from '../shared'
 import { Config, HashChksParam, RequiredWithExclude } from '../types'
+import { NodeWorkerPool } from './nodeWorkerPool'
+import { getFileMetadata, getFileSliceLocations, readFileAsArrayBuffer } from './nodeUtils'
 
 class NodeHashWorker extends BaseHashWorker {
   protected createWorkerService(workerCount: number): WorkerService {

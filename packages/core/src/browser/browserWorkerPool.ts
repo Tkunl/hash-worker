@@ -1,5 +1,5 @@
 import { BaseWorkerPool } from '../shared'
-import { BrowserWorkerWrapper } from '.'
+import { BrowserWorkerWrapper } from './browserWorkerWrapper'
 
 export class BrowserWorkerPool extends BaseWorkerPool<BrowserWorkerWrapper> {
   createWorker(): BrowserWorkerWrapper {

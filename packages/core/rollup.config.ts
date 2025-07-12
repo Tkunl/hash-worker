@@ -59,12 +59,14 @@ export default defineConfig([
       swc({ sourceMaps: true }),
       minify({ mangle: true, module: true, compress: true, sourceMap: true }),
     ],
+    external: ['worker_threads'],
   },
   // node 类型产物
   {
     input: 'src/node.ts',
     output: { file: 'dist/node.d.ts' },
     plugins: [dts()],
+    external: ['worker_threads'],
   },
   // browser worker
   {
@@ -85,5 +87,6 @@ export default defineConfig([
       swc({ sourceMaps: true }),
       minify({ mangle: true, module: true, compress: true }),
     ],
+    external: ['worker_threads'],
   },
 ])

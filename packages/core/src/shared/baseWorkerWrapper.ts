@@ -1,4 +1,4 @@
-import { restoreBuf } from '.'
+import { restoreBuf } from './arrayBufferService'
 import { Reject, Resolve, WorkerReq, WorkerRes, WorkerStatusEnum, TaskConfig } from '../types'
 
 type WorkerLike = { terminate: () => void }

@@ -1,4 +1,5 @@
-import { BaseWorkerWrapper, generateUUID } from '.'
+import { BaseWorkerWrapper } from './baseWorkerWrapper'
+import { generateUUID } from './utils'
 import { WorkerReq, WorkerStatusEnum, TaskResult, TaskConfig } from '../types'
 
 interface QueuedTask<T> {

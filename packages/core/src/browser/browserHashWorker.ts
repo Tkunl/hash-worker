@@ -1,4 +1,3 @@
-import { BrowserWorkerPool, getArrayBufFromBlobs, getFileMetadataInBrowser, sliceFile } from '.'
 import {
   BaseHashWorker,
   getArrParts,
@@ -10,6 +9,8 @@ import {
   WorkerService,
 } from '../shared'
 import { Config, HashChksParam, RequiredWithExclude } from '../types'
+import { getArrayBufFromBlobs, getFileMetadataInBrowser, sliceFile } from './browserUtils'
+import { BrowserWorkerPool } from './browserWorkerPool'
 
 class BrowserHashWorker extends BaseHashWorker {
   protected createWorkerService(workerCount: number): WorkerService {

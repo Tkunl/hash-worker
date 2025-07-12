@@ -1,4 +1,4 @@
-import { WorkerService } from '.'
+import { WorkerService } from './workerService'
 import { Config, FileMetaInfo, HashChksParam, HashChksRes } from '../types'
 
 type ProcessFileProps = {
