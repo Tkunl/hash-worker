@@ -402,4 +402,157 @@ describe('NodeWorkerWrapper', () => {
       wrappers.forEach((wrapper) => wrapper.terminate())
     })
   })
+
+  describe('createTimeout 方法', () => {
+    beforeEach(() => {
+      jest.useFakeTimers()
+    })
+
+    afterEach(() => {
+      jest.useRealTimers()
+    })
+
+    it('应该创建超时计时器并在超时时调用 handleError', async () => {
+      const mockParam = {
+        chunk: new ArrayBuffer(8),
+        strategy: Strategy.md5,
+      }
+      const index = 0
+      const timeoutMs = 1000
+
+      // Mock worker 的消息响应以确保不会正常完成
+      mockWorkerInstance.on.mockReturnThis()
+
+      // 开始执行任务，但不让它正常完成
+      const runPromise = nodeWorkerWrapper.run(mockParam, index, { timeout: timeoutMs })
+
+      // 验证任务已开始运行
+      expect(nodeWorkerWrapper.status).toBe(WorkerStatusEnum.RUNNING)
+
+      // 快进时间以触发超时
+      jest.advanceTimersByTime(timeoutMs)
+
+      // 验证任务拒绝并包含超时错误信息
+      await expect(runPromise).rejects.toThrow(`Worker task timeout after ${timeoutMs}ms`)
+      // 注意：由于 setError() 方法会调用 cleanup()，状态会重置为 WAITING
+      expect(nodeWorkerWrapper.status).toBe(WorkerStatusEnum.WAITING)
+    })
+
+    it('应该在任务 ID 匹配时触发超时处理', (done) => {
+      const mockParam = {
+        chunk: new ArrayBuffer(8),
+        strategy: Strategy.md5,
+      }
+      const index = 0
+      const timeoutMs = 500
+
+      mockWorkerInstance.on.mockReturnThis()
+
+      const runPromise = nodeWorkerWrapper.run(mockParam, index, { timeout: timeoutMs })
+
+      // 验证当前任务 ID 已设置
+      expect((nodeWorkerWrapper as any).currentTaskId).toBeTruthy()
+
+      runPromise.catch((error) => {
+        expect(error.message).toContain('Worker task timeout after')
+        expect(error.message).toContain(`${timeoutMs}ms`)
+        done()
+      })
+
+      // 触发超时
+      jest.advanceTimersByTime(timeoutMs)
+    })
+
+    it('应该在任务正常完成后不触发超时', async () => {
+      const mockParam = {
+        chunk: new ArrayBuffer(8),
+        strategy: Strategy.md5,
+      }
+      const mockResult = 'test-hash-result'
+      const index = 0
+      const timeoutMs = 1000
+
+      let messageCallback: (data: any) => void
+
+      mockWorkerInstance.on.mockImplementation((event, callback) => {
+        if (event === 'message') {
+          messageCallback = callback
+        }
+        return mockWorkerInstance
+      })
+
+      const runPromise = nodeWorkerWrapper.run(mockParam, index, { timeout: timeoutMs })
+
+      // 立即完成任务（在超时之前）
+      messageCallback!({
+        result: mockResult,
+        chunk: mockParam.chunk,
+      })
+
+      const result = await runPromise
+      expect(result).toBe(mockResult)
+      expect(nodeWorkerWrapper.status).toBe(WorkerStatusEnum.WAITING)
+
+      // 验证即使时间过去了，也不会触发超时错误
+      jest.advanceTimersByTime(timeoutMs)
+      // 如果没有抛出错误，测试通过
+    })
+
+    it('应该正确清理超时计时器', () => {
+      const mockParam = {
+        chunk: new ArrayBuffer(8),
+        strategy: Strategy.md5,
+      }
+      const index = 0
+      const timeoutMs = 1000
+
+      let messageCallback: (data: any) => void
+
+      mockWorkerInstance.on.mockImplementation((event, callback) => {
+        if (event === 'message') {
+          messageCallback = callback
+        }
+        return mockWorkerInstance
+      })
+
+      const runPromise = nodeWorkerWrapper.run(mockParam, index, { timeout: timeoutMs })
+
+      // 验证超时 ID 已设置
+      expect((nodeWorkerWrapper as any).timeoutId).toBeTruthy()
+
+      // 完成任务
+      messageCallback!({
+        result: 'test-result',
+        chunk: mockParam.chunk,
+      })
+
+      return runPromise.then(() => {
+        // 验证超时 ID 已清理
+        expect((nodeWorkerWrapper as any).timeoutId).toBeNull()
+      })
+    })
+
+    it('应该在不同的任务 ID 时不触发超时', async () => {
+      const timeoutMs = 500
+      const mockReject = jest.fn()
+
+      // 获取一个假的任务 ID
+      const fakeTaskId = 'fake-task-id'
+
+      // 设置当前任务 ID 为不同的值
+      ;(nodeWorkerWrapper as any).currentTaskId = 'different-task-id'
+
+      // 直接测试 createTimeout 方法
+      const timeoutId = (nodeWorkerWrapper as any).createTimeout(timeoutMs, mockReject, fakeTaskId)
+
+      // 快进时间触发超时
+      jest.advanceTimersByTime(timeoutMs)
+
+      // 由于当前任务 ID 不匹配，reject 不应该被调用
+      expect(mockReject).not.toHaveBeenCalled()
+
+      // 清理
+      clearTimeout(timeoutId)
+    })
+  })
 })
