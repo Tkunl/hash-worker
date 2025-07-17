@@ -1,25 +1,32 @@
 {
   "name": "hash-worker",
-  "version": "1.0.1",
+  "version": "1.1.1",
   "description": "hash-worker is a tool for quickly calculating file's hash",
   "author": "https://github.com/Tkunl",
   "repository": "https://github.com/Tkunl/hash-worker",
   "type": "module",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "unpkg": "./dist/global.js",
-  "jsdelivr": "./dist/global.js",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs"
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./browser": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.cjs.js"
+    },
+    "./node": {
+      "types": "./dist/node.d.ts",
+      "import": "./dist/node.mjs",
+      "require": "./dist/node.cjs"
     },
     "./global": {
       "types": "./dist/global.d.ts",
-      "require": "./dist/global.js",
-      "import": "./dist/global.js"
+      "default": "./dist/global.js"
     }
   },
   "files": [

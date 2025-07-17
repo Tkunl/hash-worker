@@ -11,12 +11,48 @@ const bundleName = 'HashWorker'
 // 因此你不需要过多复杂的配置。
 
 export default defineConfig([
-  // esm 产物
+  // 浏览器 esm 产物
   {
-    input: 'src/main.ts',
+    input: 'src/index.ts',
     output: [
-      { file: 'dist/index.mjs', format: 'esm', exports: 'named' },
-      { file: 'dist/index.js', format: 'cjs', exports: 'named' },
+      { file: 'dist/index.esm.js', format: 'esm', exports: 'named' },
+      { file: 'dist/index.cjs.js', format: 'cjs', exports: 'named' },
+    ],
+    plugins: [
+      nodeResolve(),
+      swc({ sourceMaps: true }),
+      minify({ mangle: true, module: true, compress: true, sourceMap: true }),
+    ],
+  },
+  // 浏览器 esm 类型产物
+  {
+    input: 'src/index.ts',
+    output: { file: 'dist/index.d.ts' },
+    plugins: [dts()],
+  },
+  // 浏览器 iife 产物
+  {
+    input: 'src/iife.ts',
+    output: { file: 'dist/global.js', format: 'iife', name: bundleName },
+    plugins: [
+      nodeResolve(),
+      swc({ sourceMaps: true }),
+      minify({ mangle: true, module: false, compress: true, sourceMap: true }),
+    ],
+  },
+  // 浏览器 iife 类型产物
+  {
+    input: 'src/iife.ts',
+    output: { file: 'dist/global.d.ts', format: 'es' },
+    plugins: [dts()],
+    external: ['worker_threads'],
+  },
+  // node esm, cjs 产物
+  {
+    input: 'src/node.ts',
+    output: [
+      { file: 'dist/node.mjs', format: 'esm', exports: 'named' },
+      { file: 'dist/node.cjs', format: 'cjs', exports: 'named' },
     ],
     plugins: [
       nodeResolve(),
@@ -25,39 +61,32 @@ export default defineConfig([
     ],
     external: ['worker_threads'],
   },
-  // esm 类型产物
+  // node 类型产物
   {
-    input: 'src/main.ts',
-    output: { file: 'dist/index.d.ts' },
+    input: 'src/node.ts',
+    output: { file: 'dist/node.d.ts' },
     plugins: [dts()],
     external: ['worker_threads'],
   },
-  // iife 产物
+  // browser worker
   {
-    input: 'src/main.ts',
-    output: { file: 'dist/global.js', format: 'iife', name: bundleName },
-    plugins: [
-      nodeResolve(),
-      swc({ sourceMaps: true }),
-      minify({ mangle: true, module: false, compress: true, sourceMap: true }),
-    ],
-    external: ['worker_threads'],
-  },
-  // iife 类型产物
-  {
-    input: 'src/iife.ts',
-    output: { file: 'dist/global.d.ts', format: 'es' },
-    plugins: [dts()],
-    external: ['worker_threads'],
-  },
-  // Worker
-  {
-    input: 'src/worker/hash.worker.ts',
-    output: { file: 'dist/worker/hash.worker.mjs', format: 'esm' },
+    input: 'src/worker/browser.worker.ts',
+    output: { file: 'dist/worker/browser.worker.mjs', format: 'esm' },
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
       minify({ mangle: true, module: true, compress: true }),
     ],
+  },
+  // node worker
+  {
+    input: 'src/worker/node.worker.ts',
+    output: { file: 'dist/worker/node.worker.mjs', format: 'esm' },
+    plugins: [
+      nodeResolve(),
+      swc({ sourceMaps: true }),
+      minify({ mangle: true, module: true, compress: true }),
+    ],
+    external: ['worker_threads'],
   },
 ])

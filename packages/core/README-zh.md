@@ -30,19 +30,23 @@ $ pnpm install hash-worker
 ### Global
 
 ```html
-
 <script src="./global.js"></script>
-<script src="./worker/hash.worker.mjs"></script>
+<script src="./worker/browser.worker.mjs"></script>
 <script>
   HashWorker.getFileHashChunks()
 </script>
 ```
 
-其中 `global.js` 和 `hash.worker.mjs` 是执行 `package.json` 中的 `build:core` 后的打包产物
+其中 `global.js` 和 `browser.worker.mjs` 是执行 `package.json` 中的 `build:core` 后的打包产物
 
 打包产物位于 `packages/core/dist` 目录
 
 ### ESM
+
+> [!WARNING]
+> 在浏览器环境下从 'hash-worker' 中导入
+>
+> 在 Node 环境下从 'hash-worker/node' 中导入
 
 ``` ts
 import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
@@ -69,48 +73,6 @@ function handleDestroyWorkerPool() {
 }
 ```
 
-> [!WARNING]
-> 如果你在使用 `Vite` 作为构建工具, 需要在 `Vite` 的配置文件中, 添加如下配置, 用于排除 vite 的依赖优化
-
- ```js
-// vite.config.js
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-
-export default defineConfig({
-  plugins: [vue()],
-  // other configurations ...
-  optimizeDeps: {
-    exclude: ['hash-worker'] // new added..
-  }
-})
- ```
-
-> [!WARNING]
-> 如果你在使用 `Webpack` 作为构建工具, 需要在 Webpack 的配置文件中, 添加如下配置, 用于排除 node 相关模块的解析
-
-```js
-// webpack.config.js
-module.exports = {
-  // new added..
-  resolve: { 
-    fallback: {
-      fs: false,
-      path: false,
-      'fs/promises': false,
-      worker_threads: false,
-    },
-  },
-  // new added..
-  externals: {
-    fs: 'commonjs fs',
-    path: 'commonjs path',
-    'fs/promises': 'commonjs fs/promises',
-    worker_threads: 'commonjs worker_threads',
-  },
-}
-```
-
 ## Options
 
 **HashChksParam**
@@ -132,15 +94,18 @@ HashChksParam 是用于配置计算哈希值所需的参数。
 | strategy                 | Strategy | Strategy.mixed | hash 计算策略                 |
 | borderCount              | number   | 100            | 'mixed' 模式下 hash 计算规则的分界点 |
 | isCloseWorkerImmediately | boolean  | true           | 当计算完成时, 是否立即销毁 Worker 线程  |
+| isShowLog                | boolean  | false           | 当计算完成时, 是否在控制台显示 log  |
+| hashFn                   | HashFn   | async (hLeft, hRight?) => (hRight ? md5(hLeft + hRight) : hLeft)| 构建 MerkleTree 时的 hash 方法 |
 
 ```ts
-// strategy.ts
-export enum Strategy {
+enum Strategy {
   md5 = 'md5',
   crc32 = 'crc32',
   xxHash64 = 'xxHash64',
   mixed = 'mixed',
 }
+
+type HashFn = (hLeft: string, hRight?: string) => Promise<string>
 ```
 
 当采用 Strategy.mixed 策略时，若文件分片数量少于 borderCount，将采用 md5 算法计算哈希值来构建 MerkleTree。

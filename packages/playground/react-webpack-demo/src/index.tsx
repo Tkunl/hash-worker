@@ -1,19 +1,24 @@
-import React from 'react'
+import { getFileHashChunks, HashChksParam, HashChksRes, Strategy } from 'hash-worker'
+import React, { useCallback, useRef } from 'react'
 import ReactDOM from 'react-dom/client'
-import { getFileHashChunks, HashChksRes, HashChksParam } from 'hash-worker'
 
 function App() {
-  let file: File
+  const fileRef = useRef<File | null>(null)
 
-  function handleInputChange(e: any) {
-    file = e.target.files[0]
-  }
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.currentTarget.files
+    if (files?.[0]) {
+      fileRef.current = files[0]
+    }
+  }, [])
 
-  function handleGetHash() {
+  const handleGetHash = useCallback(() => {
     const param: HashChksParam = {
-      file: file!,
+      file: fileRef.current!,
       config: {
-        workerCount: 8,
+        workerCount: 6,
+        strategy: Strategy.md5,
+        isShowLog: true,
       },
     }
 
@@ -21,7 +26,7 @@ function App() {
       console.log(data)
       alert('Calculation complete, please check the console!')
     })
-  }
+  }, [])
 
   return (
     <>

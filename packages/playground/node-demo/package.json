@@ -9,7 +9,6 @@
     "rm:dist": "rimraf ./dist"
   },
   "dependencies": {
-    "hash-worker": "workspace:*",
-    "hash-worker-benchmark": "workspace:*"
+    "hash-worker": "workspace:*"
   }
 }

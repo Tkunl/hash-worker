@@ -6,20 +6,26 @@ import {
   HashChksRes,
   Strategy,
 } from 'hash-worker'
+// import { md5 } from 'hash-wasm'
 
 export function useFileHashInfo() {
   const file = ref<File>()
 
-  function handleInputChange(e: any) {
-    file.value = e.target.files[0]
+  function handleInputChange(e: Event) {
+    const target = e.target as HTMLInputElement
+    if (target.files) {
+      file.value = target.files[0]
+    }
   }
 
   function handleGetHash() {
     const param: HashChksParam = {
       file: file.value!,
       config: {
-        workerCount: 8,
+        workerCount: 6,
         strategy: Strategy.md5,
+        isShowLog: true,
+        // hashFn: async (hLeft, hRight?) => (hRight ? md5(hLeft + hRight) : hLeft)
       },
     }
 
