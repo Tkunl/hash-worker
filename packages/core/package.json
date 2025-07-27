@@ -1,6 +1,6 @@
 {
   "name": "hash-worker",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "hash-worker is a tool for quickly calculating file's hash",
   "author": "https://github.com/Tkunl",
   "repository": "https://github.com/Tkunl/hash-worker",
@@ -27,7 +27,8 @@
     "./global": {
       "types": "./dist/global.d.ts",
       "default": "./dist/global.js"
-    }
+    },
+    "./worker/browser.worker.mjs": "./dist/worker/browser.worker.mjs"
   },
   "files": [
     "dist",

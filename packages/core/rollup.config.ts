@@ -1,7 +1,7 @@
 import { defineConfig } from 'rollup'
 import { dts } from 'rollup-plugin-dts'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
-import { minify, swc } from 'rollup-plugin-swc3'
+import { swc } from 'rollup-plugin-swc3'
 
 const bundleName = 'HashWorker'
 
@@ -21,7 +21,7 @@ export default defineConfig([
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true, sourceMap: true }),
+      // minify({ mangle: true, module: true, compress: true, sourceMap: true }),
     ],
   },
   // 浏览器 esm 类型产物
@@ -37,7 +37,7 @@ export default defineConfig([
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
-      minify({ mangle: true, module: false, compress: true, sourceMap: true }),
+      // minify({ mangle: true, module: false, compress: true, sourceMap: true }),
     ],
   },
   // 浏览器 iife 类型产物
@@ -57,7 +57,7 @@ export default defineConfig([
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true, sourceMap: true }),
+      // minify({ mangle: true, module: true, compress: true, sourceMap: true }),
     ],
     external: ['worker_threads'],
   },
@@ -75,7 +75,7 @@ export default defineConfig([
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true }),
+      // minify({ mangle: true, module: true, compress: true }),
     ],
   },
   // node worker
@@ -85,7 +85,7 @@ export default defineConfig([
     plugins: [
       nodeResolve(),
       swc({ sourceMaps: true }),
-      minify({ mangle: true, module: true, compress: true }),
+      // minify({ mangle: true, module: true, compress: true }),
     ],
     external: ['worker_threads'],
   },
