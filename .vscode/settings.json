@@ -1,6 +1,10 @@
 {
   "cSpell.words": [
     "Chks",
-    "Merkle"
+    "Merkle",
+    "rimraf",
+    "tsup",
+    "vite",
+    "vitejs"
   ]
 }

@@ -18,11 +18,7 @@ export default defineConfig([
       { file: 'dist/index.esm.js', format: 'esm', exports: 'named' },
       { file: 'dist/index.cjs.js', format: 'cjs', exports: 'named' },
     ],
-    plugins: [
-      nodeResolve(),
-      swc({ sourceMaps: true }),
-      // minify({ mangle: true, module: true, compress: true, sourceMap: true }),
-    ],
+    plugins: [nodeResolve(), swc({ sourceMaps: true })],
   },
   // 浏览器 esm 类型产物
   {
@@ -34,11 +30,7 @@ export default defineConfig([
   {
     input: 'src/iife.ts',
     output: { file: 'dist/global.js', format: 'iife', name: bundleName },
-    plugins: [
-      nodeResolve(),
-      swc({ sourceMaps: true }),
-      // minify({ mangle: true, module: false, compress: true, sourceMap: true }),
-    ],
+    plugins: [nodeResolve(), swc({ sourceMaps: true })],
   },
   // 浏览器 iife 类型产物
   {
@@ -54,11 +46,7 @@ export default defineConfig([
       { file: 'dist/node.mjs', format: 'esm', exports: 'named' },
       { file: 'dist/node.cjs', format: 'cjs', exports: 'named' },
     ],
-    plugins: [
-      nodeResolve(),
-      swc({ sourceMaps: true }),
-      // minify({ mangle: true, module: true, compress: true, sourceMap: true }),
-    ],
+    plugins: [nodeResolve(), swc({ sourceMaps: true })],
     external: ['worker_threads'],
   },
   // node 类型产物
@@ -72,21 +60,13 @@ export default defineConfig([
   {
     input: 'src/worker/browser.worker.ts',
     output: { file: 'dist/worker/browser.worker.mjs', format: 'esm' },
-    plugins: [
-      nodeResolve(),
-      swc({ sourceMaps: true }),
-      // minify({ mangle: true, module: true, compress: true }),
-    ],
+    plugins: [nodeResolve(), swc({ sourceMaps: true })],
   },
   // node worker
   {
     input: 'src/worker/node.worker.ts',
     output: { file: 'dist/worker/node.worker.mjs', format: 'esm' },
-    plugins: [
-      nodeResolve(),
-      swc({ sourceMaps: true }),
-      // minify({ mangle: true, module: true, compress: true }),
-    ],
+    plugins: [nodeResolve(), swc({ sourceMaps: true })],
     external: ['worker_threads'],
   },
 ])

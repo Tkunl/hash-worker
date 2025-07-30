@@ -11,7 +11,5 @@
   "dependencies": {
     "hash-worker": "workspace:*"
   },
-  "devDependencies": {
-    "typescript": "catalog:"
-  }
+  "devDependencies": {}
 }

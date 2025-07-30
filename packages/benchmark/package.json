@@ -32,12 +32,5 @@
   "dependencies": {
     "hash-worker": "workspace:*"
   },
-  "peerDependencies": {
-    "hash-worker": "workspace:*"
-  },
-  "devDependencies": {
-    "tsup": "catalog:",
-    "rimraf": "catalog:",
-    "typescript": "catalog:"
-  }
+  "devDependencies": {}
 }

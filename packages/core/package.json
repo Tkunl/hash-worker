@@ -50,8 +50,5 @@
   "license": "MIT",
   "dependencies": {
     "hash-wasm": "catalog:"
-  },
-  "devDependencies": {
-    "ts-node": "catalog:"
   }
 }
