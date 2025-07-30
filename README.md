@@ -28,6 +28,23 @@ $ pnpm install hash-worker
 
 ## Usage
 
+> [!WARNING]
+If you are using `Vite` as your build tool, you need to add the following configuration to your `Vite` config file to exclude hash-worker from Vite's pre-bundling process.
+
+```js
+// vite.config.js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  // other configurations ...
+  optimizeDeps: {
+    exclude: ['hash-worker'] // new added..
+  }
+})
+```
+
 ### Global
 
 ```html

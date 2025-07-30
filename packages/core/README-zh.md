@@ -27,6 +27,23 @@ $ pnpm install hash-worker
 
 ## Usage
 
+> [!WARNING]
+> 如果你在使用 `Vite` 作为构建工具, 需要在 `Vite` 的配置文件中, 添加如下配置, 用于将 hash-worker 排除 vite 的预构建行为
+
+ ```js
+// vite.config.js
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+export default defineConfig({
+  plugins: [vue()],
+  // other configurations ...
+  optimizeDeps: {
+    exclude: ['hash-worker'] // new added..
+  }
+})
+ ```
+
 ### Global
 
 ```html

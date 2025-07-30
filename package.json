@@ -22,7 +22,7 @@
     "prepare": "husky",
     "pre-commit": "lint-staged",
     "commitlint": "commitlint --config commitlint.config.js -e -V",
-    "sync-readme": "node scripts/syncReadme.js",
+    "sync-readme-to-core": "node scripts/syncReadme.js",
     "clear:node_modules": "node scripts/clear.js --pattern=node_modules",
     "clear:dist": "node scripts/clear.js --pattern=dist",
     "clear:cache": "node scripts/clear.js --pattern=cache",
