@@ -66,10 +66,10 @@ export default defineConfig({
 > 在 Node 环境下从 'hash-worker/node' 中导入
 
 ``` ts
-import { getFileHashChunks, destroyWorkerPool, HashWorkerResult, HashChksParam } from 'hash-worker'
+import { getFileHashChunks, destroyWorkerPool, HashWorkerResult, HashWorkerOptions } from 'hash-worker'
 
 function handleGetHash(file: File) {
-  const param: HashChksParam = {
+  const param: HashWorkerOptions = {
     file: file,
     config: {
       workerCount: 8,
@@ -92,9 +92,9 @@ function handleDestroyWorkerPool() {
 
 ## Options
 
-**HashChksParam**
+**HashWorkerOptions**
 
-HashChksParam 是用于配置计算哈希值所需的参数。
+HashWorkerOptions 是用于配置计算哈希值所需的参数。
 
 | filed    | type   | default | description                 |
 |----------|--------|---------|-----------------------------|

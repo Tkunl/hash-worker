@@ -67,10 +67,10 @@ The build artifacts are located in the `packages/core/dist` directory.
 > Import from 'hash-worker/node' in the browser environment
 
 ``` ts
-import { getFileHashChunks, destroyWorkerPool, HashWorkerResult, HashChksParam } from 'hash-worker'
+import { getFileHashChunks, destroyWorkerPool, HashWorkerResult, HashWorkerOptions } from 'hash-worker'
 
 function handleGetHash(file: File) {
-  const param: HashChksParam = {
+  const param: HashWorkerOptions = {
     file: file,
     config: {
       workerCount: 8,
@@ -93,9 +93,9 @@ function handleDestroyWorkerPool() {
 
 ## Options
 
-**HashChksParam**
+**HashWorkerOptions**
 
-HashChksParam is used to configure the parameters needed to calculate the hash.
+HashWorkerOptions is used to configure the parameters needed to calculate the hash.
 
 | filed    | type   | default | description                                                                          |
 |----------|--------|---------|--------------------------------------------------------------------------------------|

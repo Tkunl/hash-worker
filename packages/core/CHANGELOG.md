@@ -1,5 +1,13 @@
 # hash-worker
 
+## 2.0.0
+
+### Major Changes
+
+- feat: 移除了 crc32 和 mix 策略的支持, 因为 crc32 非常容易导致 hash 碰撞, 现在只支持 md5 和 xxHash128 两种 hash 算法
+
+- feat: 更新了 getFileHashChunks 方法的相关类型命名
+
 ## 1.1.3
 
 ### Patch Changes
