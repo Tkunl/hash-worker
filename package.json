@@ -14,7 +14,9 @@
     "play-iife": "pnpm run build:core && pnpm -F browser-demo run play",
     "play-vue-vite": "pnpm run build:core && pnpm -F vue-demo run play",
     "play-react-webpack": "pnpm run build:core && pnpm -F react-demo run play",
-    "check-updates": "npx npm-check-updates",
+    "check-updates": "pnpm outdated",
+    "check-updates:vue-demo": "pnpm -F vue-demo outdated",
+    "check-updates:react-demo": "pnpm -F react-demo outdated",
     "test": "pnpm -F hash-worker run test",
     "lint": "eslint --fix",
     "format": "prettier --write '**/*.{js,jsx,ts,tsx,json}'",
@@ -58,15 +60,15 @@
     "jest-environment-jsdom": "^29.7.0",
     "lint-staged": "^15.5.1",
     "prettier": "^3.5.3",
-    "rimraf": "^6.0.1",
+    "rimraf": "catalog:",
     "rollup": "^4.40.0",
     "rollup-plugin-dts": "^6.2.1",
     "rollup-plugin-swc3": "^0.12.1",
     "ts-jest": "^29.1.5",
     "ts-jest-mock-import-meta": "^1.2.0",
-    "tsup": "^8.4.0",
+    "tsup": "catalog:",
     "tsx": "^4.19.3",
     "turbo": "^2.5.0",
-    "typescript": "^5.8.3"
+    "typescript": "catalog:"
   }
 }

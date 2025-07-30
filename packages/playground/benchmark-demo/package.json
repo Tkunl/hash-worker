@@ -11,5 +11,8 @@
   "dependencies": {
     "hash-worker": "workspace:*",
     "hash-worker-benchmark": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "catalog:"
   }
 }

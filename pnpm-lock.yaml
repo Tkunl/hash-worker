@@ -4,6 +4,69 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    '@babel/core':
+      specifier: ^7.26.0
+      version: 7.26.10
+    '@babel/preset-env':
+      specifier: ^7.26.0
+      version: 7.26.9
+    '@babel/preset-react':
+      specifier: ^7.26.3
+      version: 7.26.3
+    '@babel/preset-typescript':
+      specifier: ^7.26.0
+      version: 7.27.0
+    '@types/react':
+      specifier: ^18.2.0
+      version: 18.3.23
+    '@types/react-dom':
+      specifier: ^18.2.0
+      version: 18.3.7
+    '@vitejs/plugin-vue':
+      specifier: ^5.2.3
+      version: 5.2.3
+    babel-loader:
+      specifier: ^9.2.1
+      version: 9.2.1
+    hash-wasm:
+      specifier: ^4.12.0
+      version: 4.12.0
+    react:
+      specifier: ^18.2.0
+      version: 18.3.1
+    react-dom:
+      specifier: ^18.2.0
+      version: 18.3.1
+    rimraf:
+      specifier: ^6.0.1
+      version: 6.0.1
+    ts-node:
+      specifier: ^10.9.2
+      version: 10.9.2
+    tsup:
+      specifier: ^8.4.0
+      version: 8.4.0
+    typescript:
+      specifier: ^5.8.3
+      version: 5.8.3
+    vite:
+      specifier: ^6.3.2
+      version: 6.3.2
+    vue:
+      specifier: ^3.5.13
+      version: 3.5.13
+    webpack:
+      specifier: ^5.97.1
+      version: 5.99.5
+    webpack-cli:
+      specifier: ^6.0.1
+      version: 6.0.1
+    webpack-dev-server:
+      specifier: ^5.2.0
+      version: 5.2.1
+
 importers:
 
   .:
@@ -75,7 +138,7 @@ importers:
         specifier: ^3.5.3
         version: 3.5.3
       rimraf:
-        specifier: ^6.0.1
+        specifier: 'catalog:'
         version: 6.0.1
       rollup:
         specifier: ^4.40.0
@@ -93,7 +156,7 @@ importers:
         specifier: ^1.2.0
         version: 1.3.0(ts-jest@29.3.1(@babel/core@7.26.10)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.10))(esbuild@0.25.2)(jest@29.7.0(@types/node@20.17.30)(ts-node@10.9.2(@swc/core@1.11.21)(@types/node@20.17.30)(typescript@5.8.3)))(typescript@5.8.3))
       tsup:
-        specifier: ^8.4.0
+        specifier: 'catalog:'
         version: 8.4.0(@swc/core@1.11.21)(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.3)(typescript@5.8.3)(yaml@2.7.1)
       tsx:
         specifier: ^4.19.3
@@ -102,7 +165,7 @@ importers:
         specifier: ^2.5.0
         version: 2.5.0
       typescript:
-        specifier: ^5.8.3
+        specifier: 'catalog:'
         version: 5.8.3
 
   packages/benchmark:
@@ -110,15 +173,25 @@ importers:
       hash-worker:
         specifier: workspace:*
         version: link:../core
+    devDependencies:
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.0.1
+      tsup:
+        specifier: 'catalog:'
+        version: 8.4.0(@swc/core@1.11.21)(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.3)(typescript@5.8.3)(yaml@2.7.1)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.8.3
 
   packages/core:
     dependencies:
       hash-wasm:
-        specifier: ^4.12.0
+        specifier: 'catalog:'
         version: 4.12.0
     devDependencies:
       ts-node:
-        specifier: ^10.9.2
+        specifier: 'catalog:'
         version: 10.9.2(@swc/core@1.11.21)(@types/node@20.17.30)(typescript@5.8.3)
 
   packages/playground/benchmark-demo:
@@ -129,6 +202,16 @@ importers:
       hash-worker-benchmark:
         specifier: workspace:*
         version: link:../../benchmark
+    devDependencies:
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.0.1
+      tsup:
+        specifier: 'catalog:'
+        version: 8.4.0(@swc/core@1.11.21)(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.3)(typescript@5.8.3)(yaml@2.7.1)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.8.3
 
   packages/playground/iife-demo: {}
 
@@ -137,6 +220,16 @@ importers:
       hash-worker:
         specifier: workspace:*
         version: link:../../core
+    devDependencies:
+      rimraf:
+        specifier: 'catalog:'
+        version: 6.0.1
+      tsup:
+        specifier: 'catalog:'
+        version: 8.4.0(@swc/core@1.11.21)(jiti@2.4.2)(postcss@8.5.3)(tsx@4.19.3)(typescript@5.8.3)(yaml@2.7.1)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.8.3
 
   packages/playground/react-webpack-demo:
     dependencies:
@@ -144,44 +237,44 @@ importers:
         specifier: workspace:*
         version: link:../../core
       react:
-        specifier: ^18.2.0
+        specifier: 'catalog:'
         version: 18.3.1
       react-dom:
-        specifier: ^18.2.0
+        specifier: 'catalog:'
         version: 18.3.1(react@18.3.1)
     devDependencies:
       '@babel/core':
-        specifier: ^7.26.0
+        specifier: 'catalog:'
         version: 7.26.10
       '@babel/preset-env':
-        specifier: ^7.26.0
+        specifier: 'catalog:'
         version: 7.26.9(@babel/core@7.26.10)
       '@babel/preset-react':
-        specifier: ^7.26.3
+        specifier: 'catalog:'
         version: 7.26.3(@babel/core@7.26.10)
       '@babel/preset-typescript':
-        specifier: ^7.26.0
+        specifier: 'catalog:'
         version: 7.27.0(@babel/core@7.26.10)
       '@types/react':
-        specifier: ^19.0.3
-        version: 19.1.1
+        specifier: 'catalog:'
+        version: 18.3.23
       '@types/react-dom':
-        specifier: ^19.0.2
-        version: 19.1.2(@types/react@19.1.1)
+        specifier: 'catalog:'
+        version: 18.3.7(@types/react@18.3.23)
       babel-loader:
-        specifier: ^9.2.1
+        specifier: 'catalog:'
         version: 9.2.1(@babel/core@7.26.10)(webpack@5.99.5)
       typescript:
-        specifier: ^5.7.2
+        specifier: 'catalog:'
         version: 5.8.3
       webpack:
-        specifier: ^5.97.1
+        specifier: 'catalog:'
         version: 5.99.5(@swc/core@1.11.21)(esbuild@0.25.2)(webpack-cli@6.0.1)
       webpack-cli:
-        specifier: ^6.0.1
+        specifier: 'catalog:'
         version: 6.0.1(webpack-dev-server@5.2.1)(webpack@5.99.5)
       webpack-dev-server:
-        specifier: ^5.2.0
+        specifier: 'catalog:'
         version: 5.2.1(webpack-cli@6.0.1)(webpack@5.99.5)
 
   packages/playground/vue-vite-demo:
@@ -193,14 +286,14 @@ importers:
         specifier: workspace:*
         version: link:../../benchmark
       vue:
-        specifier: ^3.5.13
+        specifier: 'catalog:'
         version: 3.5.13(typescript@5.8.3)
     devDependencies:
       '@vitejs/plugin-vue':
-        specifier: ^5.2.3
+        specifier: 'catalog:'
         version: 5.2.3(vite@6.3.2(@types/node@20.17.30)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(yaml@2.7.1))(vue@3.5.13(typescript@5.8.3))
       vite:
-        specifier: ^6.3.2
+        specifier: 'catalog:'
         version: 6.3.2(@types/node@20.17.30)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(yaml@2.7.1)
 
 packages:
@@ -1569,19 +1662,22 @@ packages:
   '@types/node@20.17.30':
     resolution: {integrity: sha512-7zf4YyHA+jvBNfVrk2Gtvs6x7E8V+YDW05bNfG2XkWDJfYRXrTiP/DsB2zSYTaHX0bGIujTBQdMVAhb+j7mwpg==}
 
+  '@types/prop-types@15.7.15':
+    resolution: {integrity: sha512-F6bEyamV9jKGAFBEmlQnesRPGOQqS2+Uwi0Em15xenOxHaf2hv6L8YCVn3rPdPJOiJfPiCnLIRyvwVaqMY3MIw==}
+
   '@types/qs@6.9.18':
     resolution: {integrity: sha512-kK7dgTYDyGqS+e2Q4aK9X3D7q234CIZ1Bv0q/7Z5IwRDoADNU81xXJK/YVyLbLTZCoIwUoDoffFeF+p/eIklAA==}
 
   '@types/range-parser@1.2.7':
     resolution: {integrity: sha512-hKormJbkJqzQGhziax5PItDUTMAM9uE2XXQmM37dyd4hVM+5aVl7oVxMVUiVQn2oCQFN/LKCZdvSM0pFRqbSmQ==}
 
-  '@types/react-dom@19.1.2':
-    resolution: {integrity: sha512-XGJkWF41Qq305SKWEILa1O8vzhb3aOo3ogBlSmiqNko/WmRb6QIaweuZCXjKygVDXpzXb5wyxKTSOsmkuqj+Qw==}
+  '@types/react-dom@18.3.7':
+    resolution: {integrity: sha512-MEe3UeoENYVFXzoXEWsvcpg6ZvlrFNlOQ7EOsvhI3CfAXwzPfO8Qwuxd40nepsYKqyyVQnTdEfv68q91yLcKrQ==}
     peerDependencies:
-      '@types/react': ^19.0.0
+      '@types/react': ^18.0.0
 
-  '@types/react@19.1.1':
-    resolution: {integrity: sha512-ePapxDL7qrgqSF67s0h9m412d9DbXyC1n59O2st+9rjuuamWsZuD2w55rqY12CbzsZ7uVXb5Nw0gEp9Z8MMutQ==}
+  '@types/react@18.3.23':
+    resolution: {integrity: sha512-/LDXMQh55EzZQ0uVAZmKKhfENivEvWz6E+EYzh+/MCjMhNsotd+ZHhBGIjFDTi6+fz0OhQQQLbTgdQIxxCsC0w==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -6159,16 +6255,19 @@ snapshots:
     dependencies:
       undici-types: 6.19.8
 
+  '@types/prop-types@15.7.15': {}
+
   '@types/qs@6.9.18': {}
 
   '@types/range-parser@1.2.7': {}
 
-  '@types/react-dom@19.1.2(@types/react@19.1.1)':
+  '@types/react-dom@18.3.7(@types/react@18.3.23)':
     dependencies:
-      '@types/react': 19.1.1
+      '@types/react': 18.3.23
 
-  '@types/react@19.1.1':
+  '@types/react@18.3.23':
     dependencies:
+      '@types/prop-types': 15.7.15
       csstype: 3.1.3
 
   '@types/resolve@1.20.2': {}
