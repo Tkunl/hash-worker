@@ -1,4 +1,4 @@
-import { HashChksParam, Strategy } from 'hash-worker'
+import { HashWorkerOptions, Strategy } from 'hash-worker'
 
 export interface BenchmarkOptions {
   sizeInMB?: number // 默认: 测试文件 500MB
@@ -8,5 +8,5 @@ export interface BenchmarkOptions {
 
 export interface NormalizeOptions {
   sizeInMB: number
-  params: HashChksParam[]
+  params: HashWorkerOptions[]
 }

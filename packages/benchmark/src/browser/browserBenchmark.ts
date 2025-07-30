@@ -1,4 +1,4 @@
-import { Strategy, HashChksParam, getFileHashChunks } from 'hash-worker'
+import { Strategy, HashWorkerOptions, getFileHashChunks } from 'hash-worker'
 import { Benchmark } from '../shared/benchmark'
 import { BenchmarkOptions, NormalizeOptions } from '../shared/types'
 import { createMockFile, normalizeBenchmarkOptions } from '../shared/helper'
@@ -52,7 +52,7 @@ class BrowserBenchmark extends Benchmark {
     alert('Please check the console for benchmark information ~')
   }
 
-  protected async getFileHashChunks(param: HashChksParam): Promise<void> {
+  protected async getFileHashChunks(param: HashWorkerOptions): Promise<void> {
     await getFileHashChunks(param)
   }
 }

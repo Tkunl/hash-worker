@@ -1,4 +1,4 @@
-import { getFileHashChunks, HashChksParam, HashChksRes, Strategy } from 'hash-worker'
+import { getFileHashChunks, HashWorkerOptions, HashWorkerResult, Strategy } from 'hash-worker'
 import React, { useCallback, useRef } from 'react'
 import ReactDOM from 'react-dom/client'
 
@@ -13,7 +13,7 @@ function App() {
   }, [])
 
   const handleGetHash = useCallback(() => {
-    const param: HashChksParam = {
+    const param: HashWorkerOptions = {
       file: fileRef.current!,
       config: {
         workerCount: 6,
@@ -22,7 +22,7 @@ function App() {
       },
     }
 
-    getFileHashChunks(param).then((data: HashChksRes) => {
+    getFileHashChunks(param).then((data: HashWorkerResult) => {
       console.log(data)
       alert('Calculation complete, please check the console!')
     })

@@ -128,8 +128,8 @@ describe('NodeWorkerPool', () => {
       const mockResults = ['hash1', 'hash2', 'hash3']
       const mockParams = [
         { chunk: new ArrayBuffer(8), strategy: Strategy.md5 },
-        { chunk: new ArrayBuffer(8), strategy: Strategy.crc32 },
-        { chunk: new ArrayBuffer(8), strategy: Strategy.xxHash64 },
+        { chunk: new ArrayBuffer(8), strategy: Strategy.md5 },
+        { chunk: new ArrayBuffer(8), strategy: Strategy.xxHash128 },
       ]
 
       // Mock 每个 worker 的 run 方法
@@ -180,7 +180,7 @@ describe('NodeWorkerPool', () => {
       const mockError = new Error('Worker execution failed')
       const mockParams = [
         { chunk: new ArrayBuffer(8), strategy: Strategy.md5 },
-        { chunk: new ArrayBuffer(8), strategy: Strategy.crc32 },
+        { chunk: new ArrayBuffer(8), strategy: Strategy.md5 },
       ]
 
       // Mock 第一个 worker 成功，第二个失败

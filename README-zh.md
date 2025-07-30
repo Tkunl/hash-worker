@@ -12,7 +12,7 @@
 
 它基于 hash-wasm 且利用了 WebWorker 进行并行计算，从而加快了计算文件分片的计算速度。
 
-Hash-worker 支持三种哈希计算算法：`md5`, `crc32` 和 `xxHash64`。
+Hash-worker 支持两种哈希计算算法：`md5` 和 `xxHash128`。
 
 同时支持 `浏览器` 和 `Node.js` 环境。
 
@@ -66,7 +66,7 @@ export default defineConfig({
 > 在 Node 环境下从 'hash-worker/node' 中导入
 
 ``` ts
-import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
+import { getFileHashChunks, destroyWorkerPool, HashWorkerResult, HashChksParam } from 'hash-worker'
 
 function handleGetHash(file: File) {
   const param: HashChksParam = {
@@ -77,7 +77,7 @@ function handleGetHash(file: File) {
     }
   }
 
-  getFileHashChunks(param).then((data: HashChksRes) => {
+  getFileHashChunks(param).then((data: HashWorkerResult) => {
     console.log('chunksHash', data.chunksHash)
   })
 }
@@ -108,8 +108,7 @@ HashChksParam 是用于配置计算哈希值所需的参数。
 |--------------------------|----------|----------------|---------------------------|
 | chunkSize                | number   | 10 (MB)        | 文件分片的大小                   |
 | workerCount              | number   | 8              | 计算 Hash 时同时开启的 worker 数量  |
-| strategy                 | Strategy | Strategy.mixed | hash 计算策略                 |
-| borderCount              | number   | 100            | 'mixed' 模式下 hash 计算规则的分界点 |
+| strategy                 | Strategy | Strategy.xxHash128 | hash 计算策略                 |
 | isCloseWorkerImmediately | boolean  | true           | 当计算完成时, 是否立即销毁 Worker 线程  |
 | isShowLog                | boolean  | false           | 当计算完成时, 是否在控制台显示 log  |
 | hashFn                   | HashFn   | async (hLeft, hRight?) => (hRight ? md5(hLeft + hRight) : hLeft)| 构建 MerkleTree 时的 hash 方法 |
@@ -117,20 +116,17 @@ HashChksParam 是用于配置计算哈希值所需的参数。
 ```ts
 enum Strategy {
   md5 = 'md5',
-  crc32 = 'crc32',
-  xxHash64 = 'xxHash64',
-  mixed = 'mixed',
+  xxHash128 = 'xxHash128',
 }
 
 type HashFn = (hLeft: string, hRight?: string) => Promise<string>
 ```
 
-当采用 Strategy.mixed 策略时，若文件分片数量少于 borderCount，将采用 md5 算法计算哈希值来构建 MerkleTree。
-否则，则切换至使用 crc32 算法进行 MerkleTree 的构建。
 
-**HashChksRes**
 
-HashChksRes 是计算哈希值之后的返回结果。
+**HashWorkerResult**
+
+HashWorkerResult 是计算哈希值之后的返回结果。
 
 | filed      | type         | description              |
 |------------|--------------|--------------------------|

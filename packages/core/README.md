@@ -13,7 +13,7 @@
 It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, which speeds up computation when
 processing file blocks.
 
-Hash-worker supports three hash computation algorithms: `md5`, `crc32` and `xxHash64`.
+Hash-worker supports two hash computation algorithms: `md5` and `xxHash128`.
 
 Both `browser` and `Node.js` are supported.
 
@@ -67,7 +67,7 @@ The build artifacts are located in the `packages/core/dist` directory.
 > Import from 'hash-worker/node' in the browser environment
 
 ``` ts
-import { getFileHashChunks, destroyWorkerPool, HashChksRes, HashChksParam } from 'hash-worker'
+import { getFileHashChunks, destroyWorkerPool, HashWorkerResult, HashChksParam } from 'hash-worker'
 
 function handleGetHash(file: File) {
   const param: HashChksParam = {
@@ -78,7 +78,7 @@ function handleGetHash(file: File) {
     }
   }
 
-  getFileHashChunks(param).then((data: HashChksRes) => {
+  getFileHashChunks(param).then((data: HashWorkerResult) => {
     console.log('chunksHash', data.chunksHash)
   })
 }
@@ -109,8 +109,7 @@ HashChksParam is used to configure the parameters needed to calculate the hash.
 |--------------------------|----------|----------------|-----------------------------------------------------------------------------------|
 | chunkSize                | number   | 10 (MB)        | Size of the file slice                                                            |
 | workerCount              | number   | 8              | Number of workers turned on at the same time as the hash is calculated            |
-| strategy                 | Strategy | Strategy.mixed | Hash computation strategy                                                         |
-| borderCount              | number   | 100            | The cutoff for the hash calculation rule in 'mixed' mode                          |
+| strategy                 | Strategy | Strategy.xxHash128 | Hash computation strategy                                                         |
 | isCloseWorkerImmediately | boolean  | true           | Whether to destroy the worker thread immediately when the calculation is complete |
 | isShowLog                | boolean  | false           | Whether to show log in console when he calculation is complete  |
 | hashFn                   | HashFn   | async (hLeft, hRight?) => (hRight ? md5(hLeft + hRight) : hLeft)| The hash method for build MerkleTree |
@@ -119,21 +118,17 @@ HashChksParam is used to configure the parameters needed to calculate the hash.
 // strategy.ts
 export enum Strategy {
   md5 = 'md5',
-  crc32 = 'crc32',
-  xxHash64 = 'xxHash64',
-  mixed = 'mixed',
+  xxHash128 = 'xxHash128',
 }
 
 type HashFn = (hLeft: string, hRight?: string) => Promise<string>
 ```
 
-When Strategy.mixed strategy is used, if the number of file fragments is less than borderCount, the md5 algorithm will
-be used to calculate the hash value to build the MerkleTree.
-Otherwise, it switches to using the crc32 algorithm for MerkleTree construction.
 
-**HashChksRes**
 
-HashChksRes is the returned result after calculating the hash value.
+**HashWorkerResult**
+
+HashWorkerResult is the returned result after calculating the hash value.
 
 | filed      | type         | description                                                             |
 |------------|--------------|-------------------------------------------------------------------------|

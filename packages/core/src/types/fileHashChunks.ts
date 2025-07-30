@@ -5,7 +5,6 @@ export interface Config {
   chunkSize?: number // 分片大小 MB
   workerCount?: number // worker 线程数量
   strategy?: Strategy // hash 计算策略
-  borderCount?: number // 使用 'mixed' 时的分界点, 分片数量少于 borderCount 时使用 md5 作为 hash 算法, 否则使用 crc32
   isCloseWorkerImmediately?: boolean // 是否在计算 hash 后立即关闭 worker
   isShowLog?: boolean // 是否显示 log
   hashFn?: HashFn // 自定义 MerkleTree hash 合并方法
@@ -19,7 +18,7 @@ export interface FileMetaInfo {
   type: string // 文件的后缀名
 }
 
-export interface HashChksRes {
+export interface HashWorkerResult {
   chunksBlob?: Blob[] // 文件分片的 Blob[]
   chunksHash: string[] // 文件分片的 Hash[]
   merkleHash: string // 文件的 merkleHash
@@ -38,4 +37,4 @@ interface NodeEnvParam extends BaseParam {
   filePath: string // 待计算 Hash 的文件的 URL (Node 环境)
 }
 /** 使用交叉类型确保 file 和 filePath 二者之一必须存在 */
-export type HashChksParam = BrowserEnvParam | NodeEnvParam
+export type HashWorkerOptions = BrowserEnvParam | NodeEnvParam

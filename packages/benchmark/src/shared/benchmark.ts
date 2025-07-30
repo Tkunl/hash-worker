@@ -1,4 +1,4 @@
-import { HashChksParam, Strategy } from 'hash-worker'
+import { HashWorkerOptions, Strategy } from 'hash-worker'
 import { BenchmarkOptions, NormalizeOptions } from './types'
 import { sleep } from './helper'
 
@@ -12,7 +12,7 @@ export abstract class Benchmark {
   protected abstract logAvgSpeed(averageSpeed: number): void
   protected abstract logCurSpeed(overTime: number, workerCount: number, speed: number): void
   protected abstract logCompletion(): void
-  protected abstract getFileHashChunks(param: HashChksParam): Promise<void>
+  protected abstract getFileHashChunks(param: HashWorkerOptions): Promise<void>
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected async createMockFileInLocal(sizeInMB: number) {}

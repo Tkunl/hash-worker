@@ -100,11 +100,11 @@ describe('BaseWorkerPool', () => {
         },
         {
           chunk: new ArrayBuffer(8),
-          strategy: 'crc32' as any,
+          strategy: 'md5' as any,
         },
         {
           chunk: new ArrayBuffer(8),
-          strategy: 'xxHash64' as any,
+          strategy: 'xxHash128' as any,
         },
       ]
 
@@ -154,7 +154,7 @@ describe('BaseWorkerPool', () => {
         },
         {
           chunk: new ArrayBuffer(8),
-          strategy: 'crc32' as any,
+          strategy: 'md5' as any,
         },
       ]
 

@@ -39,6 +39,7 @@ const config: Config = {
       testEnvironment: 'node',
       testMatch: ['**/__tests__/node/**/*.spec.ts'],
     },
+    // TODO: 此处貌似暂时没有用到
     {
       displayName: 'browser',
       testEnvironment: 'jsdom',

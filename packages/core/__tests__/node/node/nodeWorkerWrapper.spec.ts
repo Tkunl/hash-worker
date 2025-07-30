@@ -136,7 +136,7 @@ describe('NodeWorkerWrapper', () => {
     it('应该正确传递参数给 worker', () => {
       const mockParam = {
         chunk: new ArrayBuffer(16),
-        strategy: Strategy.crc32,
+        strategy: Strategy.md5,
       }
       const index = 2
 
@@ -150,7 +150,7 @@ describe('NodeWorkerWrapper', () => {
     it('应该为不同索引设置正确的监听器', () => {
       const mockParam = {
         chunk: new ArrayBuffer(8),
-        strategy: Strategy.xxHash64,
+        strategy: Strategy.xxHash128,
       }
       const index = 3
 
@@ -196,7 +196,7 @@ describe('NodeWorkerWrapper', () => {
     })
 
     it('应该正确处理不同策略的消息', async () => {
-      const strategies = [Strategy.md5, Strategy.crc32, Strategy.xxHash64]
+      const strategies = [Strategy.md5, Strategy.xxHash128]
 
       for (const strategy of strategies) {
         const mockParam = {
@@ -352,8 +352,8 @@ describe('NodeWorkerWrapper', () => {
     it('应该能够处理多个并发任务', async () => {
       const mockParams = [
         { chunk: new ArrayBuffer(8), strategy: Strategy.md5 },
-        { chunk: new ArrayBuffer(16), strategy: Strategy.crc32 },
-        { chunk: new ArrayBuffer(32), strategy: Strategy.xxHash64 },
+        { chunk: new ArrayBuffer(16), strategy: Strategy.md5 },
+        { chunk: new ArrayBuffer(32), strategy: Strategy.xxHash128 },
       ]
 
       const mockResults = ['hash1', 'hash2', 'hash3']

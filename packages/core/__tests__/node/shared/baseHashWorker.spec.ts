@@ -1,10 +1,10 @@
 import { BaseHashWorker } from '../../../src/shared/baseHashWorker'
 import { WorkerService } from '../../../src/shared/workerService'
-import { Config, FileMetaInfo, HashChksParam, Strategy } from '../../../src/types'
+import { Config, FileMetaInfo, HashWorkerOptions, Strategy } from '../../../src/types'
 
 // 创建一个具体的测试实现类
 class TestHashWorker extends BaseHashWorker {
-  protected normalizeParams(param: HashChksParam): Required<HashChksParam> {
+  protected normalizeParams(param: HashWorkerOptions): Required<HashWorkerOptions> {
     const baseConfig = {
       chunkSize: 1,
       workerCount: 2,
@@ -106,7 +106,7 @@ describe('BaseHashWorker', () => {
   describe('getFileHashChunks', () => {
     it('应该正确处理文件参数并返回结果', async () => {
       const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' })
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         file: mockFile,
         config: {
           workerCount: 2,
@@ -130,7 +130,7 @@ describe('BaseHashWorker', () => {
     })
 
     it('应该正确处理文件路径参数', async () => {
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         filePath: '/path/to/file.txt',
         config: {
           workerCount: 3,
@@ -155,7 +155,7 @@ describe('BaseHashWorker', () => {
 
     it('应该显示日志当 isShowLog 为 true', async () => {
       const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' })
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         file: mockFile,
         config: {
           workerCount: 2,
@@ -172,7 +172,7 @@ describe('BaseHashWorker', () => {
 
     it('应该立即关闭 worker 当 isCloseWorkerImmediately 为 true', async () => {
       const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' })
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         file: mockFile,
         config: {
           workerCount: 2,
@@ -190,7 +190,7 @@ describe('BaseHashWorker', () => {
 
     it('应该重用现有的 workerService 当 workerCount 相同', async () => {
       const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' })
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         file: mockFile,
         config: {
           workerCount: 2,
@@ -212,7 +212,7 @@ describe('BaseHashWorker', () => {
 
     it('应该调整 worker 池当 workerCount 改变', async () => {
       const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' })
-      const param1: HashChksParam = {
+      const param1: HashWorkerOptions = {
         file: mockFile,
         config: {
           workerCount: 2,
@@ -223,7 +223,7 @@ describe('BaseHashWorker', () => {
       // 第一次调用
       await worker.getFileHashChunks(param1)
 
-      const param2: HashChksParam = {
+      const param2: HashWorkerOptions = {
         file: mockFile,
         config: {
           workerCount: 4,
@@ -239,7 +239,7 @@ describe('BaseHashWorker', () => {
 
     it('应该使用默认配置当没有提供配置', async () => {
       const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' })
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         file: mockFile,
       }
 
@@ -254,7 +254,7 @@ describe('BaseHashWorker', () => {
   describe('destroyWorkerPool', () => {
     it('应该正确销毁 worker 池', async () => {
       const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' })
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         file: mockFile,
         config: {
           workerCount: 2,
@@ -283,7 +283,7 @@ describe('BaseHashWorker', () => {
   describe('参数验证', () => {
     it('应该正确处理空的配置对象', async () => {
       const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' })
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         file: mockFile,
         config: {},
       }
@@ -296,11 +296,11 @@ describe('BaseHashWorker', () => {
 
     it('应该正确处理部分配置', async () => {
       const mockFile = new File(['test content'], 'test.txt', { type: 'text/plain' })
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         file: mockFile,
         config: {
           chunkSize: 5,
-          strategy: Strategy.crc32,
+          strategy: Strategy.md5,
         },
       }
 

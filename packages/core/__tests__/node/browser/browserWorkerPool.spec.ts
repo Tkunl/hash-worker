@@ -102,7 +102,7 @@ describe('BrowserWorkerPool', () => {
         const mockData = new ArrayBuffer(8)
         const params = [
           { chunk: mockData, strategy: Strategy.md5 },
-          { chunk: mockData, strategy: Strategy.crc32 },
+          { chunk: mockData, strategy: Strategy.md5 },
         ]
 
         // Mock worker 响应
@@ -123,12 +123,10 @@ describe('BrowserWorkerPool', () => {
         const mockData = new ArrayBuffer(8)
         const params = [
           { chunk: mockData, strategy: Strategy.md5 },
-          { chunk: mockData, strategy: Strategy.crc32 },
-          { chunk: mockData, strategy: Strategy.xxHash64 },
-          { chunk: mockData, strategy: Strategy.mixed },
+          { chunk: mockData, strategy: Strategy.xxHash128 },
         ]
 
-        const mockResults = ['hash1', 'hash2', 'hash3', 'hash4']
+        const mockResults = ['hash1', 'hash2']
         let callIndex = 0
 
         workerPool.pool.forEach((worker: BrowserWorkerWrapper) => {
@@ -139,14 +137,14 @@ describe('BrowserWorkerPool', () => {
 
         const results = await workerPool.exec(params)
 
-        expect(results).toHaveLength(4)
+        expect(results).toHaveLength(2)
       })
 
       it('应该处理 worker 执行失败的情况', async () => {
         const mockData = new ArrayBuffer(8)
         const params = [
           { chunk: mockData, strategy: Strategy.md5 },
-          { chunk: mockData, strategy: Strategy.crc32 },
+          { chunk: mockData, strategy: Strategy.md5 },
         ]
 
         const error = new Error('Worker execution failed')
@@ -249,8 +247,7 @@ describe('BrowserWorkerPool', () => {
       const mockData = new ArrayBuffer(8)
       const params = [
         { chunk: mockData, strategy: Strategy.md5 },
-        { chunk: mockData, strategy: Strategy.crc32 },
-        { chunk: mockData, strategy: Strategy.xxHash64 },
+        { chunk: mockData, strategy: Strategy.xxHash128 },
       ]
 
       const executionOrder: number[] = []
@@ -265,7 +262,7 @@ describe('BrowserWorkerPool', () => {
 
       const results = await workerPool.exec(params)
 
-      expect(results).toHaveLength(3)
+      expect(results).toHaveLength(2)
 
       // 验证 worker 被使用
       expect(executionOrder.length).toBeGreaterThan(0)

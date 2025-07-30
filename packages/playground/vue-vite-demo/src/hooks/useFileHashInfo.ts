@@ -2,11 +2,10 @@ import { ref } from 'vue'
 import {
   destroyWorkerPool,
   getFileHashChunks,
-  HashChksParam,
-  HashChksRes,
+  HashWorkerOptions,
+  HashWorkerResult,
   Strategy,
 } from 'hash-worker'
-// import { md5 } from 'hash-wasm'
 
 export function useFileHashInfo() {
   const file = ref<File>()
@@ -19,17 +18,17 @@ export function useFileHashInfo() {
   }
 
   function handleGetHash() {
-    const param: HashChksParam = {
+    const param: HashWorkerOptions = {
       file: file.value!,
       config: {
-        workerCount: 6,
-        strategy: Strategy.md5,
+        workerCount: 1,
+        strategy: Strategy.xxHash128,
         isShowLog: true,
         // hashFn: async (hLeft, hRight?) => (hRight ? md5(hLeft + hRight) : hLeft)
       },
     }
 
-    getFileHashChunks(param).then((res: HashChksRes) => {
+    getFileHashChunks(param).then((res: HashWorkerResult) => {
       console.log(res)
       alert('Calculation complete, please check the console!')
     })

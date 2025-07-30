@@ -59,7 +59,7 @@ describe('ArrayBufferService', () => {
       const largeChunk = new ArrayBuffer(1024)
       const largeReq: WorkerReq = {
         chunk: largeChunk,
-        strategy: Strategy.crc32,
+        strategy: Strategy.md5,
       }
 
       const result = obtainBuf(largeReq)
@@ -70,7 +70,7 @@ describe('ArrayBufferService', () => {
     it('应该处理不同的策略类型', () => {
       const reqWithDifferentStrategy: WorkerReq = {
         chunk: new ArrayBuffer(16),
-        strategy: Strategy.xxHash64,
+        strategy: Strategy.xxHash128,
       }
 
       const result = obtainBuf(reqWithDifferentStrategy)
@@ -143,7 +143,7 @@ describe('ArrayBufferService', () => {
       // 2. 获取 buffer
       const testReq: WorkerReq = {
         chunk: new ArrayBuffer(24),
-        strategy: Strategy.mixed,
+        strategy: Strategy.md5,
       }
       const obtainedBuffer = obtainBuf(testReq)
       expect(obtainedBuffer).toBe(testReq.chunk)
@@ -185,7 +185,7 @@ describe('ArrayBufferService', () => {
 
       const largeReq: WorkerReq = {
         chunk: largeBuffer,
-        strategy: Strategy.crc32,
+        strategy: Strategy.md5,
       }
 
       const result = obtainBuf(largeReq)

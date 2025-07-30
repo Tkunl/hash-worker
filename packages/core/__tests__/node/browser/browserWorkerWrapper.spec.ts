@@ -84,7 +84,7 @@ describe('BrowserWorkerWrapper', () => {
     it('应该在执行期间设置状态为 RUNNING', async () => {
       const mockParam = {
         chunk: new ArrayBuffer(8),
-        strategy: Strategy.crc32,
+        strategy: Strategy.md5,
       }
       const index = 1
 
@@ -112,7 +112,7 @@ describe('BrowserWorkerWrapper', () => {
     })
 
     it('应该处理不同的策略类型', async () => {
-      const strategies = [Strategy.md5, Strategy.crc32, Strategy.xxHash64, Strategy.mixed]
+      const strategies = [Strategy.md5, Strategy.xxHash128]
 
       for (const strategy of strategies) {
         const mockParam = {
@@ -212,7 +212,7 @@ describe('BrowserWorkerWrapper', () => {
       }
       const mockParam2 = {
         chunk: new ArrayBuffer(16),
-        strategy: Strategy.crc32,
+        strategy: Strategy.md5,
       }
 
       // 第一个调用

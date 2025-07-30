@@ -1,5 +1,5 @@
 import { WorkerService } from './workerService'
-import { Config, FileMetaInfo, HashChksParam, HashChksRes } from '../types'
+import { Config, FileMetaInfo, HashWorkerOptions, HashWorkerResult } from '../types'
 
 type ProcessFileProps = {
   file?: File
@@ -18,7 +18,7 @@ export abstract class BaseHashWorker {
   protected workerService: WorkerService | null = null
   protected curWorkerCount: number = 0
 
-  protected abstract normalizeParams(param: HashChksParam): Required<HashChksParam>
+  protected abstract normalizeParams(param: HashWorkerOptions): Required<HashWorkerOptions>
   protected abstract processFile({ file, filePath, config }: ProcessFileProps): ProcessFileResult
   protected abstract getFileMetadata({
     file,
@@ -26,7 +26,7 @@ export abstract class BaseHashWorker {
   }: GetFileMetadataProps): Promise<FileMetaInfo>
   protected abstract createWorkerService(workerCount: number): WorkerService
 
-  async getFileHashChunks(param: HashChksParam): Promise<HashChksRes> {
+  async getFileHashChunks(param: HashWorkerOptions): Promise<HashWorkerResult> {
     const { config, file, filePath } = this.normalizeParams(param)
     const requiredConfig = config as Required<Config>
     const { isCloseWorkerImmediately, isShowLog, workerCount } = requiredConfig

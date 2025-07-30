@@ -1,5 +1,5 @@
 import * as chalk from 'chalk'
-import { HashChksParam, Strategy, getFileHashChunks } from 'hash-worker/node'
+import { HashWorkerOptions, Strategy, getFileHashChunks } from 'hash-worker/node'
 import { Benchmark } from '../shared/benchmark'
 import { FILE_PATH } from '../shared/constant'
 import { BenchmarkOptions, NormalizeOptions } from '../shared/types'
@@ -48,7 +48,7 @@ class NodeBenchmark extends Benchmark {
     process.exit(0)
   }
 
-  protected async getFileHashChunks(param: HashChksParam): Promise<void> {
+  protected async getFileHashChunks(param: HashWorkerOptions): Promise<void> {
     await getFileHashChunks(param)
   }
 

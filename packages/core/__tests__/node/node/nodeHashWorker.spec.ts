@@ -38,7 +38,7 @@ jest.mock('../../../src/shared/workerService', () => ({
 import fs from 'fs'
 import path from 'path'
 import { getFileHashChunks, destroyWorkerPool } from '../../../src/node/nodeHashWorker'
-import { HashChksParam, Strategy } from '../../../src/types'
+import { HashWorkerOptions, Strategy } from '../../../src/types'
 
 const mockFs = fs as jest.Mocked<typeof fs>
 const mockPath = path as jest.Mocked<typeof path>
@@ -95,7 +95,7 @@ describe('NodeHashWorker', () => {
         endLocation: 1024,
       })
 
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         filePath,
         config: {
           workerCount: 2,
@@ -135,7 +135,7 @@ describe('NodeHashWorker', () => {
         endLocation: 1024,
       })
 
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         filePath: relativePath,
         config: {
           workerCount: 2,
@@ -184,7 +184,7 @@ describe('NodeHashWorker', () => {
 
       mockGetMerkleRootHashByChunks.mockResolvedValue('multiple-merkle-hash')
 
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         filePath,
         config: {
           workerCount: 2,
@@ -218,7 +218,7 @@ describe('NodeHashWorker', () => {
         endLocation: 1024,
       })
 
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         filePath,
         config: {
           workerCount: 2,
@@ -240,7 +240,7 @@ describe('NodeHashWorker', () => {
           workerCount: 2,
           isShowLog: false,
         },
-      } as HashChksParam
+      } as HashWorkerOptions
 
       await expect(getFileHashChunks(param)).rejects.toThrow(
         'The filePath attribute is required in node environment',
@@ -257,7 +257,7 @@ describe('NodeHashWorker', () => {
         throw error
       })
 
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         filePath,
         config: {
           workerCount: 2,
@@ -277,7 +277,7 @@ describe('NodeHashWorker', () => {
       mockPath.isAbsolute.mockReturnValue(true)
       mockFs.statSync.mockReturnValue(mockStats as any)
 
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         filePath,
         config: {
           workerCount: 2,
@@ -300,7 +300,7 @@ describe('NodeHashWorker', () => {
         throw error
       })
 
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         filePath,
         config: {
           workerCount: 2,
@@ -330,7 +330,7 @@ describe('NodeHashWorker', () => {
         endLocation: 1024,
       })
 
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         filePath,
         config: {
           workerCount: 2,
@@ -368,7 +368,7 @@ describe('NodeHashWorker', () => {
         endLocation: 1024,
       })
 
-      const param: HashChksParam = {
+      const param: HashWorkerOptions = {
         filePath,
         config: {
           chunkSize: 2,

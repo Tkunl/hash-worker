@@ -1,6 +1,6 @@
-import { getFileHashChunks, HashChksParam, HashChksRes, Strategy } from 'hash-worker/node'
+import { getFileHashChunks, HashWorkerOptions, HashWorkerResult, Strategy } from 'hash-worker/node'
 
-const param: HashChksParam = {
+const param: HashWorkerOptions = {
   filePath: '/home/tkunl/下载/docker-desktop-amd64.deb',
   config: {
     strategy: Strategy.md5,
@@ -9,7 +9,7 @@ const param: HashChksParam = {
 }
 
 function main() {
-  getFileHashChunks(param).then((res: HashChksRes) => {
+  getFileHashChunks(param).then((res: HashWorkerResult) => {
     console.log(res)
   })
 }

@@ -108,7 +108,7 @@ const {
 const { getArrParts, runAsyncFuncSerialized } = require('../../../src/shared/utils')
 
 type HashChksParam = any
-type Strategy = 'md5' | 'crc32' | 'mixed'
+type Strategy = 'md5' | 'xxHash128'
 
 describe('BrowserHashWorker', () => {
   let mockFile: File
@@ -246,7 +246,7 @@ describe('BrowserHashWorker', () => {
     it('应该使用自定义配置', async () => {
       const customConfig = {
         chunkSize: 2,
-        strategy: 'crc32' as Strategy,
+        strategy: 'md5' as Strategy,
         workerCount: 4,
         borderCount: 5,
         isShowLog: true,
@@ -261,7 +261,7 @@ describe('BrowserHashWorker', () => {
         file: mockFile,
         config: {
           chunkSize: 2,
-          strategy: 'crc32' as Strategy,
+          strategy: 'md5' as Strategy,
           workerCount: 4,
           borderCount: 5,
           isShowLog: true,
@@ -303,7 +303,7 @@ describe('BrowserHashWorker', () => {
     })
 
     it('应该正确处理不同的 hash 策略', async () => {
-      const strategies: Strategy[] = ['md5', 'crc32', 'mixed']
+      const strategies: Strategy[] = ['md5', 'xxHash128']
 
       for (const strategy of strategies) {
         mergeConfig.mockReturnValue({

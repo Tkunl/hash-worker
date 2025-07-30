@@ -3,14 +3,13 @@ import path from 'path'
 import {
   BaseHashWorker,
   getArrParts,
-  getChunksHashMultipleStrategy,
   getChunksHashSingle,
   getMerkleRootHashByChunks,
   mergeConfig,
   runAsyncFuncSerialized,
   WorkerService,
 } from '../shared'
-import { Config, HashChksParam, RequiredWithExclude } from '../types'
+import { Config, HashWorkerOptions, RequiredWithExclude } from '../types'
 import { NodeWorkerPool } from './nodeWorkerPool'
 import { getFileMetadata, getFileSliceLocations, readFileAsArrayBuffer } from './nodeUtils'
 
@@ -19,7 +18,7 @@ class NodeHashWorker extends BaseHashWorker {
     return new WorkerService(new NodeWorkerPool(workerCount))
   }
 
-  protected normalizeParams(param: HashChksParam) {
+  protected normalizeParams(param: HashWorkerOptions) {
     if (!param.filePath) {
       throw new Error('The filePath attribute is required in node environment')
     }
@@ -39,7 +38,7 @@ class NodeHashWorker extends BaseHashWorker {
       }
       throw err
     }
-    return <Required<HashChksParam>>{
+    return <Required<HashWorkerOptions>>{
       ...param,
       config: mergeConfig(param.config),
     }
@@ -52,7 +51,7 @@ class NodeHashWorker extends BaseHashWorker {
     filePath?: string
     config: RequiredWithExclude<Config, 'hashFn'>
   }) {
-    const { chunkSize, strategy, workerCount, borderCount, hashFn, timeout } = config
+    const { chunkSize, strategy, workerCount, hashFn, timeout } = config
     const _filePath = filePath!
 
     // 文件分片
@@ -74,12 +73,10 @@ class NodeHashWorker extends BaseHashWorker {
         chunksBuf = await Promise.all(
           partArr.map((part) => readFileAsArrayBuffer(_filePath, part[0], part[1])),
         )
-        // 执行不同的 hash 计算策略
-        const _strategy = getChunksHashMultipleStrategy(strategy, sliceLocation.length, borderCount)
 
         // 传递超时配置给 getHashForFiles
         const taskConfig = timeout ? { timeout } : undefined
-        return this.workerService!.getHashForFiles(chunksBuf, _strategy, taskConfig)
+        return this.workerService!.getHashForFiles(chunksBuf, strategy, taskConfig)
       })
 
       chunksHash = await runAsyncFuncSerialized<string>(tasks)

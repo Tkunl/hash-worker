@@ -3,16 +3,14 @@ import {
   mergeConfig,
   calculateHashInWorker,
   getChunksHashSingle,
-  getChunksHashMultipleStrategy,
 } from '../../../src/shared/helper'
 import { Strategy, Config, WorkerReq } from '../../../src/types'
-import { BORDER_COUNT, DEFAULT_MAX_WORKERS } from '../../../src/shared/constant'
+import { DEFAULT_MAX_WORKERS } from '../../../src/shared/constant'
 
 // Mock hash-wasm functions
 jest.mock('hash-wasm', () => ({
   md5: jest.fn().mockResolvedValue('mock-md5-hash'),
-  crc32: jest.fn().mockResolvedValue('mock-crc32-hash'),
-  xxhash64: jest.fn().mockResolvedValue('mock-xxhash64-hash'),
+  xxhash128: jest.fn().mockResolvedValue('mock-xxHash128-hash'),
 }))
 
 describe('helper', () => {
@@ -55,8 +53,7 @@ describe('helper', () => {
       expect(config).toEqual({
         chunkSize: 10,
         workerCount: DEFAULT_MAX_WORKERS,
-        strategy: Strategy.mixed,
-        borderCount: BORDER_COUNT,
+        strategy: Strategy.xxHash128,
         isCloseWorkerImmediately: true,
         isShowLog: false,
       })
@@ -65,7 +62,7 @@ describe('helper', () => {
     it('应该合并部分配置参数', () => {
       const partialConfig: Config = {
         chunkSize: 20,
-        strategy: Strategy.md5,
+        strategy: Strategy.xxHash128,
         isShowLog: true,
       }
 
@@ -74,8 +71,7 @@ describe('helper', () => {
       expect(config).toEqual({
         chunkSize: 20,
         workerCount: DEFAULT_MAX_WORKERS,
-        strategy: Strategy.md5,
-        borderCount: BORDER_COUNT,
+        strategy: Strategy.xxHash128,
         isCloseWorkerImmediately: true,
         isShowLog: true,
       })
@@ -85,8 +81,7 @@ describe('helper', () => {
       const fullConfig: Config = {
         chunkSize: 15,
         workerCount: 4,
-        strategy: Strategy.crc32,
-        borderCount: 50,
+        strategy: Strategy.md5,
         isCloseWorkerImmediately: false,
         isShowLog: true,
       }
@@ -102,8 +97,7 @@ describe('helper', () => {
       expect(config).toEqual({
         chunkSize: 10,
         workerCount: DEFAULT_MAX_WORKERS,
-        strategy: Strategy.mixed,
-        borderCount: BORDER_COUNT,
+        strategy: Strategy.xxHash128,
         isCloseWorkerImmediately: true,
         isShowLog: false,
       })
@@ -125,43 +119,18 @@ describe('helper', () => {
       })
     })
 
-    it('应该使用 crc32 策略计算哈希', async () => {
-      const req: WorkerReq = {
-        chunk: new ArrayBuffer(16),
-        strategy: Strategy.crc32,
-      }
-
-      const result = await calculateHashInWorker(req)
-
-      expect(result).toEqual({
-        result: 'mock-crc32-hash',
-        chunk: req.chunk,
-      })
-    })
-
-    it('应该使用 xxHash64 策略计算哈希', async () => {
+    it('应该使用 xxHash128 策略计算哈希', async () => {
       const req: WorkerReq = {
         chunk: new ArrayBuffer(32),
-        strategy: Strategy.xxHash64,
+        strategy: Strategy.xxHash128,
       }
 
       const result = await calculateHashInWorker(req)
 
       expect(result).toEqual({
-        result: 'mock-xxhash64-hash',
+        result: 'mock-xxHash128-hash',
         chunk: req.chunk,
       })
-    })
-
-    it('应该抛出错误当使用 mixed 策略时', async () => {
-      const req: WorkerReq = {
-        chunk: new ArrayBuffer(8),
-        strategy: Strategy.mixed,
-      }
-
-      await expect(calculateHashInWorker(req)).rejects.toThrow(
-        'Mixed strategy not supported in worker calculation',
-      )
     })
 
     it('应该抛出错误当使用不支持的策略时', async () => {
@@ -196,25 +165,11 @@ describe('helper', () => {
       expect(result).toEqual(['mock-md5-hash'])
     })
 
-    it('应该使用 crc32 策略计算单个哈希', async () => {
-      const arrayBuffer = new ArrayBuffer(16)
-      const result = await getChunksHashSingle(Strategy.crc32, arrayBuffer)
-
-      expect(result).toEqual(['mock-crc32-hash'])
-    })
-
-    it('应该使用 xxHash64 策略计算单个哈希', async () => {
+    it('应该使用 xxHash128 策略计算单个哈希', async () => {
       const arrayBuffer = new ArrayBuffer(32)
-      const result = await getChunksHashSingle(Strategy.xxHash64, arrayBuffer)
+      const result = await getChunksHashSingle(Strategy.xxHash128, arrayBuffer)
 
-      expect(result).toEqual(['mock-xxhash64-hash'])
-    })
-
-    it('应该为 mixed 策略使用 md5（默认情况）', async () => {
-      const arrayBuffer = new ArrayBuffer(8)
-      const result = await getChunksHashSingle(Strategy.mixed, arrayBuffer)
-
-      expect(result).toEqual(['mock-md5-hash'])
+      expect(result).toEqual(['mock-xxHash128-hash'])
     })
 
     it('应该抛出错误当使用不支持的策略时', async () => {
@@ -230,50 +185,6 @@ describe('helper', () => {
       const result = await getChunksHashSingle(Strategy.md5, arrayBuffer)
 
       expect(result).toEqual(['mock-md5-hash'])
-    })
-  })
-
-  describe('getChunksHashMultipleStrategy', () => {
-    it('应该为 mixed 策略且分片数量小于边界值时返回 md5', () => {
-      const result = getChunksHashMultipleStrategy(Strategy.mixed, BORDER_COUNT - 1, BORDER_COUNT)
-
-      expect(result).toBe(Strategy.md5)
-    })
-
-    it('应该为 mixed 策略且分片数量等于边界值时返回 md5', () => {
-      const result = getChunksHashMultipleStrategy(Strategy.mixed, BORDER_COUNT, BORDER_COUNT)
-
-      expect(result).toBe(Strategy.md5)
-    })
-
-    it('应该为 mixed 策略且分片数量大于边界值时返回 crc32', () => {
-      const result = getChunksHashMultipleStrategy(Strategy.mixed, BORDER_COUNT + 1, BORDER_COUNT)
-
-      expect(result).toBe(Strategy.crc32)
-    })
-
-    it('应该为非 mixed 策略直接返回原策略', () => {
-      expect(getChunksHashMultipleStrategy(Strategy.md5, 50, 100)).toBe(Strategy.md5)
-      expect(getChunksHashMultipleStrategy(Strategy.crc32, 50, 100)).toBe(Strategy.crc32)
-      expect(getChunksHashMultipleStrategy(Strategy.xxHash64, 50, 100)).toBe(Strategy.xxHash64)
-    })
-
-    it('应该为 mixed 策略且没有边界参数时返回 md5（默认情况）', () => {
-      const result = getChunksHashMultipleStrategy(Strategy.mixed, 0, 100)
-
-      expect(result).toBe(Strategy.md5)
-    })
-
-    it('应该为 mixed 策略且只有分片数量时返回 md5（默认情况）', () => {
-      const result = getChunksHashMultipleStrategy(Strategy.mixed, 50, 100)
-
-      expect(result).toBe(Strategy.md5)
-    })
-
-    it('应该为 mixed 策略且边界值较大时返回 crc32', () => {
-      const result = getChunksHashMultipleStrategy(Strategy.mixed, 150, 100)
-
-      expect(result).toBe(Strategy.crc32)
     })
   })
 })

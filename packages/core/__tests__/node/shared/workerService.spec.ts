@@ -69,7 +69,7 @@ describe('WorkerService', () => {
 
     it('应该处理空数组的情况', async () => {
       const chunks: ArrayBuffer[] = []
-      const strategy = Strategy.crc32
+      const strategy = Strategy.md5
       const expectedResult: string[] = []
 
       const result = await workerService.getHashForFiles(chunks, strategy)
@@ -82,7 +82,7 @@ describe('WorkerService', () => {
 
     it('应该处理单个 chunk 的情况', async () => {
       const chunks = [new ArrayBuffer(32)]
-      const strategy = Strategy.xxHash64
+      const strategy = Strategy.xxHash128
       const expectedResult = ['single-hash']
 
       mockPool.exec.mockResolvedValue([{ success: true, data: 'single-hash', index: 0 }])
@@ -91,31 +91,6 @@ describe('WorkerService', () => {
 
       expect(arrayBufferService.initBufService).toHaveBeenCalledWith(chunks)
       expect(mockPool.exec).toHaveBeenCalledWith([{ chunk: chunks[0], strategy }], undefined)
-      expect(result).toEqual(expectedResult)
-    })
-
-    it('应该处理 mixed 策略', async () => {
-      const chunks = [new ArrayBuffer(8), new ArrayBuffer(16), new ArrayBuffer(24)]
-      const strategy = Strategy.mixed
-      const expectedResult = ['mixed-hash1', 'mixed-hash2', 'mixed-hash3']
-
-      mockPool.exec.mockResolvedValue([
-        { success: true, data: 'mixed-hash1', index: 0 },
-        { success: true, data: 'mixed-hash2', index: 1 },
-        { success: true, data: 'mixed-hash3', index: 2 },
-      ])
-
-      const result = await workerService.getHashForFiles(chunks, strategy)
-
-      expect(arrayBufferService.initBufService).toHaveBeenCalledWith(chunks)
-      expect(mockPool.exec).toHaveBeenCalledWith(
-        [
-          { chunk: chunks[0], strategy },
-          { chunk: chunks[1], strategy },
-          { chunk: chunks[2], strategy },
-        ],
-        undefined,
-      )
       expect(result).toEqual(expectedResult)
     })
 
@@ -236,7 +211,7 @@ describe('WorkerService', () => {
 
     it('应该能够处理不同策略的 hash 计算', async () => {
       const chunks = [new ArrayBuffer(32)]
-      const strategies = [Strategy.md5, Strategy.crc32, Strategy.xxHash64, Strategy.mixed]
+      const strategies = [Strategy.md5, Strategy.xxHash128]
 
       for (const strategy of strategies) {
         const expectedResult = [`${strategy}-hash`]
