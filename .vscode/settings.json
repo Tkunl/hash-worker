@@ -3,6 +3,7 @@
     "Chks",
     "Merkle",
     "rimraf",
+    "rsbuild",
     "tsup",
     "vite",
     "vitejs"

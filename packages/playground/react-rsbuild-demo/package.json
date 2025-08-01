@@ -1,0 +1,19 @@
+{
+  "name": "react-rsbuild-demo",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "play": "rsbuild dev"
+  },
+  "dependencies": {
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "hash-worker": "workspace:*"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "catalog:",
+    "@rsbuild/plugin-react": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:"
+  }
+}
