@@ -1,5 +1,11 @@
 # hash-worker
 
+## 2.0.1
+
+### Patch Changes
+
+- 修复发包产物的问题, 在使用了 pnpm 的 catalog 功能时, 应该使用 pnpm publish 而不是 npm publish
+
 ## 2.0.0
 
 ### Major Changes
