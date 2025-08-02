@@ -51,7 +51,7 @@ export abstract class BaseHashWorker {
     isShowLog && (overTime = Date.now() - beforeTime)
     isShowLog &&
       console.log(
-        `get file hash in: ${overTime} ms by using ${config.workerCount} worker, speed: ${(metadata.size / 1024 / (overTime / 1000)).toFixed(2)} MB/s`,
+        `Generated file Merkle hash in ${overTime}ms using ${config.workerCount} worker(s) with ${requiredConfig.strategy} strategy, processing speed: ${(metadata.size / 1024 / (overTime / 1000)).toFixed(2)} MB/s`,
       )
     isCloseWorkerImmediately && this.destroyWorkerPool()
 

@@ -12,7 +12,7 @@
 
 它基于 hash-wasm 且利用了 WebWorker 进行并行计算，从而加快了计算文件分片的计算速度。
 
-Hash-worker 支持两种哈希计算算法：`md5` 和 `xxHash128`。
+Hash-worker 支持两种哈希计算算法：`md5`, `xxHash64`, `xxHash128`。
 
 同时支持 `浏览器` 和 `Node.js` 环境。
 
@@ -116,6 +116,7 @@ HashWorkerOptions 是用于配置计算哈希值所需的参数。
 ```ts
 enum Strategy {
   md5 = 'md5',
+  xxHash64 = 'xxHash64',
   xxHash128 = 'xxHash128',
 }
 

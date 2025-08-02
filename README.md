@@ -13,7 +13,7 @@
 It is based on `hash-wasm` and utilizes `WebWorkers` for parallel computation, which speeds up computation when
 processing file blocks.
 
-Hash-worker supports two hash computation algorithms: `md5` and `xxHash128`.
+Hash-worker supports two hash computation algorithms: `md5`, `xxHash64`, `xxHash128`.
 
 Both `browser` and `Node.js` are supported.
 
@@ -116,8 +116,9 @@ HashWorkerOptions is used to configure the parameters needed to calculate the ha
 
 ```ts
 // strategy.ts
-export enum Strategy {
+enum Strategy {
   md5 = 'md5',
+  xxHash64 = 'xxHash64',
   xxHash128 = 'xxHash128',
 }
 

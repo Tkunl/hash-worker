@@ -166,7 +166,9 @@ describe('BaseHashWorker', () => {
       await worker.getFileHashChunks(param)
 
       expect(mockConsoleLog).toHaveBeenCalledWith(
-        expect.stringMatching(/get file hash in: \d+ ms by using 2 worker, speed: [\d.]+ MB\/s/),
+        expect.stringMatching(
+          /Generated file Merkle hash in \d+ms using 2 worker\(s\) with md5 strategy, processing speed: [\d.]+ MB\/s/,
+        ),
       )
     })
 

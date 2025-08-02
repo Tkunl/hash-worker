@@ -21,8 +21,8 @@ export function useFileHashInfo() {
     const param: HashWorkerOptions = {
       file: file.value!,
       config: {
-        workerCount: 1,
-        strategy: Strategy.xxHash128,
+        workerCount: 6,
+        strategy: Strategy.md5,
         isShowLog: true,
         // hashFn: async (hLeft, hRight?) => (hRight ? md5(hLeft + hRight) : hLeft)
       },
